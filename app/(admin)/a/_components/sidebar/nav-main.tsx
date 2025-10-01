@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -20,7 +22,7 @@ import { adminNavLinks } from "@/constant";
 import { useSidebar } from "@/components/ui/sidebar";
 
 export function NavMain() {
-  const { state, isMobile } = useSidebar();
+  const { state, isMobile, setOpenMobile } = useSidebar();
   const isCollapsed = !isMobile && state === "collapsed";
   const pathname = usePathname();
 
@@ -43,6 +45,7 @@ export function NavMain() {
               className="group/collapsible"
             >
               <SidebarMenuItem>
+                {/* Parent link */}
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
                     tooltip={item.title}
@@ -54,6 +57,12 @@ export function NavMain() {
                       }`,
                       isSectionActive && "bg-white text-primary font-semibold"
                     )}
+                    onClick={() => {
+                      // Close sidebar on mobile if top-level link is clicked
+                      if (isMobile && !item.items?.length) {
+                        setOpenMobile(false);
+                      }
+                    }}
                   >
                     {item.icon && (
                       <item.icon
@@ -61,17 +70,17 @@ export function NavMain() {
                       />
                     )}
                     {(!isCollapsed || isMobile) && <span>{item.title}</span>}
-                    {!isCollapsed && (
+                    {!isCollapsed && item.items && (
                       <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                     )}
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
 
                 {/* Submenu */}
-                {(!isCollapsed || isMobile) && (
+                {(!isCollapsed || isMobile) && item.items && (
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {item.items?.map((subItem) => {
+                      {item.items.map((subItem) => {
                         const isActive = pathname.startsWith(subItem.url);
                         return (
                           <SidebarMenuSubItem key={subItem.title}>
@@ -82,6 +91,11 @@ export function NavMain() {
                                 isActive &&
                                   "bg-white text-primary font-medium [&>svg]:text-primary"
                               )}
+                              onClick={() => {
+                                if (isMobile) {
+                                  setOpenMobile(false); // closes sidebar on mobile
+                                }
+                              }}
                             >
                               <Link href={subItem.url}>
                                 {subItem.icon && <subItem.icon />}

@@ -57,9 +57,13 @@ export const DashboardCards = () => {
             <Card key={index}>
               <CardContent className="flex items-center justify-between gap-1">
                 <div className="space-y-2">
-                  <CardDescription>{title}</CardDescription>
+                  <CardDescription className="line-clamp-1">
+                    {title}
+                  </CardDescription>
                   <CardTitle className="text-3xl">{value} </CardTitle>
-                  <p className="text-muted-foreground text-sm">{description}</p>
+                  <p className="text-muted-foreground text-xs line-clamp-1">
+                    {description}
+                  </p>
                 </div>
                 <div className={cn(`rounded-lg p-3`, bgColor)}>
                   <Icon className={cn(`h-6 w-6`, textColor)} />
