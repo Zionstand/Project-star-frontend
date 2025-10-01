@@ -7,9 +7,6 @@ export const StudentsLists = () => {
       <StudentBox />
       <StudentBox />
       <StudentBox />
-      <StudentBox />
-      <StudentBox />
-      <StudentBox />
     </div>
   );
 };
