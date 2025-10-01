@@ -1,0 +1,9 @@
+name: Deploy to Vercel
+on:
+  workflow_dispatch:  # <-- this allows a manual “Run workflow” button on GitHub
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy Hook
+        run: curl -X POST https://api.vercel.com/v1/integrations/deploy/YOUR_DEPLOY_HOOK
