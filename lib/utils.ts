@@ -114,4 +114,8 @@ export const formatStatus: Record<string, string> = {
   CREDIT: "Credit",
   PROCESSING: "Processing",
   DEBIT: "Debit",
+  CORE: "Core",
+  ELECTIVE: "Elective",
+  VOCATIONAL: "Vocational",
+  INACTIVE: "Inactive",
 };

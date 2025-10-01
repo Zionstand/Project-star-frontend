@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "../_components/PageHeader";
-import { DashboardCards } from "./_components/DashboardCards";
+import { DashboardCards } from "../_components/DashboardCards";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {

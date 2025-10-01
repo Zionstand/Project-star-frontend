@@ -52,7 +52,7 @@ export const adminNavLinks = [
       },
       {
         title: "Classes & Subjects",
-        url: "/a/students/classes",
+        url: "/a/classes",
         icon: IconBook,
       },
     ],
@@ -162,3 +162,6 @@ export const allClasses = [
 ];
 
 export const studentStatuses = ["PENDING", "APPROVED", "REJECTED"];
+
+export const subjectStatuses = ["ACTIVE", "INACTIVE", "DRAFT"];
+export const subjectTypes = ["CORE", "ELECTIVE", "VOCATIONAL"];

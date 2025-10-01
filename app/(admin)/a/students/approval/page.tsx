@@ -1,6 +1,6 @@
 import React from "react";
 import { PageHeader } from "../../_components/PageHeader";
-import { StudentApprovalCards } from "../_components/StudentApprovalCards";
+import { StudentApprovalCards } from "../../_components/StudentApprovalCards";
 import { StudentSearchComponent } from "../../_components/StudentSearchComponent";
 import { StudentsLists } from "./_components/StudentsLists";
 
