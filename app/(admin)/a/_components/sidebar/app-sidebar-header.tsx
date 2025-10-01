@@ -1,3 +1,4 @@
+"use client";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminDropdown } from "../AdminDropdown";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { IconBell } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { SearchBar } from "@/components/Searchbar";
-import { FullLogo, Logo } from "@/components/Logo";
+import { Logo } from "@/components/Logo";
 
 export const AppSidebarHeader = () => {
   return (
