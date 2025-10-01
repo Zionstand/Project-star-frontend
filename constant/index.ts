@@ -133,3 +133,32 @@ export const adminNavLinks = [
 ];
 
 export const DEFAULT_PROFILE_IMAGE = "/assets/images/profile-img.jpg";
+
+export const allClasses = [
+  {
+    value: "JSS1",
+    label: "Junior Secondary School 1",
+  },
+  {
+    value: "JSS2",
+    label: "Junior Secondary School 2",
+  },
+  {
+    value: "JSS3",
+    label: "Junior Secondary School 3",
+  },
+  {
+    value: "SSS1",
+    label: "Senior Secondary School 1",
+  },
+  {
+    value: "SSS2",
+    label: "Senior Secondary School 2",
+  },
+  {
+    value: "SSS3",
+    label: "Senior Secondary School 3",
+  },
+];
+
+export const studentStatuses = ["PENDING", "APPROVED", "REJECTED"];

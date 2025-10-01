@@ -30,9 +30,9 @@ export function NavMain() {
         className={cn("flex flex-col gap-2", isCollapsed && "items-center")}
       >
         {adminNavLinks.map((item) => {
-          // check if ANY child matches current pathname
-          const isSectionActive = item.items?.some((sub) =>
-            pathname.startsWith(sub.url)
+          // Parent is active if ANY child matches
+          const isSectionActive = item.items?.some(
+            (sub) => pathname === sub.url
           );
 
           return (

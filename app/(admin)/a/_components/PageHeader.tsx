@@ -1,11 +1,16 @@
 import React from "react";
 
-export const PageHeader = () => {
+interface Props {
+  title: string;
+  description?: string;
+}
+
+export const PageHeader = ({ title, description }: Props) => {
   return (
     <div className="space-y-1">
-      <h1 className="font-medium text-3xl lg:text-4xl">Dashboard</h1>
+      <h1 className="font-medium text-3xl lg:text-4xl">{title}</h1>
       <p className="text-sm md:text-base text-muted-foreground font-normal">
-        Welcome back! Here's what's happening at your school today.
+        {description}
       </p>
     </div>
   );
