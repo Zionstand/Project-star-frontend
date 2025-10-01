@@ -26,7 +26,7 @@ import {
 import { TeamSwitcher } from "./team-switcher";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import { Logo } from "@/components/Logo";
+import { FullLogo } from "@/components/Logo";
 import { DEFAULT_PROFILE_IMAGE } from "@/constant";
 
 // This is sample data.
@@ -41,8 +41,8 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="border-b border-muted/60">
-        <Logo />
+      <SidebarHeader>
+        <FullLogo />
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
