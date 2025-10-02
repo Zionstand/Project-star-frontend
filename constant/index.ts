@@ -180,3 +180,4 @@ export const allRoles = [
   "COUNSELOR",
   "LIBRARIAN",
 ];
+export const feesStatus = ["PAID", "PENDING", "OVERDUE", "PARTIAL"];

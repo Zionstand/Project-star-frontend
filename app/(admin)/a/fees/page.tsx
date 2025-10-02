@@ -1,80 +1,72 @@
 import React from "react";
 import { PageHeader } from "../_components/PageHeader";
 import {
-  IconAward,
-  IconCalendar,
-  IconCircleDashedLetterA,
+  IconBrandStackoverflow,
   IconDownload,
   IconPlus,
-  IconTrendingUp,
+  IconReplaceUser,
+  IconTopologyFullHierarchy,
 } from "@tabler/icons-react";
-import { AssessmentCards } from "../_components/AssessmentCards";
+import { FeesCards } from "../_components/FeesCards";
+import { FeesSearchComponent } from "../_components/FeesSearchComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { AssessmentTypes } from "./_components/AssessmentTypes";
-import { GradingSchemes } from "./_components/GradingSchemes";
+import { PaymentOverview } from "./_components/PaymentOverview";
+import { FeeStructures } from "./_components/FeeStructures";
 
 const page = () => {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Assessment Setup"
-        description="Configure assessment types, grading schemes, and evaluation criteria"
+        title="Fees & Payments"
+        description="Manage fee structures and track payments"
         primaryCTA={{
-          label: "Create Assessment",
-          slug: "/a/students/new",
+          label: "Add Fee Structure",
+          slug: "/a/staff/new",
           icon: IconPlus,
         }}
         secondaryCTA={{
-          label: "Import Template",
-          slug: "/a/students/new",
+          label: "Export Report",
+          slug: "/a/staff/new",
           icon: IconDownload,
         }}
       />
-      <AssessmentCards />
+      <FeesCards />
       <Tabs defaultValue="catalog">
         <ScrollArea>
           <TabsList className="mb-3 w-full">
             <TabsTrigger value="catalog">
-              <IconCircleDashedLetterA
+              <IconBrandStackoverflow
                 className="-ms-0.5 me-1.5 opacity-60"
                 size={16}
                 aria-hidden="true"
               />
-              Assessment Types
+              Payment Overview
             </TabsTrigger>
             <TabsTrigger value="structure" className="group">
-              <IconAward
+              <IconTopologyFullHierarchy
                 className="-ms-0.5 me-1.5 opacity-60"
                 size={16}
                 aria-hidden="true"
               />
-              Grading Schemes
+              Fee Structure
             </TabsTrigger>
             <TabsTrigger value="mapping" className="group">
-              <IconCalendar
+              <IconReplaceUser
                 className="-ms-0.5 me-1.5 opacity-60"
                 size={16}
                 aria-hidden="true"
               />
-              Exam Schedules
-            </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
-              <IconTrendingUp
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Analytics
+              Transactions
             </TabsTrigger>
           </TabsList>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="catalog">
-          <AssessmentTypes />
+          <PaymentOverview />
         </TabsContent>
         <TabsContent value="structure">
-          <GradingSchemes />
+          <FeeStructures />
         </TabsContent>
         <TabsContent value="mapping">
           <p className="text-muted-foreground p-4 pt-1 text-center text-xs">

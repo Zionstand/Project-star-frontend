@@ -129,4 +129,6 @@ export const formatWord: Record<string, string> = {
   SCIENCE: "Science",
   ENGLISH: "English",
   "LIBRARY SERVICE": "Library Service",
+  PARTIAL: "Partial",
+  OVERDUE: "Overdue",
 };

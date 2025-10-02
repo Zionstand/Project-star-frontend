@@ -26,7 +26,7 @@ export const StudentsLists = () => {
                 <TableHead>Admission No.</TableHead>
                 <TableHead>Class</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
+                <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

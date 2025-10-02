@@ -25,7 +25,7 @@ export const StudentCard = () => {
           <IconDotsVertical />
         </Button>
       </div>
-      <div className="text-sm text-muted-foreground space-y-1">
+      <div className="text-sm text-muted-foreground space-y-2">
         <p>
           <span>JSS1 - Section A</span>
         </p>
