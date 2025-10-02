@@ -164,4 +164,19 @@ export const allClasses = [
 export const studentStatuses = ["PENDING", "APPROVED", "REJECTED"];
 
 export const subjectStatuses = ["ACTIVE", "INACTIVE", "DRAFT"];
+export const staffStatuses = ["ACTIVE", "INACTIVE", "ON LEAVE"];
 export const subjectTypes = ["CORE", "ELECTIVE", "VOCATIONAL"];
+export const departments = [
+  "ADMINISTRATION",
+  "MATHEMATICS",
+  "SCIENCE",
+  "ENGLISH",
+  "LIBRARY SERVICE",
+];
+export const allRoles = [
+  "TEACHER",
+  "PRINCIPAL",
+  "ADMIN",
+  "COUNSELOR",
+  "LIBRARIAN",
+];

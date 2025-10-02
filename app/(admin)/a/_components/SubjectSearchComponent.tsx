@@ -13,7 +13,7 @@ import {
   subjectStatuses,
   subjectTypes,
 } from "@/constant";
-import { formatStatus } from "@/lib/utils";
+import { formatWord } from "@/lib/utils";
 
 export const SubjectSearchComponent = () => {
   return (
@@ -30,7 +30,7 @@ export const SubjectSearchComponent = () => {
             <SelectContent className="[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0">
               {subjectTypes.map((type, index) => (
                 <SelectItem key={index} value={type}>
-                  <span className="truncate">{formatStatus[type]}</span>
+                  <span className="truncate">{formatWord[type]}</span>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -42,7 +42,7 @@ export const SubjectSearchComponent = () => {
             <SelectContent className="[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0">
               {subjectStatuses.map((status, index) => (
                 <SelectItem key={index} value={status}>
-                  <span className="truncate">{formatStatus[status]}</span>
+                  <span className="truncate">{formatWord[status]}</span>
                 </SelectItem>
               ))}
             </SelectContent>

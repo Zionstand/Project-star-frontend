@@ -2,7 +2,7 @@ import React from "react";
 import { PageHeader } from "../../_components/PageHeader";
 import { StudentApprovalCards } from "../../_components/StudentApprovalCards";
 import { StudentSearchComponent } from "../../_components/StudentSearchComponent";
-import { StudentsLists } from "./_components/StudentsLists";
+import { ApprovalStudentsLists } from "./_components/ApprovalStudentsLists";
 
 const page = () => {
   return (
@@ -13,7 +13,7 @@ const page = () => {
       />
       <StudentApprovalCards />
       <StudentSearchComponent />
-      <StudentsLists />
+      <ApprovalStudentsLists />
     </div>
   );
 };

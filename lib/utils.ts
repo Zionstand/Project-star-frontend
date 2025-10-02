@@ -94,7 +94,7 @@ export function formatDate(dateString: string | any): string {
   return `${month} ${getOrdinalSuffix(day)}, ${year}`;
 }
 
-export const formatStatus: Record<string, string> = {
+export const formatWord: Record<string, string> = {
   PENDING: "Pending",
   FAILED: "Failed",
   REFUNDED: "Refunded",
@@ -118,4 +118,15 @@ export const formatStatus: Record<string, string> = {
   ELECTIVE: "Elective",
   VOCATIONAL: "Vocational",
   INACTIVE: "Inactive",
+  "ON LEAVE": "On leave",
+  TEACHER: "Teacher",
+  PRINCIPAL: "Principal",
+  ADMIN: "Admin",
+  COUNSELOR: "Counselor",
+  LIBRARIAN: "Librarian",
+  ADMINISTRATION: "Administration",
+  MATHEMATICS: "Mathematics",
+  SCIENCE: "Science",
+  ENGLISH: "English",
+  "LIBRARY SERVICE": "Library Service",
 };

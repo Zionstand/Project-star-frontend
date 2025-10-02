@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/utils";
 import { IconBan, IconCheck } from "@tabler/icons-react";
 import React from "react";
 
-export const StudentBox = () => {
+export const ApprovalStudentBox = () => {
   return (
     <Card>
       <CardContent className="flex flex-col lg:flex-row items-start justify-start gap-4">

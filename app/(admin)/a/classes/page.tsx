@@ -1,14 +1,13 @@
 import React from "react";
 import { PageHeader } from "../_components/PageHeader";
 import { ClassesCards } from "../_components/ClassesCards";
-import { BoxIcon, HouseIcon, PanelsTopLeftIcon } from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   IconCategoryFilled,
+  IconDownload,
   IconGridScan,
+  IconPlus,
   IconTopologyFullHierarchy,
 } from "@tabler/icons-react";
 import { SubjectCatalog } from "./_components/SubjectCatalog";
@@ -20,6 +19,16 @@ const page = () => {
       <PageHeader
         title="Classes & Subjects"
         description="Structured curriculum management and class organization"
+        primaryCTA={{
+          label: "Add Subject",
+          slug: "/a/classes/new",
+          icon: IconPlus,
+        }}
+        secondaryCTA={{
+          label: "Import Curriculum",
+          slug: "/a/students/new",
+          icon: IconDownload,
+        }}
       />
       <ClassesCards />
       <Tabs defaultValue="catalog">

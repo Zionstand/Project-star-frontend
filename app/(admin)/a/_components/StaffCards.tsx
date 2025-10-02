@@ -7,27 +7,27 @@ import {
 import { cn } from "@/lib/utils";
 import React from "react";
 
-export const StudentApprovalCards = () => {
+export const StaffCards = () => {
   const stats = [
     {
-      title: "Pending review",
-      value: 16,
-      textColor: "text-yellow-500",
+      title: "Total Staffs",
+      value: 5,
+      textColor: "text-black",
     },
     {
-      title: "Approved today",
-      value: 0,
+      title: "Active Staffs",
+      value: "10",
       textColor: "text-green-500",
     },
     {
-      title: "Rejected",
-      value: 0,
-      textColor: "text-red-500",
+      title: "Teachers",
+      value: "45",
+      textColor: "text-primary",
     },
     {
-      title: "Average days to process",
-      value: 5,
-      textColor: "text-primary",
+      title: "On Leave",
+      value: "5",
+      textColor: "text-orange-500",
     },
   ];
   return (

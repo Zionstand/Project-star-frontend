@@ -23,6 +23,8 @@ const badgeVariants = cva(
           "text-primary border-primary [a&]:hover:bg-primary/10 [a&]:hover:text-primary/20",
         outlineSuccess:
           "text-green-500 border-green-500 [a&]:hover:bg-green-500/10 [a&]:hover:text-green-500/20",
+        outlinePurple:
+          "text-purple-500 border-purple-500 [a&]:hover:bg-purple-500/10 [a&]:hover:text-green-500/20",
       },
     },
     defaultVariants: {
