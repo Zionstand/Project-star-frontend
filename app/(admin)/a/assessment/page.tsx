@@ -1,6 +1,7 @@
 import React from "react";
 import { PageHeader } from "../_components/PageHeader";
 import { IconDownload, IconPlus } from "@tabler/icons-react";
+import { AssessmentCards } from "../_components/AssessmentCards";
 
 const page = () => {
   return (
@@ -19,6 +20,7 @@ const page = () => {
           icon: IconDownload,
         }}
       />
+      <AssessmentCards />
     </div>
   );
 };
