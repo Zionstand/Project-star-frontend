@@ -1,0 +1,137 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
+import { IconEye, IconEyeClosed } from "@tabler/icons-react";
+import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
+import { LoginSchema, LoginSchemaType } from "@/lib/zodSchema";
+
+export function LoginForm() {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  const form = useForm<LoginSchemaType>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  function onSubmit(data: LoginSchemaType) {
+    toast("You submitted the following values", {
+      description: (
+        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  }
+
+  return (
+    <Card className="bg-white">
+      <CardContent className="space-y-10 py-6">
+        <div className="space-y-1 text-center">
+          <h3 className="font-medium text-2xl md:text-3xl">Welcome Back</h3>
+          <p className="text-sm text-muted-foreground">
+            Sign in to access your school management dashboard
+          </p>
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="example@lagelu.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        className="pe-9"
+                        placeholder="Password"
+                        type={isVisible ? "text" : "password"}
+                        {...field}
+                      />
+                      <Button
+                        className="absolute top-[50%] translate-y-[-50%] end-1 text-muted-foreground/80"
+                        variant={"ghost"}
+                        size="icon"
+                        type="button"
+                        onClick={toggleVisibility}
+                        aria-label={
+                          isVisible ? "Hide password" : "Show password"
+                        }
+                        aria-pressed={isVisible}
+                        aria-controls="password"
+                      >
+                        {isVisible ? (
+                          <IconEyeClosed
+                            className="size-4"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <IconEye className="size-4" aria-hidden="true" />
+                        )}
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Link
+              href="/forgot-password"
+              className="inline-block text-sm text-primary hover:underline"
+            >
+              Forgot password?
+            </Link>
+            <Button type="submit" className="w-full">
+              Sign in
+            </Button>
+            <Separator />
+            <p className="text-center text-sm text-muted-foreground">
+              Need help accessing your account?{" "}
+              <Link
+                href="/contact"
+                className="hover:underline text-primary font-medium"
+              >
+                Contact Support
+              </Link>
+            </p>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+}

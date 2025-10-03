@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { IconBell } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { SearchBar } from "@/components/Searchbar";
-import { Logo } from "@/components/Logo";
+import { Logo } from "@/app/(admin)/a/_components/Logo";
 
 export const AppSidebarHeader = () => {
   return (

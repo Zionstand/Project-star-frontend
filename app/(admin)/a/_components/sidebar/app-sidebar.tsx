@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
-import { FullLogo } from "@/components/Logo";
+import { FullLogo } from "@/app/(admin)/a/_components/Logo";
 import { DEFAULT_PROFILE_IMAGE } from "@/constant";
 
 // This is sample data.
