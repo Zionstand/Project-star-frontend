@@ -47,7 +47,7 @@ export const adminNavLinks = [
       },
       {
         title: "Academic Calendar",
-        url: "/a/students/calendar",
+        url: "/a/school/calendar",
         icon: IconCalendar,
       },
       {
