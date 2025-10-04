@@ -17,13 +17,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { LoginSchema, LoginSchemaType } from "@/lib/zodSchema";
+import axios from "axios";
+import api from "@/lib/api";
+import { Loader } from "@/components/Loader";
+import { useAuth } from "@/store/useAuth";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
+  const router = useRouter();
+  const setUser = useAuth((s) => s.setUser);
+
+  const [pending, startTransition] = useTransition();
+
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
   const form = useForm<LoginSchemaType>({
@@ -35,12 +45,15 @@ export function LoginForm() {
   });
 
   function onSubmit(data: LoginSchemaType) {
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    startTransition(async () => {
+      try {
+        const res = await api.post("/auth/login", data);
+
+        setUser(res.data.user);
+        router.replace(`/a/dashboard`);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      }
     });
   }
 
@@ -116,8 +129,8 @@ export function LoginForm() {
             >
               Forgot password?
             </Link>
-            <Button type="submit" className="w-full">
-              Sign in
+            <Button type="submit" className="w-full" disabled={pending}>
+              {pending ? <Loader text="Signing in..." /> : "Sign In"}
             </Button>
             <Separator />
             <p className="text-center text-sm text-muted-foreground">

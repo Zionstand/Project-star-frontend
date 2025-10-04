@@ -1,3 +1,4 @@
+"use client";
 import {
   BoltIcon,
   BookOpenIcon,
@@ -20,8 +21,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DEFAULT_PROFILE_IMAGE } from "@/constant";
+import { useSignout } from "@/hooks/use-signout";
 
 export function AdminDropdown() {
+  const handleSignout = useSignout();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -82,7 +86,7 @@ export function AdminDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignout}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>
         </DropdownMenuItem>
