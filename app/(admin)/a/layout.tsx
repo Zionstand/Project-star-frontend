@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (hydrated && !user) {
-      router.replace("/");
+      // router.replace("/");
     }
   }, [hydrated, user, router]);
 

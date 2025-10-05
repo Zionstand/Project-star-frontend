@@ -48,8 +48,8 @@ export function LoginForm() {
     startTransition(async () => {
       try {
         const res = await api.post("/auth/login", data);
-
         setUser(res.data.user);
+        toast.success(res.data.message);
         router.replace(`/a/dashboard`);
       } catch (error: any) {
         toast.error(error.response.data.message);

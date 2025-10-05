@@ -2,8 +2,9 @@
 import { useAutoLogin } from "@/hooks/use-auto-login";
 import { PageGradient } from "./_components/PageGradient";
 import { useAuth } from "@/store/useAuth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 export default function Layout({
   children,
@@ -13,10 +14,22 @@ export default function Layout({
   const router = useRouter();
   const { user } = useAuth();
 
-  if (user) {
-    toast.success("Authenticated");
-    router.replace("/a/dashboard");
-  }
+  const searchParams = useSearchParams(); // ✅ access query params
+
+  useEffect(() => {
+    const unauthenticated = searchParams.get("unauthenticated");
+
+    if (unauthenticated === "true") {
+      toast.error("Your session has expired. Please log in again.");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (user) {
+      // toast.success("Authenticated");
+      router.replace("/a/dashboard");
+    }
+  }, [user, router]);
 
   return (
     <div className="relative">

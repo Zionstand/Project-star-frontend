@@ -19,7 +19,6 @@ export function useAutoLogin() {
           router.replace("/");
         }
       } catch (error) {
-        console.log("error", error);
         clearUser();
         router.replace("/");
       }

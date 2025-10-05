@@ -16,7 +16,7 @@ export const useSignout = () => {
       toast.error("Oops! Failed to logout");
     } finally {
       useAuth.getState().clearUser();
-      router.replace("/");
+      router.replace("/?logout=true");
     }
   };
 

@@ -11,6 +11,7 @@ export function middleware(req: NextRequest) {
 
     if (!access) {
       url.pathname = "/";
+      url.searchParams.set("unauthenticated", "true"); // ✅ correct way
       return NextResponse.redirect(url);
     }
   }
