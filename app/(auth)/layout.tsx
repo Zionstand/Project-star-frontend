@@ -1,32 +1,33 @@
 "use client";
+
 import { useAutoLogin } from "@/hooks/use-auto-login";
 import { PageGradient } from "./_components/PageGradient";
 import { useAuth } from "@/store/useAuth";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
 
-export default function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user } = useAuth();
 
-  const searchParams = useSearchParams(); // ✅ access query params
-
   useEffect(() => {
-    const unauthenticated = searchParams.get("unauthenticated");
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const unauthenticated = params.get("unauthenticated");
 
-    if (unauthenticated === "true") {
-      toast.error("Your session has expired. Please log in again.");
+      if (unauthenticated === "true") {
+        toast.error("Your session has expired. Please log in again.");
+
+        // remove query from URL
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, "", cleanUrl);
+      }
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     if (user) {
-      // toast.success("Authenticated");
       router.replace("/a/dashboard");
     }
   }, [user, router]);
