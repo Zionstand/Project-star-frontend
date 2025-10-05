@@ -27,6 +27,7 @@ import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
+import { FullLogo } from "./Logo";
 
 export function LoginForm() {
   const router = useRouter();

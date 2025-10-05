@@ -6,6 +6,7 @@ import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { FullLogo } from "./_components/Logo";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -35,7 +36,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       <PageGradient />
-      <div className="container flex items-center justify-center min-h-screen py-16">
+      <div className="container flex flex-col space-y-4 items-center justify-center min-h-screen py-16">
+        <div className="flex items-center justify-center lg:hidden">
+          <FullLogo />
+        </div>
         {children}
       </div>
     </div>
