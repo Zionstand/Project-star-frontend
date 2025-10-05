@@ -94,6 +94,22 @@ export function formatDate(dateString: string | any): string {
   return `${month} ${getOrdinalSuffix(day)}, ${year}`;
 }
 
+export const maskEmail = (email: string) => {
+  const [name, domain] = email.split("@");
+  if (!name || !domain) return email; // fallback for invalid emails
+
+  const maskedName =
+    name.length > 2
+      ? name.slice(0, 2) + "*".repeat(name.length - 2)
+      : name[0] + "*";
+  const maskedDomain =
+    domain.length > 3
+      ? domain[0] + "*".repeat(domain.length - 2) + domain.slice(-4)
+      : domain;
+
+  return `${maskedName}@${maskedDomain}`;
+};
+
 export const formatWord: Record<string, string> = {
   PENDING: "Pending",
   FAILED: "Failed",

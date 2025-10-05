@@ -70,7 +70,10 @@ const page = () => {
             )}
           </div>
         </div>
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 space-y-4">
+          <div className="flex items-center justify-center lg:hidden">
+            <FullLogo />
+          </div>
           <LoginForm />
         </div>
       </div>

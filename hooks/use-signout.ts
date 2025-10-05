@@ -12,11 +12,12 @@ export const useSignout = () => {
     try {
       const res = await api.post("/auth/logout");
       toast.success(res.data.message);
+      router.push("/?logout=true");
     } catch (error) {
       toast.error("Oops! Failed to logout");
     } finally {
       useAuth.getState().clearUser();
-      router.replace("/?logout=true");
+      router.push("/?logout=true");
     }
   };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { ForgotPasswordForm } from "../_components/ForgotPasswordForm";
 import { Metadata } from "next";
+import { FullLogo } from "../_components/Logo";
 
 export const metadata: Metadata = {
   title: "Forgot password | Lagelu Grammar School",
@@ -8,7 +9,10 @@ export const metadata: Metadata = {
 
 const page = () => {
   return (
-    <div>
+    <div className="space-y-4">
+      <div className="flex items-center justify-center">
+        <FullLogo />
+      </div>
       <ForgotPasswordForm />
     </div>
   );

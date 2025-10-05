@@ -16,14 +16,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const unauthenticated = params.get("unauthenticated");
+      const logout = params.get("logout");
 
       if (unauthenticated === "true") {
         toast.error("Your session has expired. Please log in again.");
-
-        // remove query from URL
-        const cleanUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState({}, "", cleanUrl);
       }
+
+      if (logout === "true") {
+        toast.success("You've been logged out successfully.");
+      }
+
+      // remove query from URL
+      // const cleanUrl = window.location.origin + window.location.pathname;
+      // window.history.replaceState({}, "", cleanUrl);
     }
   }, []);
 
@@ -36,10 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       <PageGradient />
-      <div className="container flex flex-col space-y-4 items-center justify-center min-h-screen py-16">
-        <div className="flex items-center justify-center lg:hidden">
-          <FullLogo />
-        </div>
+      <div className="container flex items-center justify-center min-h-screen py-16">
         {children}
       </div>
     </div>

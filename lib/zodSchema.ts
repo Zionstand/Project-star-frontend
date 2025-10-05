@@ -13,9 +13,9 @@ export const VerifyCodeSchema = z.object({
   email: z.string().email().min(2, {
     message: "Email must be at least 2 characters.",
   }),
-  code: z
+  otp: z
     .string()
-    .min(2, {
+    .min(6, {
       message: "Code must be 6 characters.",
     })
     .max(6, { message: "Code must be 6 characters" }),
@@ -23,8 +23,14 @@ export const VerifyCodeSchema = z.object({
 
 export const NewPasswordSchema = z
   .object({
-    code: z.string().min(2, {
-      message: "Code must be 6 characters.",
+    otp: z
+      .string()
+      .min(6, {
+        message: "Code must be 6 characters.",
+      })
+      .max(6, { message: "Code must be 6 characters" }),
+    email: z.string().email().min(2, {
+      message: "Email must be at least 2 characters.",
     }),
     newPassword: z
       .string()

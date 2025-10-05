@@ -39,7 +39,12 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 
-export function NewPasswordForm() {
+interface Props {
+  email: string;
+  otp: string;
+}
+
+export function NewPasswordForm({ email, otp }: Props) {
   const router = useRouter();
   const setUser = useAuth((s) => s.setUser);
 
@@ -50,7 +55,8 @@ export function NewPasswordForm() {
     defaultValues: {
       newPassword: "",
       confirmPassword: "",
-      code: "",
+      otp,
+      email,
     },
   });
 
@@ -96,12 +102,12 @@ export function NewPasswordForm() {
   function onSubmit(data: NewPasswordSchemaType) {
     startTransition(async () => {
       try {
-        const res = await api.post("/auth/newPassword", data);
-        setUser(res.data.user);
+        const res = await api.post("/auth/set-new-password", data);
         toast.success(res.data.message);
-        router.replace(`/a/dashboard`);
+        router.push(`/new-password/success`);
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
       }
     });
   }

@@ -11,19 +11,24 @@ export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const user = useAuth((s) => s.user);
-  const [hydrated, setHydrated] = useState(false);
+  // const [hydrated, setHydrated] = useState(false);
 
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
+  // useEffect(() => {
+  //   setHydrated(true);
+  // }, []);
 
-  useEffect(() => {
-    if (hydrated && !user) {
-      router.replace("/?unauthenticated=true");
-    }
-  }, [hydrated, user, router]);
+  // useEffect(() => {
+  //   if (hydrated && !user) {
+  //     router.push("/?unauthenticated=true");
+  //   }
+  // }, [hydrated, user, router]);
+  // useEffect(() => {
+  //   if (hydrated && !user) {
+  //     window.location.href = "/?unauthenticated=true";
+  //   }
+  // }, [hydrated, user]);
 
-  if (!hydrated) return null;
+  // if (!hydrated) return null;
   if (!user) return null;
 
   return (

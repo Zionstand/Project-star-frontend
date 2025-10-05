@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import {
   IconProgressCheck,
   IconRefreshDot,
@@ -25,36 +25,82 @@ import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn, maskEmail } from "@/lib/utils";
 import { OTPInput, SlotProps } from "input-otp";
 
-export function VerifyCodeForm() {
+interface Props {
+  email: string;
+}
+
+export function VerifyCodeForm({ email }: Props) {
   const router = useRouter();
   const setUser = useAuth((s) => s.setUser);
 
   const [pending, startTransition] = useTransition();
+  const [resendPending, startResendTransition] = useTransition();
 
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+  const [timeLeft, setTimeLeft] = useState(20); // 3 minutes = 180 seconds
+  const [isCounting, setIsCounting] = useState(true);
+
+  // Start the countdown
+  useEffect(() => {
+    if (!isCounting) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setIsCounting(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isCounting]);
+
+  // Convert seconds → MM:SS format
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
   const form = useForm<VerifyCodeSchemaType>({
     resolver: zodResolver(VerifyCodeSchema),
     defaultValues: {
-      email: "",
+      email,
+      otp: "",
     },
   });
 
   function onSubmit(data: VerifyCodeSchemaType) {
     startTransition(async () => {
       try {
-        const res = await api.post("/auth/verifyCode", data);
-        setUser(res.data.user);
+        const res = await api.post("/auth/verify-code", data);
         toast.success(res.data.message);
-        router.replace(`/a/dashboard`);
+        router.replace(`/new-password?email=${data.email}&otp=${data.otp}`);
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    });
+  }
+
+  const handleResendCode = () => {
+    startResendTransition(async () => {
+      try {
+        const res = await api.post("/auth/forgot-password", { email });
+        // setUser(res.data.user);
+        toast.success(res.data.message);
+        setTimeLeft(180);
+        setIsCounting(true);
       } catch (error: any) {
         toast.error(error.response.data.message);
       }
     });
-  }
+  };
 
   return (
     <Card className="bg-white md:min-w-md">
@@ -71,7 +117,7 @@ export function VerifyCodeForm() {
             <h3 className="font-medium text-2xl md:text-3xl">Verify Code</h3>
             <p className="text-sm text-muted-foreground">
               We've sent a 6-digit verification code to{" "}
-              <span className="font-medium">js***@jd.com</span>
+              <span className="font-medium">{maskEmail(email)}</span>
             </p>
           </div>
         </div>
@@ -79,7 +125,7 @@ export function VerifyCodeForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="code"
+              name="otp"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-center w-full block">
@@ -87,7 +133,15 @@ export function VerifyCodeForm() {
                   </FormLabel>
                   <FormControl>
                     <OTPInput
-                      {...field}
+                      value={field.value}
+                      onChange={(value) => {
+                        field.onChange(value);
+
+                        // Automatically submit when length === 6
+                        if (value.length === 6) {
+                          form.handleSubmit(onSubmit)();
+                        }
+                      }}
                       containerClassName="flex items-center justify-center gap-3 has-disabled:opacity-50"
                       maxLength={6}
                       render={({ slots }) => (
@@ -99,11 +153,15 @@ export function VerifyCodeForm() {
                       )}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="w-full block text-center text-xs" />
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={pending}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={resendPending || pending}
+            >
               {pending ? (
                 <Loader text="Verifying..." />
               ) : (
@@ -118,11 +176,25 @@ export function VerifyCodeForm() {
               <p className="text-center text-sm text-muted-foreground">
                 Didn't receive the code?
               </p>
-              <Button className="w-full" variant={"outline"}>
-                <IconRefreshDot />
-                Resend code
+              <Button
+                type="button"
+                onClick={handleResendCode}
+                className="w-full"
+                variant={"outline"}
+                disabled={resendPending || pending || isCounting}
+              >
+                {resendPending ? (
+                  <Loader text="Resending..." />
+                ) : (
+                  <>
+                    <IconRefreshDot />
+                    Resend code
+                  </>
+                )}
               </Button>
-              <p className="text-sm text-muted-foreground">Available in 1:23</p>
+              <p className="text-xs text-muted-foreground">
+                Available in {formatTime(timeLeft)}
+              </p>
             </div>
           </form>
         </Form>
