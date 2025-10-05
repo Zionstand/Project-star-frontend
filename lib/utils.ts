@@ -121,7 +121,7 @@ export const formatWord: Record<string, string> = {
   "ON LEAVE": "On leave",
   TEACHER: "Teacher",
   PRINCIPAL: "Principal",
-  ADMIN: "Admin",
+  ADMIN: "Administrator",
   COUNSELOR: "Counselor",
   LIBRARIAN: "Librarian",
   ADMINISTRATION: "Administration",

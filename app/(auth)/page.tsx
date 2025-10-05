@@ -3,6 +3,11 @@ import { FullLogo } from "./_components/Logo";
 import { IconBook, IconShield, IconUsers } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { LoginForm } from "./_components/LoginForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Lagelu Grammar School",
+};
 
 const page = () => {
   const features = [

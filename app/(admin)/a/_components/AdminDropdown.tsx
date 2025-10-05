@@ -22,9 +22,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DEFAULT_PROFILE_IMAGE } from "@/constant";
 import { useSignout } from "@/hooks/use-signout";
+import { useAuth } from "@/store/useAuth";
+import { formatWord } from "@/lib/utils";
 
 export function AdminDropdown() {
   const handleSignout = useSignout();
+  const { user } = useAuth();
+
+  if (!user) return null;
 
   return (
     <DropdownMenu>
@@ -38,9 +43,11 @@ export function AdminDropdown() {
             <AvatarFallback>LGS</AvatarFallback>
           </Avatar>
           <div className="text-left hidden md:block">
-            <p className="font-medium text-sm">Dr. Adebayo</p>
+            <p className="font-medium text-sm">
+              {user?.firstName} {user?.lastName}
+            </p>
             <p className="text-xs font-normal text-muted-foreground">
-              Administrator
+              {formatWord[user.role]}
             </p>
           </div>
           <ChevronDownIcon

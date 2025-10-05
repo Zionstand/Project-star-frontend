@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative">
       <PageGradient />
-      <div className="container flex items-center justify-center min-h-screen">
+      <div className="container flex items-center justify-center min-h-screen py-16">
         {children}
       </div>
     </div>

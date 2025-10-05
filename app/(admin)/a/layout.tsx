@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (hydrated && !user) {
-      // router.replace("/");
+      router.replace("/?unauthenticated=true");
     }
   }, [hydrated, user, router]);
 
@@ -31,7 +31,6 @@ export default function Layout({ children }: { children: ReactNode }) {
       <AppSidebar />
       <SidebarInset>
         <AppSidebarHeader />
-        <h1>{user.name}</h1>
         <div className="px-3 py-8 sm:px-4 md:px-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
