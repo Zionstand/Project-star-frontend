@@ -6,22 +6,11 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { FullLogo } from "@/app/(admin)/a/_components/Logo";
-import { DEFAULT_PROFILE_IMAGE } from "@/constant";
-
-// This is sample data.
-const data = {
-  user: {
-    name: "Admin",
-    email: "admin@example.com",
-    avatar: DEFAULT_PROFILE_IMAGE,
-  },
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -33,7 +22,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
