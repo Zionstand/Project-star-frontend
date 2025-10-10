@@ -36,7 +36,7 @@ import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
+import { cn, maskEmail } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 
 interface Props {
@@ -129,7 +129,7 @@ export function NewPasswordForm({ email, otp }: Props) {
             </h3>
             <p className="text-sm text-muted-foreground">
               Create a new password for{" "}
-              <span className="font-medium">to***@gmail.com</span>
+              <span className="font-medium">{maskEmail(email)}</span>
             </p>
           </div>
         </div>
