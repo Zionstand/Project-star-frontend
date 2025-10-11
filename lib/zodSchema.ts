@@ -54,7 +54,49 @@ export const NewPasswordSchema = z
     path: ["confirmPassword"], // 👈 attach the error to confirmPassword
   });
 
+export const SchoolIdentitySchema = z.object({
+  schoolName: z
+    .string()
+    .min(2, { message: "School name must be at least 2 characters" }),
+  shortName: z.string().optional(),
+  schoolMotto: z.string().optional(),
+  visionStatement: z
+    .string()
+    .min(2, { message: "Vision statement must be at least 2 characters" }),
+  missionStatement: z
+    .string()
+    .min(2, { message: "Mission statement must be at least 2 characters" }),
+  establishmentYear: z
+    .string()
+    .min(2, { message: "Year of establishment must be selected" }),
+  ownershipType: z.string().min(2, { message: "Ownership must be selected" }),
+  schoolType: z.string().min(2, { message: "Type of school must be selected" }),
+});
+
+export const ContactDetailsSchema = z.object({
+  address: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters" }),
+  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  state: z.string().min(2, { message: "State must be selected" }),
+  postalCode: z.string().optional(),
+  country: z.string().min(2, { message: "Country must be selected" }),
+  website: z.string().url().optional(),
+  email: z.string().email({ message: "Enter a valid email address" }),
+  primaryPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  alternatePhoneNumber: z
+    .string()
+    .regex(/^(\+?\d{10,15})$/, {
+      message: "Enter a valid phone number.",
+    })
+    .optional(),
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 export type VerifyCodeSchemaType = z.infer<typeof VerifyCodeSchema>;
 export type NewPasswordSchemaType = z.infer<typeof NewPasswordSchema>;
+export type SchoolIdentitySchemaType = z.infer<typeof SchoolIdentitySchema>;
+export type ContactDetailsSchemaType = z.infer<typeof ContactDetailsSchema>;
