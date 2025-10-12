@@ -94,9 +94,46 @@ export const ContactDetailsSchema = z.object({
     .optional(),
 });
 
+export const AcademicSettingsSchema = z.object({
+  currentSession: z
+    .string()
+    .min(2, { message: "Current session be at least 2 characters" }),
+  currentTerm: z.string().min(2, { message: "Current term must be selected" }),
+  termsPerSession: z
+    .string()
+    .min(2, { message: "Terms per session must be selected" }),
+  postalCode: z.string().optional(),
+  academicStartDate: z
+    .string()
+    .min(2, { message: "Academic start date must be selected" }),
+  academicEndDate: z
+    .string()
+    .min(2, { message: "Academic end date must be selected" }),
+  gradingSystem: z
+    .string()
+    .min(2, { message: "Grading system must be selected" }),
+  passMark: z.string().min(2, { message: "passMark must be selected" }),
+});
+
+export const AdministrativeDetailsSchema = z.object({
+  schoolRegistrationNumber: z
+    .string()
+    .min(2, { message: "Registration number must be at least 2 characters" }),
+  accreditationBody: z
+    .string()
+    .min(2, { message: "Accreditation body must be provided" }),
+  accreditationNumber: z
+    .string()
+    .min(2, { message: "Accreditation number must be provided" }),
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 export type VerifyCodeSchemaType = z.infer<typeof VerifyCodeSchema>;
 export type NewPasswordSchemaType = z.infer<typeof NewPasswordSchema>;
 export type SchoolIdentitySchemaType = z.infer<typeof SchoolIdentitySchema>;
 export type ContactDetailsSchemaType = z.infer<typeof ContactDetailsSchema>;
+export type AcademicSettingsSchemaType = z.infer<typeof AcademicSettingsSchema>;
+export type AdministrativeDetailsSchemaType = z.infer<
+  typeof AdministrativeDetailsSchema
+>;

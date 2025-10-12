@@ -60,7 +60,7 @@ export const SchoolProfileCards = () => {
                 <CardDescription className="line-clamp-1">
                   {title}
                 </CardDescription>
-                <CardTitle className={cn("text-3xl", textColor)}>
+                <CardTitle className={cn("text-xl", textColor)}>
                   {value}{" "}
                 </CardTitle>
               </div>

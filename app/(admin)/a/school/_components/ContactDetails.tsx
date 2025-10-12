@@ -24,6 +24,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconBuildings,
+  IconClock,
   IconEye,
   IconMapPin,
   IconPhone,
@@ -291,6 +292,13 @@ export const ContactDetails = () => {
                 </div>
               </div>
               <Separator />
+              <div className="space-y-4">
+                <h3 className="font-medium text-sm flex items-center justify-start gap-1">
+                  <IconClock className="text-purple-500 inline-block" />
+                  <span>Operating Hours</span>
+                </h3>
+                <div className="grid grid-col-1 md:grid-cols-2 gap-4 space-y-4"></div>
+              </div>
             </div>
           </form>
         </Form>

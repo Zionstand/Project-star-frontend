@@ -190,6 +190,14 @@ export const schoolTypes = [
 ];
 
 export const ownershipTypes = ["Government", "Private", "Mission", "Community"];
+export const academicTerms = ["First Term", "Second Term", "Third Term"];
+export const termsPerSession = ["2 Terms", "3 Terms", "4 Terms (Quarters)"];
+export const gradingSystems = [
+  "Percentage (0-100)",
+  "Letter Grade (A-F)",
+  "GPA (0.0-4-0)",
+  "Points (1-10)",
+];
 
 export const years = Array.from(
   { length: new Date().getFullYear() - 1960 + 1 },

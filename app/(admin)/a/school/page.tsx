@@ -12,6 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { BasicInformation } from "./_components/BasicInformation";
 import { ContactDetails } from "./_components/ContactDetails";
+import { AcademicSettings } from "./_components/AcademicSettings";
+import { AdministrativeDetails } from "./_components/AdministrativeDetails";
 
 const page = () => {
   return (
@@ -45,7 +47,7 @@ const page = () => {
               />
               Contact Details
             </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
+            <TabsTrigger value="academicSettings" className="group">
               <IconBook
                 className="-ms-0.5 me-1.5 opacity-60"
                 size={16}
@@ -70,10 +72,11 @@ const page = () => {
         <TabsContent value="contactDetails">
           <ContactDetails />
         </TabsContent>
-        <TabsContent value="mapping">
-          <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
-            Content for Tab 3
-          </p>
+        <TabsContent value="academicSettings">
+          <AcademicSettings />
+        </TabsContent>
+        <TabsContent value="administrative">
+          <AdministrativeDetails />
         </TabsContent>
       </Tabs>
     </div>
