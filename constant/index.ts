@@ -440,3 +440,14 @@ export const countries = [
   "Zambia",
   "Zimbabwe",
 ];
+
+export const timezones = [
+  {
+    label: "Africa/Lagos (WAT)",
+    value: "WAT",
+  },
+  {
+    label: "UTC",
+    value: "UTC",
+  },
+];

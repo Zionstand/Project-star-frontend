@@ -216,7 +216,7 @@ export const AcademicSettings = () => {
                   <IconAward className="text-green-500 inline-block" />
                   <span>Grading & Assessment</span>
                 </h3>
-                <div className="grid grid-col-1 md:grid-cols-2 gap-4 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="gradingSystem"
@@ -253,7 +253,7 @@ export const AcademicSettings = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Pass Mark <RequiredAsterisk />{" "}
+                          Pass Mark <RequiredAsterisk />
                         </FormLabel>
                         <FormControl>
                           <Input placeholder="e.g., 50" {...field} />

@@ -7,7 +7,6 @@ import {
   DatePicker,
   Dialog,
   Group,
-  Label,
   Popover,
 } from "react-aria-components";
 
@@ -80,7 +79,8 @@ export default function DatePickerWithDropdowns() {
               ),
               Dropdown: (props: DropdownProps) => (
                 <div
-                  onClick={(e) => e.stopPropagation()} // stop clicks from bubbling up to popover
+                  onClick={(e) => e.stopPropagation()}
+                  onPointerDown={(e) => e.stopPropagation()}
                 >
                   <Select
                     value={String(props.value)}
@@ -89,20 +89,13 @@ export default function DatePickerWithDropdowns() {
                         handleCalendarChange(value, props.onChange);
                       }
                     }}
-                    onOpenChange={(open) => {
-                      // stop propagation when the select opens/closes
-                      // so the parent popover isn't affected
-                      window.setTimeout(() => {
-                        const activeEl = document.activeElement as HTMLElement;
-                        activeEl?.blur();
-                      }, 0);
-                    }}
                   >
                     <SelectTrigger className="h-8 w-fit font-medium first:grow">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent
                       onClick={(e) => e.stopPropagation()}
+                      onPointerDown={(e) => e.stopPropagation()}
                       className="max-h-[min(26rem,var(--radix-select-content-available-height))]"
                     >
                       {props.options?.map((option) => (

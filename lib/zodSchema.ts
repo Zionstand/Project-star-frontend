@@ -127,6 +127,23 @@ export const AdministrativeDetailsSchema = z.object({
     .min(2, { message: "Accreditation number must be provided" }),
 });
 
+export const GeneralSettingsSchema = z.object({
+  systemName: z
+    .string()
+    .min(2, { message: "System name must be at least 2 characters" }),
+  supportEmail: z.string().email().min(2, {
+    message: "Support email must be at least 2 characters.",
+  }),
+  administrativeEmail: z.string().email().min(2, {
+    message: "Administrative email must be at least 2 characters.",
+  }),
+  timezone: z.string().min(2, { message: "Timezone must be selected" }),
+  currency: z.string().min(2, { message: "Currency must be selected" }),
+  systemLanguage: z
+    .string()
+    .min(2, { message: "SystemLanguage must be selected" }),
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 export type VerifyCodeSchemaType = z.infer<typeof VerifyCodeSchema>;
@@ -137,3 +154,4 @@ export type AcademicSettingsSchemaType = z.infer<typeof AcademicSettingsSchema>;
 export type AdministrativeDetailsSchemaType = z.infer<
   typeof AdministrativeDetailsSchema
 >;
+export type GeneralSettingsSchemaType = z.infer<typeof GeneralSettingsSchema>;
