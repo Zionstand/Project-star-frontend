@@ -8,9 +8,9 @@ import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const user = useAuth((s) => s.user);
+  // const user = useAuth((s) => s.user);
   // const [hydrated, setHydrated] = useState(false);
 
   // useEffect(() => {
@@ -29,7 +29,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   // }, [hydrated, user]);
 
   // if (!hydrated) return null;
-  if (!user) return null;
+
+  // useEffect(() => {
+  //   const
+  // },[])
+  // if (!user) return null;
 
   return (
     <SidebarProvider>

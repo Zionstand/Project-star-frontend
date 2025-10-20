@@ -60,10 +60,10 @@ export function AdminDropdown() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="text-foreground truncate text-sm font-medium">
-            Dr. Adebayo
+            {user?.firstName} {user?.lastName}
           </span>
           <span className="text-muted-foreground truncate text-xs font-normal">
-            Administrator - k.kennedy@originui.com
+            {formatWord[user.role]} - {user.email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

@@ -22,7 +22,6 @@ import { IconEye, IconEyeClosed } from "@tabler/icons-react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { LoginSchema, LoginSchemaType } from "@/lib/zodSchema";
-import axios from "axios";
 import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
 import { useAuth } from "@/store/useAuth";
@@ -51,7 +50,12 @@ export function LoginForm() {
         const res = await api.post("/auth/login", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        router.replace(`/a/dashboard`);
+        console.log(res.data);
+        if (res.data.user.role === "ADMIN") {
+          router.replace(`/a/dashboard`);
+        } else {
+          router.replace(`/s/dashboard`);
+        }
       } catch (error: any) {
         toast.error(error.response.data.message);
       }
@@ -135,12 +139,12 @@ export function LoginForm() {
             </Button>
             <Separator />
             <p className="text-center text-sm text-muted-foreground">
-              Need help accessing your account?{" "}
+              Don't have an account?{" "}
               <Link
-                href="/contact"
+                href="/register"
                 className="hover:underline text-primary font-medium"
               >
-                Contact Support
+                Sign up
               </Link>
             </p>
           </form>

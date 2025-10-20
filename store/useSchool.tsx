@@ -34,34 +34,19 @@ type School = {
   updatedAT: Date | null;
 } | null;
 
-type User = {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  image: string | null;
-  role: string;
-  ownedSchool?: School;
-} | null;
-
-type AuthState = {
-  user: User;
-  setUser: (user: User) => void;
-  clearUser: () => void;
-  updateSchool: (school: School) => void; // Update school details
+type SchoolState = {
+  school: School;
+  setSchool: (school: School) => void;
+  clearSchool: () => void;
 };
 
-export const useAuth = create<AuthState>()(
+export const useSchool = create<SchoolState>()(
   persist(
     (set) => ({
-      user: null,
-      setUser: (user) => set({ user }),
-      clearUser: () => set({ user: null }),
-      updateSchool: (school) =>
-        set((state) => ({
-          user: state.user ? { ...state.user, ownedSchool: school } : null,
-        })),
+      school: null,
+      setSchool: (school) => set({ school }),
+      clearSchool: () => set({ school: null }),
     }),
-    { name: "auth-user" }
+    { name: "school-profile" }
   )
 );

@@ -148,3 +148,12 @@ export const formatWord: Record<string, string> = {
   PARTIAL: "Partial",
   OVERDUE: "Overdue",
 };
+
+export const getAcronym = (name?: string) => {
+  if (!name) return "LGS"; // fallback
+  const words = name.trim().split(/\s+/);
+  return words
+    .slice(0, 3)
+    .map((word) => word[0]?.toUpperCase())
+    .join("");
+};

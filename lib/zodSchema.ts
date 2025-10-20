@@ -1,5 +1,56 @@
 import z from "zod";
 
+export const RegisterSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(2, { message: "First name must be at least 2 characters" }),
+    lastName: z
+      .string()
+      .min(2, { message: "Last name must be at least 2 characters" }),
+    email: z.string().email({ message: "Enter a valid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters." })
+      .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+      })
+      .refine((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z.string().min(2, { message: "Enter your password" }),
+    phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+      message: "Enter a valid phone number.",
+    }),
+    schoolName: z
+      .string()
+      .min(2, { message: "School name must be at least 2 characters" }),
+    role: z.string().min(2, { message: "Role must be selected" }),
+    schoolType: z
+      .string()
+      .min(2, { message: "Type of school must be selected" }),
+    address: z
+      .string()
+      .min(2, { message: "Address must be at least 2 characters" }),
+    city: z.string().min(2, { message: "City must be at least 2 characters" }),
+    state: z.string().min(2, { message: "State must be selected" }),
+    country: z.string().min(2, { message: "Country must be selected" }),
+    establishmentYear: z
+      .string()
+      .min(2, { message: "Year of establishment must be selected" }),
+    ownershipType: z.string().min(2, { message: "Ownership must be selected" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"], // 👈 attach the error to confirmPassword
+  });
+
 export const LoginSchema = z.object({
   email: z.string().email({ message: "Enter a valid email address" }),
   password: z.string().min(2, { message: "Enter your password" }),
@@ -145,6 +196,7 @@ export const GeneralSettingsSchema = z.object({
 });
 
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
+export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
 export type VerifyCodeSchemaType = z.infer<typeof VerifyCodeSchema>;
 export type NewPasswordSchemaType = z.infer<typeof NewPasswordSchema>;
