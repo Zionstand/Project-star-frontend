@@ -22,11 +22,7 @@ export const General = () => {
     },
   });
 
-  function onSubmit(values: GeneralSettingsSchemaType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  function onSubmit(values: GeneralSettingsSchemaType) {}
   return (
     <Card>
       <CardContent>

@@ -147,6 +147,9 @@ export const formatWord: Record<string, string> = {
   "LIBRARY SERVICE": "Library Service",
   PARTIAL: "Partial",
   OVERDUE: "Overdue",
+  PRIMARY: "Primary",
+  SECONDARY: "Secondary",
+  COMBINED: "Combined",
 };
 
 export const getAcronym = (name?: string) => {

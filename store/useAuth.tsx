@@ -16,6 +16,7 @@ type School = {
   city: string | null;
   country: string | null;
   state: string | null;
+  postalCode: string | null;
   primaryPhone: string | null;
   alternatePhone: string | null;
   email: string | null;

@@ -3,22 +3,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import { Card, CardContent } from "@/components/ui/card";
-import { IconBuildings, IconEye, IconTarget } from "@tabler/icons-react";
-import React from "react";
+import {
+  IconBell,
+  IconBuildings,
+  IconEye,
+  IconTarget,
+} from "@tabler/icons-react";
+import React, { useEffect, useTransition } from "react";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import {
   SchoolIdentitySchema,
@@ -32,26 +34,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ownershipTypes, schoolTypes, years } from "@/constant";
+import { years } from "@/constant";
+import { useAuth } from "@/store/useAuth";
+import { getAcronym } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Loader } from "@/components/Loader";
+import api from "@/lib/api";
+import { toast } from "sonner";
 
-export const BasicInformation = () => {
+interface Props {
+  schoolTypes: {
+    id: string;
+    name: string;
+  }[];
+  ownershipTypes: {
+    id: string;
+    name: string;
+  }[];
+}
+
+export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const updateSchool = useAuth((s) => s.updateSchool);
+  const [pending, startTransition] = useTransition();
+  const { user } = useAuth();
+  const edit = searchParams.get("edit") === "true";
+
   const form = useForm<SchoolIdentitySchemaType>({
     resolver: zodResolver(SchoolIdentitySchema),
     defaultValues: {
-      schoolName: "Lagelu Grammar School",
-      schoolMotto: "Excellence Through Knowledge",
-      shortName: "LGS",
-      visionStatement:
-        "To be a leading institution that nurtures future leaders through quality education, character development, and innovation.",
-      missionStatement:
-        "To provide comprehensive and quality education that empowers students with knowledge, skills, and values necessary for academic excellence and positive contribution to society.",
+      name: "",
+      motto: "",
+      acronym: "",
+      visionStatement: "",
+      missionStatement: "",
+      establishmentYear: "",
+      ownershipType: "",
+      schoolType: "",
     },
   });
 
+  // Reset form when owned school loads
+  useEffect(() => {
+    if (user?.ownedSchool) {
+      form.reset({
+        name: user.ownedSchool.name || "",
+        motto: user.ownedSchool.motto || "",
+        acronym: user.ownedSchool.acronym || getAcronym(user.ownedSchool.name),
+        visionStatement: user.ownedSchool.visionStatement || "",
+        missionStatement: user.ownedSchool.missionStatement || "",
+        establishmentYear: user.ownedSchool.establishmentYear?.toString() || "",
+        ownershipType: user.ownedSchool.ownershipType || "",
+        schoolType: user.ownedSchool.schoolType || "",
+      });
+    }
+  }, [user?.ownedSchool, form]);
+
   function onSubmit(values: SchoolIdentitySchemaType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    startTransition(async () => {
+      try {
+        const res = await api.put(`/schools/${user?.ownedSchool?.id}`, values);
+        updateSchool(res.data.school);
+        toast.success(res.data.message);
+        router.replace(`/a/school`);
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || "An error occurred");
+      }
+    });
   }
 
   return (
@@ -60,6 +110,7 @@ export const BasicInformation = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-6">
+              {/* ==== BASIC INFO SECTION ==== */}
               <div className="space-y-4">
                 <div>
                   <h3 className="font-medium text-base">School Identity</h3>
@@ -72,20 +123,22 @@ export const BasicInformation = () => {
                   <div className="flex-1 border-2 border-dashed border-muted-foreground rounded-lg w-full py-10 flex items-center justify-center bg-accent">
                     <IconBuildings className="text-muted-foreground size-14" />
                   </div>
-                  <div className="flex-3 w-full">
+                  <div className="flex-3 w-full space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* SCHOOL NAME */}
                       <FormField
                         control={form.control}
-                        name="schoolName"
+                        name="name"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              School Name
-                              <RequiredAsterisk />
+                              School Name <RequiredAsterisk />
                             </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Lagelu Grammar School"
+                                readOnly={!edit}
+                                disabled={!edit}
                                 {...field}
                               />
                             </FormControl>
@@ -93,28 +146,37 @@ export const BasicInformation = () => {
                           </FormItem>
                         )}
                       />
+                      {/* ACRONYM */}
                       <FormField
                         control={form.control}
-                        name="shortName"
+                        name="acronym"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Short Name/Acronym</FormLabel>
                             <FormControl>
-                              <Input placeholder="LGS" {...field} />
+                              <Input
+                                readOnly={!edit}
+                                disabled={!edit}
+                                placeholder="LGS"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                     </div>
+                    {/* MOTTO */}
                     <FormField
                       control={form.control}
-                      name="schoolMotto"
+                      name="motto"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>School Motto</FormLabel>
                           <FormControl>
                             <Input
+                              readOnly={!edit}
+                              disabled={!edit}
                               placeholder="Excellence Through Knowledge"
                               {...field}
                             />
@@ -126,10 +188,13 @@ export const BasicInformation = () => {
                   </div>
                 </div>
               </div>
+
               <Separator />
+
+              {/* ==== STATEMENTS ==== */}
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <h3 className="font-medium text-sm flex items-center justify-start gap-1">
+                  <h3 className="font-medium text-sm flex items-center gap-1">
                     <IconEye className="text-primary inline-block" />
                     <span>Vision Statement</span>
                   </h3>
@@ -139,7 +204,7 @@ export const BasicInformation = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input placeholder="" {...field} />
+                          <Input readOnly={!edit} disabled={!edit} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -147,7 +212,7 @@ export const BasicInformation = () => {
                   />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="font-medium text-sm flex items-center justify-start gap-1">
+                  <h3 className="font-medium text-sm flex items-center gap-1">
                     <IconTarget className="text-green-500 inline-block" />
                     <span>Mission Statement</span>
                   </h3>
@@ -157,7 +222,7 @@ export const BasicInformation = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Input placeholder="" {...field} />
+                          <Input readOnly={!edit} disabled={!edit} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -165,17 +230,22 @@ export const BasicInformation = () => {
                   />
                 </div>
               </div>
+
               <Separator />
-              <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+              {/* ==== DROPDOWNS ==== */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* ESTABLISHMENT YEAR */}
                 <FormField
                   control={form.control}
                   name="establishmentYear"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Year Establishment</FormLabel>
+                      <FormLabel>Year Established</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
+                        disabled={!edit}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -184,7 +254,7 @@ export const BasicInformation = () => {
                         </FormControl>
                         <SelectContent>
                           {years.map((year) => (
-                            <SelectItem value={year} key={year}>
+                            <SelectItem key={year} value={year}>
                               {year}
                             </SelectItem>
                           ))}
@@ -194,25 +264,30 @@ export const BasicInformation = () => {
                     </FormItem>
                   )}
                 />
+
+                {/* SCHOOL TYPE */}
                 <FormField
                   control={form.control}
                   name="schoolType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>School Type</FormLabel>
+                      <FormLabel>
+                        School Category <RequiredAsterisk />
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
+                        disabled={!edit}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select type" />
+                            <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {schoolTypes.map((type) => (
-                            <SelectItem value={type} key={type}>
-                              {type}
+                          {schoolTypes?.map((type) => (
+                            <SelectItem key={type.id} value={type.name}>
+                              {type.name}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -221,15 +296,20 @@ export const BasicInformation = () => {
                     </FormItem>
                   )}
                 />
+
+                {/* OWNERSHIP TYPE */}
                 <FormField
                   control={form.control}
                   name="ownershipType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ownership Type</FormLabel>
+                      <FormLabel>
+                        Ownership Type <RequiredAsterisk />
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
+                        disabled={!edit}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -237,9 +317,9 @@ export const BasicInformation = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {ownershipTypes.map((type) => (
-                            <SelectItem value={type} key={type}>
-                              {type}
+                          {ownershipTypes?.map((type) => (
+                            <SelectItem key={type.id} value={type.name}>
+                              {type.name}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -251,7 +331,28 @@ export const BasicInformation = () => {
               </div>
             </div>
 
-            {/* <Button type="submit">Submit</Button> */}
+            {/* ==== SAVE / CANCEL ==== */}
+            {edit && (
+              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+                <div className="flex items-center justify-start gap-1">
+                  <IconBell />
+                  <p>You have unsaved changes</p>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <Button
+                    onClick={() => router.push("/a/school")}
+                    type="button"
+                    variant="secondary"
+                    disabled={pending || !edit}
+                  >
+                    Cancel
+                  </Button>
+                  <Button disabled={pending || !edit} type="submit">
+                    {pending ? <Loader text="Saving..." /> : "Save changes"}
+                  </Button>
+                </div>
+              </div>
+            )}
           </form>
         </Form>
       </CardContent>

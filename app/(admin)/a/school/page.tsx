@@ -14,8 +14,17 @@ import { BasicInformation } from "./_components/BasicInformation";
 import { ContactDetails } from "./_components/ContactDetails";
 import { AcademicSettings } from "./_components/AcademicSettings";
 import { AdministrativeDetails } from "./_components/AdministrativeDetails";
+import { useAuth } from "@/store/useAuth";
+import { configService } from "@/lib/configs";
 
-const page = () => {
+const page = async () => {
+  const schoolTypes = await configService.getCategory("SCHOOL_TYPE");
+  const ownershipTypes = await configService.getCategory("OWNERSHIP_TYPE");
+  const states = await configService.getCategory("STATE");
+  const countries = await configService.getCategory("COUNTRY");
+
+  console.log(countries, states);
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -23,7 +32,7 @@ const page = () => {
         description="Manage your school's information, academic settings, and administrative details."
         primaryCTA={{
           label: "Edit Profile",
-          slug: "/a/school/edit",
+          slug: "/a/school?edit=true",
           icon: IconSettings,
         }}
       />
@@ -67,10 +76,13 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="basicInformation">
-          <BasicInformation />
+          <BasicInformation
+            schoolTypes={schoolTypes.items}
+            ownershipTypes={ownershipTypes.items}
+          />
         </TabsContent>
         <TabsContent value="contactDetails">
-          <ContactDetails />
+          <ContactDetails states={states.items} countries={countries.items} />
         </TabsContent>
         <TabsContent value="academicSettings">
           <AcademicSettings />

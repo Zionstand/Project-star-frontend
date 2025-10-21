@@ -21,8 +21,13 @@ import {
 
 import { Calendar } from "@/components/ui/calendar";
 
-export default function DatePickerWithDropdowns() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+interface Props {
+  disabled?: boolean;
+  field: any;
+}
+
+export default function DateSelector({ disabled, field }: Props) {
+  const date = field.value ? new Date(field.value) : undefined;
 
   const handleCalendarChange = (
     _value: string | number,
@@ -39,12 +44,16 @@ export default function DatePickerWithDropdowns() {
       <div className="flex">
         <Group className="w-full">
           <input
+            disabled={disabled}
             readOnly
             value={date ? date.toLocaleDateString() : ""}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/50"
+            className="w-full rounded-md border border-input bg-muted px-3 py-2 h-11 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/50"
           />
         </Group>
-        <Button className="z-10 -ms-9 -me-px flex w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground data-focus-visible:border-ring data-focus-visible:ring-[3px] data-focus-visible:ring-ring/50">
+        <Button
+          isDisabled={disabled}
+          className="z-10 -ms-9 -me-px flex w-9 items-center justify-center rounded-e-md text-muted-foreground/80 transition-[color,box-shadow] outline-none hover:text-foreground data-focus-visible:border-ring data-focus-visible:ring-[3px] data-focus-visible:ring-ring/50"
+        >
           <CalendarIcon size={16} />
         </Button>
       </div>
@@ -62,7 +71,11 @@ export default function DatePickerWithDropdowns() {
           <Calendar
             mode="single"
             selected={date}
-            onSelect={setDate}
+            onSelect={(selectedDate) => {
+              if (selectedDate) {
+                field.onChange(selectedDate.toISOString());
+              }
+            }}
             className="rounded-md border p-2"
             captionLayout="dropdown"
             defaultMonth={new Date()}

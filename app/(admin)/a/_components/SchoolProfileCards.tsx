@@ -1,10 +1,13 @@
+"use client";
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, formatWord } from "@/lib/utils";
+import { useAuth } from "@/store/useAuth";
 import {
   IconAward,
   IconBook,
@@ -19,36 +22,39 @@ import {
 import React from "react";
 
 export const SchoolProfileCards = () => {
+  const { user } = useAuth();
+
   const stats = [
     {
       title: "Established",
-      value: "1976",
+      value: user?.ownedSchool?.establishmentYear,
       icon: IconCalendar,
       bgColor: "bg-primary/10",
       textColor: "text-primary",
     },
     {
       title: "Current Session",
-      value: "2025/2026",
+      value: user?.ownedSchool?.currentSession,
       icon: IconSchool,
       bgColor: "bg-green-500/20",
       textColor: "text-green-500",
     },
     {
       title: "Current Term",
-      value: "First Term",
+      value: user?.ownedSchool?.currentTerm,
       icon: IconBook,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",
     },
     {
       title: "School Type",
-      value: "Secondary",
+      value: formatWord[user?.ownedSchool?.schoolType || ""],
       icon: IconBuilding,
       bgColor: "bg-orange-500/20",
       textColor: "text-orange-500",
     },
   ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map(({ value, title, icon, bgColor, textColor }, index) => {

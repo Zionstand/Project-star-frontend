@@ -50,7 +50,6 @@ export function LoginForm() {
         const res = await api.post("/auth/login", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        console.log(res.data);
         if (res.data.user.role === "ADMIN") {
           router.replace(`/a/dashboard`);
         } else {

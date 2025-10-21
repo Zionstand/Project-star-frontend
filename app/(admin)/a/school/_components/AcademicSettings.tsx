@@ -2,37 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import * as RPNInput from "react-phone-number-input";
-import {
-  CountrySelect,
-  FlagComponent,
-  PhoneInput,
-} from "@/components/PhoneNumberInput";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  IconAward,
-  IconBuildings,
-  IconCalendar,
-  IconClock,
-  IconEye,
-  IconMapPin,
-  IconPhone,
-  IconTarget,
-} from "@tabler/icons-react";
-import React from "react";
+import { IconAward, IconBell, IconCalendar } from "@tabler/icons-react";
+import React, { useEffect, useTransition } from "react";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import {
   AcademicSettingsSchema,
@@ -46,36 +28,65 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  academicTerms,
-  countries,
-  gradingSystems,
-  ownershipTypes,
-  schoolTypes,
-  states,
-  termsPerSession,
-  years,
-} from "@/constant";
+import { academicTerms, gradingSystems, termsPerSession } from "@/constant";
 import DateSelector from "@/components/DateSelector";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
+import api from "@/lib/api";
+import { toast } from "sonner";
+import { Loader } from "@/components/Loader";
 
 export const AcademicSettings = () => {
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const edit = searchParams.get("edit") === "true";
+
+  const updateSchool = useAuth((s) => s.updateSchool);
+  const { user } = useAuth();
+
+  const [pending, startTransition] = useTransition();
+
   const form = useForm<AcademicSettingsSchemaType>({
     resolver: zodResolver(AcademicSettingsSchema),
     defaultValues: {
       currentSession: "",
       currentTerm: "",
       termsPerSession: "",
-      academicStartDate: "",
-      academicEndDate: "",
       gradingSystem: "",
       passMark: "",
+      academicEndDate: "",
+      academicStartDate: "",
     },
   });
 
+  // ✅ Load user school data into form
+  useEffect(() => {
+    if (user?.ownedSchool) {
+      form.reset({
+        currentSession: user.ownedSchool.currentSession || "",
+        termsPerSession: user.ownedSchool.termsPerSession || "",
+        academicEndDate: user.ownedSchool.academicEndDate || "",
+        academicStartDate: user.ownedSchool.academicStartDate || "",
+        currentTerm: user.ownedSchool.currentTerm || "",
+        gradingSystem: user.ownedSchool.gradingSystem || "",
+        passMark: user.ownedSchool.passMark || "",
+      });
+    }
+  }, [user?.ownedSchool, form]);
+
   function onSubmit(values: AcademicSettingsSchemaType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    startTransition(async () => {
+      try {
+        const res = await api.put(`/schools/${user?.ownedSchool?.id}`, values);
+        updateSchool(res.data.school);
+        toast.success(res.data.message);
+        router.replace(`/a/school`);
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    });
   }
 
   return (
@@ -111,7 +122,12 @@ export const AcademicSettings = () => {
                               <RequiredAsterisk />
                             </FormLabel>
                             <FormControl>
-                              <Input placeholder="e.g., 2025/2026" {...field} />
+                              <Input
+                                readOnly={!edit}
+                                disabled={!edit}
+                                placeholder="e.g., 2025/2026"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -129,7 +145,8 @@ export const AcademicSettings = () => {
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
-                              defaultValue={field.value}
+                              value={field.value}
+                              disabled={!edit}
                             >
                               <FormControl>
                                 <SelectTrigger>
@@ -159,7 +176,8 @@ export const AcademicSettings = () => {
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
-                              defaultValue={field.value}
+                              value={field.value}
+                              disabled={!edit}
                             >
                               <FormControl>
                                 <SelectTrigger>
@@ -187,7 +205,7 @@ export const AcademicSettings = () => {
                           <FormItem>
                             <FormLabel>Academic Year Start Date</FormLabel>
                             <FormControl>
-                              <DateSelector />
+                              <DateSelector field={field} disabled={!edit} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -200,7 +218,7 @@ export const AcademicSettings = () => {
                           <FormItem>
                             <FormLabel>Academic Year End Date</FormLabel>
                             <FormControl>
-                              <DateSelector />
+                              <DateSelector field={field} disabled={!edit} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -228,7 +246,8 @@ export const AcademicSettings = () => {
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
+                          disabled={!edit}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -256,7 +275,12 @@ export const AcademicSettings = () => {
                           Pass Mark <RequiredAsterisk />
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., 50" {...field} />
+                          <Input
+                            readOnly={!edit}
+                            disabled={!edit}
+                            placeholder="e.g., 50"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -265,6 +289,27 @@ export const AcademicSettings = () => {
                 </div>
               </div>
             </div>
+            {edit && (
+              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+                <div className="flex items-center justify-start gap-1">
+                  <IconBell />
+                  <p>You have unsaved changes</p>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <Button
+                    onClick={() => router.push("/a/school")}
+                    type="button"
+                    variant="secondary"
+                    disabled={pending || !edit}
+                  >
+                    Cancel
+                  </Button>
+                  <Button disabled={pending || !edit} type="submit">
+                    {pending ? <Loader text="Saving..." /> : "Save changes"}
+                  </Button>
+                </div>
+              </div>
+            )}
           </form>
         </Form>
       </CardContent>

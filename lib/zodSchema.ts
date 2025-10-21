@@ -28,7 +28,7 @@ export const RegisterSchema = z
     phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
       message: "Enter a valid phone number.",
     }),
-    schoolName: z
+    name: z
       .string()
       .min(2, { message: "School name must be at least 2 characters" }),
     role: z.string().min(2, { message: "Role must be selected" }),
@@ -106,11 +106,11 @@ export const NewPasswordSchema = z
   });
 
 export const SchoolIdentitySchema = z.object({
-  schoolName: z
+  name: z
     .string()
     .min(2, { message: "School name must be at least 2 characters" }),
-  shortName: z.string().optional(),
-  schoolMotto: z.string().optional(),
+  acronym: z.string().optional(),
+  motto: z.string().optional(),
   visionStatement: z
     .string()
     .min(2, { message: "Vision statement must be at least 2 characters" }),
@@ -134,10 +134,10 @@ export const ContactDetailsSchema = z.object({
   country: z.string().min(2, { message: "Country must be selected" }),
   website: z.string().url().optional(),
   email: z.string().email({ message: "Enter a valid email address" }),
-  primaryPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+  primaryPhone: z.string().regex(/^(\+?\d{10,15})$/, {
     message: "Enter a valid phone number.",
   }),
-  alternatePhoneNumber: z
+  alternatePhone: z
     .string()
     .regex(/^(\+?\d{10,15})$/, {
       message: "Enter a valid phone number.",

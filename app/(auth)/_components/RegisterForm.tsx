@@ -90,7 +90,7 @@ export function RegisterForm({
       password: "",
       confirmPassword: "",
       phoneNumber: "",
-      schoolName: "",
+      name: "",
       role: "",
       schoolType: "",
       address: "",
@@ -158,7 +158,7 @@ export function RegisterForm({
       "password",
       "confirmPassword",
       "phoneNumber",
-      "schoolName",
+      "name",
       "role",
       "schoolType",
     ];
@@ -179,7 +179,6 @@ export function RegisterForm({
         toast.success(res.data.message);
         router.replace(`/a/dashboard`);
       } catch (error: any) {
-        console.log(error);
         toast.error(error.response.data.message);
       }
     });
@@ -343,7 +342,7 @@ export function RegisterForm({
                 </div>
                 <FormField
                   control={form.control}
-                  name="schoolName"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>

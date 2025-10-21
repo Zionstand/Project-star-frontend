@@ -106,7 +106,6 @@ export function NewPasswordForm({ email, otp }: Props) {
         toast.success(res.data.message);
         router.push(`/new-password/success`);
       } catch (error: any) {
-        console.log(error);
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     });

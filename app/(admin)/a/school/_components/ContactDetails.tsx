@@ -23,6 +23,7 @@ import {
 } from "@/components/PhoneNumberInput";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  IconBell,
   IconBuildings,
   IconClock,
   IconEye,
@@ -30,7 +31,7 @@ import {
   IconPhone,
   IconTarget,
 } from "@tabler/icons-react";
-import React from "react";
+import React, { useEffect, useTransition } from "react";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import {
   ContactDetailsSchema,
@@ -44,15 +45,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  countries,
-  ownershipTypes,
-  schoolTypes,
-  states,
-  years,
-} from "@/constant";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
+import { toast } from "sonner";
+import api from "@/lib/api";
+import { Loader } from "@/components/Loader";
 
-export const ContactDetails = () => {
+interface Props {
+  states: {
+    id: string;
+    name: string;
+  }[];
+  countries: {
+    id: string;
+    name: string;
+  }[];
+}
+
+export const ContactDetails = ({ states, countries }: Props) => {
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const edit = searchParams.get("edit") === "true";
+
+  const updateSchool = useAuth((s) => s.updateSchool);
+  const { user } = useAuth();
+
+  const [pending, startTransition] = useTransition();
+
   const form = useForm<ContactDetailsSchemaType>({
     resolver: zodResolver(ContactDetailsSchema),
     defaultValues: {
@@ -61,13 +81,42 @@ export const ContactDetails = () => {
       state: "",
       postalCode: "",
       country: "",
+      primaryPhone: "",
+      alternatePhone: "",
+      email: "",
+      website: "",
     },
   });
 
+  // ✅ Load user school data into form
+  useEffect(() => {
+    if (user?.ownedSchool) {
+      form.reset({
+        address: user.ownedSchool.address || "",
+        city: user.ownedSchool.city || "",
+        state: user.ownedSchool.state || "",
+        email: user.ownedSchool.email || "",
+        website: user.ownedSchool.website || "",
+        alternatePhone: user.ownedSchool.alternatePhone || "",
+        primaryPhone: user.ownedSchool.primaryPhone || "",
+        postalCode: user.ownedSchool.postalCode || "",
+        country: user.ownedSchool.country?.toString() || "",
+      });
+    }
+  }, [user?.ownedSchool, form]);
+
   function onSubmit(values: ContactDetailsSchemaType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    startTransition(async () => {
+      try {
+        const res = await api.put(`/schools/${user?.ownedSchool?.id}`, values);
+        updateSchool(res.data.school);
+        toast.success(res.data.message);
+        router.replace(`/a/school`);
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    });
   }
 
   return (
@@ -100,6 +149,8 @@ export const ContactDetails = () => {
                           </FormLabel>
                           <FormControl>
                             <Input
+                              readOnly={!edit}
+                              disabled={!edit}
                               placeholder="123 Education Avenue, Lagelu Local Government"
                               {...field}
                             />
@@ -119,7 +170,12 @@ export const ContactDetails = () => {
                               <RequiredAsterisk />
                             </FormLabel>
                             <FormControl>
-                              <Input placeholder="Ibadan" {...field} />
+                              <Input
+                                readOnly={!edit}
+                                disabled={!edit}
+                                placeholder="Ibadan"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -136,7 +192,8 @@ export const ContactDetails = () => {
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
-                              defaultValue={field.value}
+                              value={field.value}
+                              disabled={!edit}
                             >
                               <FormControl>
                                 <SelectTrigger>
@@ -145,8 +202,8 @@ export const ContactDetails = () => {
                               </FormControl>
                               <SelectContent>
                                 {states.map((state) => (
-                                  <SelectItem value={state} key={state}>
-                                    {state}
+                                  <SelectItem value={state.name} key={state.id}>
+                                    {state.name}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -164,7 +221,12 @@ export const ContactDetails = () => {
                           <FormItem>
                             <FormLabel>Postal Code </FormLabel>
                             <FormControl>
-                              <Input placeholder="100001" {...field} />
+                              <Input
+                                readOnly={!edit}
+                                disabled={!edit}
+                                placeholder="100001"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -180,7 +242,8 @@ export const ContactDetails = () => {
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
-                              defaultValue={field.value}
+                              value={field.value}
+                              disabled={!edit}
                             >
                               <FormControl>
                                 <SelectTrigger>
@@ -189,8 +252,11 @@ export const ContactDetails = () => {
                               </FormControl>
                               <SelectContent>
                                 {countries.map((country) => (
-                                  <SelectItem value={country} key={country}>
-                                    {country}
+                                  <SelectItem
+                                    value={country.name}
+                                    key={country.id}
+                                  >
+                                    {country.name}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -212,7 +278,7 @@ export const ContactDetails = () => {
                 <div className="grid grid-col-1 md:grid-cols-2 gap-4 space-y-4">
                   <FormField
                     control={form.control}
-                    name="primaryPhoneNumber"
+                    name="primaryPhone"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
@@ -229,6 +295,8 @@ export const ContactDetails = () => {
                             placeholder="+2348012345679"
                             value={field.value}
                             onChange={(value) => field.onChange(value)}
+                            readOnly={!edit}
+                            disabled={!edit}
                           />
                         </FormControl>
                         <FormMessage />
@@ -237,7 +305,7 @@ export const ContactDetails = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="alternatePhoneNumber"
+                    name="alternatePhone"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Alternate Phone</FormLabel>
@@ -251,6 +319,8 @@ export const ContactDetails = () => {
                             placeholder="+2348012345679"
                             value={field.value}
                             onChange={(value) => field.onChange(value)}
+                            readOnly={!edit}
+                            disabled={!edit}
                           />
                         </FormControl>
                         <FormMessage />
@@ -269,6 +339,8 @@ export const ContactDetails = () => {
                           <Input
                             placeholder="info@lgs.com"
                             type="email"
+                            readOnly={!edit}
+                            disabled={!edit}
                             {...field}
                           />
                         </FormControl>
@@ -283,7 +355,12 @@ export const ContactDetails = () => {
                       <FormItem>
                         <FormLabel>Website </FormLabel>
                         <FormControl>
-                          <Input placeholder="www.lgs.com" {...field} />
+                          <Input
+                            placeholder="www.lgs.com"
+                            readOnly={!edit}
+                            disabled={!edit}
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -291,15 +368,28 @@ export const ContactDetails = () => {
                   />
                 </div>
               </div>
-              <Separator />
-              <div className="space-y-4">
-                <h3 className="font-medium text-sm flex items-center justify-start gap-1">
-                  <IconClock className="text-purple-500 inline-block" />
-                  <span>Operating Hours</span>
-                </h3>
-                <div className="grid grid-col-1 md:grid-cols-2 gap-4 space-y-4"></div>
-              </div>
             </div>
+            {edit && (
+              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+                <div className="flex items-center justify-start gap-1">
+                  <IconBell />
+                  <p>You have unsaved changes</p>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <Button
+                    onClick={() => router.push("/a/school")}
+                    type="button"
+                    variant="secondary"
+                    disabled={pending || !edit}
+                  >
+                    Cancel
+                  </Button>
+                  <Button disabled={pending || !edit} type="submit">
+                    {pending ? <Loader text="Saving..." /> : "Save changes"}
+                  </Button>
+                </div>
+              </div>
+            )}
           </form>
         </Form>
       </CardContent>

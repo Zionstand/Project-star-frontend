@@ -24,6 +24,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconAward,
+  IconBell,
   IconBuildings,
   IconBulb,
   IconCalendar,
@@ -34,7 +35,7 @@ import {
   IconTarget,
   IconUsers,
 } from "@tabler/icons-react";
-import React from "react";
+import React, { useEffect, useTransition } from "react";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import {
   AdministrativeDetailsSchema,
@@ -59,8 +60,23 @@ import {
   years,
 } from "@/constant";
 import DateSelector from "@/components/DateSelector";
+import { Loader } from "@/components/Loader";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/store/useAuth";
+import api from "@/lib/api";
+import { toast } from "sonner";
 
 export const AdministrativeDetails = () => {
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const edit = searchParams.get("edit") === "true";
+
+  const updateSchool = useAuth((s) => s.updateSchool);
+  const { user } = useAuth();
+
+  const [pending, startTransition] = useTransition();
+
   const form = useForm<AdministrativeDetailsSchemaType>({
     resolver: zodResolver(AdministrativeDetailsSchema),
     defaultValues: {
@@ -70,10 +86,30 @@ export const AdministrativeDetails = () => {
     },
   });
 
+  // ✅ Load user school data into form
+  useEffect(() => {
+    if (user?.ownedSchool) {
+      form.reset({
+        accreditationNumber: user.ownedSchool.accreditationNumber || "",
+        accreditationBody: user.ownedSchool.accreditationBody || "",
+        schoolRegistrationNumber:
+          user.ownedSchool.schoolRegistrationNumber || "",
+      });
+    }
+  }, [user?.ownedSchool, form]);
+
   function onSubmit(values: AdministrativeDetailsSchemaType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    startTransition(async () => {
+      try {
+        const res = await api.put(`/schools/${user?.ownedSchool?.id}`, values);
+        updateSchool(res.data.school);
+        toast.success(res.data.message);
+        router.replace(`/a/school`);
+      } catch (error: any) {
+        console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
+    });
   }
 
   return (
@@ -109,6 +145,8 @@ export const AdministrativeDetails = () => {
                           </FormLabel>
                           <FormControl>
                             <Input
+                              readOnly={!edit}
+                              disabled={!edit}
                               placeholder="Enter Registration Number"
                               {...field}
                             />
@@ -139,6 +177,8 @@ export const AdministrativeDetails = () => {
                         <FormLabel>Accreditation Body</FormLabel>
                         <FormControl>
                           <Input
+                            readOnly={!edit}
+                            disabled={!edit}
                             placeholder="e.g., Ministry of Education"
                             {...field}
                           />
@@ -155,6 +195,8 @@ export const AdministrativeDetails = () => {
                         <FormLabel>Accreditation Number</FormLabel>
                         <FormControl>
                           <Input
+                            readOnly={!edit}
+                            disabled={!edit}
                             placeholder="Enter accreditation number"
                             {...field}
                           />
@@ -215,6 +257,27 @@ export const AdministrativeDetails = () => {
                 </div>
               </div>
             </div>
+            {edit && (
+              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+                <div className="flex items-center justify-start gap-1">
+                  <IconBell />
+                  <p>You have unsaved changes</p>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <Button
+                    onClick={() => router.push("/a/school")}
+                    type="button"
+                    variant="secondary"
+                    disabled={pending || !edit}
+                  >
+                    Cancel
+                  </Button>
+                  <Button disabled={pending || !edit} type="submit">
+                    {pending ? <Loader text="Saving..." /> : "Save changes"}
+                  </Button>
+                </div>
+              </div>
+            )}
           </form>
         </Form>
       </CardContent>

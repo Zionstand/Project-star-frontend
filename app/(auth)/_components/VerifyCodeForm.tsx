@@ -82,7 +82,6 @@ export function VerifyCodeForm({ email }: Props) {
         toast.success(res.data.message);
         router.replace(`/new-password?email=${data.email}&otp=${data.otp}`);
       } catch (error: any) {
-        console.log(error);
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     });
