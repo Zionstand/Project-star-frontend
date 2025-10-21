@@ -176,7 +176,11 @@ export function RegisterForm({
         const res = await api.post("/auth/register/school", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        router.replace(`/a/dashboard`);
+        if (res.data.user.role === "ADMINISTRATOR") {
+          router.replace(`/a/dashboard`);
+        } else {
+          router.replace(`/s/dashboard`);
+        }
       } catch (error: any) {
         toast.error(error.response.data.message);
       }
