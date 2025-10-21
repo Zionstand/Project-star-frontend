@@ -73,6 +73,7 @@ export function RegisterForm({
   states,
 }: Props) {
   const router = useRouter();
+
   const setUser = useAuth((s) => s.setUser);
 
   const [step, setStep] = useState(1);
