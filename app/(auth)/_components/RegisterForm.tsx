@@ -171,7 +171,6 @@ export function RegisterForm({
   };
 
   function onSubmit(data: RegisterSchemaType) {
-    console.log(data);
     startTransition(async () => {
       try {
         const res = await api.post("/auth/register/school", data);

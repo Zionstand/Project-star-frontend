@@ -106,7 +106,6 @@ export const AdministrativeDetails = () => {
         toast.success(res.data.message);
         router.replace(`/a/school`);
       } catch (error: any) {
-        console.log(error);
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     });

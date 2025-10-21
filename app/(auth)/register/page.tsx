@@ -61,8 +61,6 @@ const page = async () => {
       </div>
     );
   } catch (err) {
-    console.error("Error fetching categories:", err);
-
     // fallback empty data so build won't fail
     return (
       <div className="space-y-4 w-full">

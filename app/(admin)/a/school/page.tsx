@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { PageHeader } from "../_components/PageHeader";
 import {
   IconAward,
@@ -23,8 +23,6 @@ const page = async () => {
   const states = await configService.getCategory("STATE");
   const countries = await configService.getCategory("COUNTRY");
 
-  console.log(countries, states);
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -37,60 +35,62 @@ const page = async () => {
         }}
       />
       <SchoolProfileCards />
-      <Tabs defaultValue="basicInformation">
-        <ScrollArea>
-          <TabsList className="mb-3 w-full">
-            <TabsTrigger value="basicInformation">
-              <IconBuildings
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Basic Information
-            </TabsTrigger>
-            <TabsTrigger value="contactDetails" className="group">
-              <IconMap
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Contact Details
-            </TabsTrigger>
-            <TabsTrigger value="academicSettings" className="group">
-              <IconBook
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Academic Settings
-            </TabsTrigger>
-            <TabsTrigger value="administrative" className="group">
-              <IconAward
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Administrative
-            </TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-        <TabsContent value="basicInformation">
-          <BasicInformation
-            schoolTypes={schoolTypes.items}
-            ownershipTypes={ownershipTypes.items}
-          />
-        </TabsContent>
-        <TabsContent value="contactDetails">
-          <ContactDetails states={states.items} countries={countries.items} />
-        </TabsContent>
-        <TabsContent value="academicSettings">
-          <AcademicSettings />
-        </TabsContent>
-        <TabsContent value="administrative">
-          <AdministrativeDetails />
-        </TabsContent>
-      </Tabs>
+      <Suspense fallback={<p>Loading contact details...</p>}>
+        <Tabs defaultValue="basicInformation">
+          <ScrollArea>
+            <TabsList className="mb-3 w-full">
+              <TabsTrigger value="basicInformation">
+                <IconBuildings
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Basic Information
+              </TabsTrigger>
+              <TabsTrigger value="contactDetails" className="group">
+                <IconMap
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Contact Details
+              </TabsTrigger>
+              <TabsTrigger value="academicSettings" className="group">
+                <IconBook
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Academic Settings
+              </TabsTrigger>
+              <TabsTrigger value="administrative" className="group">
+                <IconAward
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Administrative
+              </TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          <TabsContent value="basicInformation">
+            <BasicInformation
+              schoolTypes={schoolTypes.items}
+              ownershipTypes={ownershipTypes.items}
+            />
+          </TabsContent>
+          <TabsContent value="contactDetails">
+            <ContactDetails states={states.items} countries={countries.items} />
+          </TabsContent>
+          <TabsContent value="academicSettings">
+            <AcademicSettings />
+          </TabsContent>
+          <TabsContent value="administrative">
+            <AdministrativeDetails />
+          </TabsContent>
+        </Tabs>
+      </Suspense>
     </div>
   );
 };
