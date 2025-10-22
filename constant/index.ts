@@ -161,6 +161,9 @@ export const allClasses = [
   },
 ];
 
+export const sections = ["A", "B", "C", "D"];
+export const relationships = ["Father", "Mother", "Guardian", "Others"];
+
 export const studentStatuses = ["PENDING", "APPROVED", "REJECTED"];
 
 export const subjectStatuses = ["ACTIVE", "INACTIVE", "DRAFT"];
@@ -451,3 +454,5 @@ export const timezones = [
     value: "UTC",
   },
 ];
+
+export const genders = ["Male", "Female"];

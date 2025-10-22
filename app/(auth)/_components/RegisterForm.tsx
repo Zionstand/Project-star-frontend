@@ -178,9 +178,9 @@ export function RegisterForm({
         setUser(res.data.user);
         toast.success(res.data.message);
         if (res.data.user.role === "ADMINISTRATOR") {
-          router.replace(`/a/dashboard`);
+          router.push(`/a/dashboard`);
         } else {
-          router.replace(`/s/dashboard`);
+          router.push(`/s/dashboard`);
         }
       } catch (error: any) {
         toast.error(error.response.data.message);

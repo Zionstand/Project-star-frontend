@@ -26,7 +26,7 @@ export const Logo = () => {
       href="/"
       className="p-3 bg-primary text-white rounded-xl flex items-center justify-center"
     >
-      <span className="font-bold text-lg">LGS</span>
+      <span className="font-bold text-lg">EMS</span>
     </Link>
   );
 };

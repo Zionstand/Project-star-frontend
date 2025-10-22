@@ -192,7 +192,59 @@ export const GeneralSettingsSchema = z.object({
   currency: z.string().min(2, { message: "Currency must be selected" }),
   systemLanguage: z
     .string()
-    .min(2, { message: "SystemLanguage must be selected" }),
+    .min(2, { message: "System language must be selected" }),
+});
+
+export const NewStudentForm = z.object({
+  firstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  lastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
+  email: z.string().email().min(2, {
+    message: "Email must be at least 2 characters.",
+  }),
+  phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  gender: z.string().min(2, { message: "Gender must be selected" }),
+  dob: z.string().min(2, { message: "Academic start date must be selected" }),
+  address: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters" }),
+  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  state: z.string().min(2, { message: "State must be selected" }),
+  country: z.string().min(2, { message: "Country must be selected" }),
+  studentClass: z.string().min(2, { message: "Class must be selected" }),
+  section: z.string().min(2, { message: "section must be selected" }),
+  admissionNumber: z
+    .string()
+    .min(2, { message: "Admission number must be selected" }),
+  parentFirstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  parentLastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
+  parentEmail: z.string().email().min(2, {
+    message: "Email must be at least 2 characters.",
+  }),
+  parentPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  parentRelationship: z
+    .string()
+    .min(2, { message: "Relationship must be selected" }),
+  emergencyContactName: z
+    .string()
+    .min(2, { message: "Contact name must be at least 2 characters" }),
+  emergencyPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  medicalConditions: z
+    .string()
+    .min(2, { message: "Contact name must be at least 2 characters" }),
 });
 
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
@@ -207,3 +259,4 @@ export type AdministrativeDetailsSchemaType = z.infer<
   typeof AdministrativeDetailsSchema
 >;
 export type GeneralSettingsSchemaType = z.infer<typeof GeneralSettingsSchema>;
+export type NewStudentFormType = z.infer<typeof NewStudentForm>;
