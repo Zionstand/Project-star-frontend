@@ -31,18 +31,20 @@ type School = {
   schoolRegistrationNumber: string | null;
   accreditationBody: string | null;
   accreditationNumber: string | null;
+  schoolID: string | null;
   createdAt: Date | null;
-  updatedAT: Date | null;
+  updatedAt: Date | null;
 } | null;
 
-type User = {
+export type User = {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
   image: string | null;
   role: string;
-  ownedSchool?: School;
+  school?: School;
+  schoolId: string;
 } | null;
 
 type AuthState = {
@@ -60,7 +62,7 @@ export const useAuth = create<AuthState>()(
       clearUser: () => set({ user: null }),
       updateSchool: (school) =>
         set((state) => ({
-          user: state.user ? { ...state.user, ownedSchool: school } : null,
+          user: state.user ? { ...state.user, school: school } : null,
         })),
     }),
     { name: "auth-user" }

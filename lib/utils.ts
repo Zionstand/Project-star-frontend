@@ -150,13 +150,17 @@ export const formatWord: Record<string, string> = {
   PRIMARY: "Primary",
   SECONDARY: "Secondary",
   COMBINED: "Combined",
+  "EXAM OFFICER": "Examination officer",
+  BURSAR: "Bursar",
+  "IT SUPPORT": "IT Support",
+  "DATA ANALYST": "Data Analyst",
 };
 
-export const getAcronym = (name?: string) => {
-  if (!name) return "LGS"; // fallback
-  const words = name.trim().split(/\s+/);
-  return words
-    .slice(0, 3)
-    .map((word) => word[0]?.toUpperCase())
-    .join("");
-};
+// export const getAcronym = (name?: string) => {
+//   if (!name) return "LGS"; // fallback
+//   const words = name.trim().split(/\s+/);
+//   return words
+//     .slice(0, 3)
+//     .map((word) => word[0]?.toUpperCase())
+//     .join("");
+// };

@@ -1,4 +1,4 @@
-import z from "zod";
+import z, { optional } from "zod";
 
 export const RegisterSchema = z
   .object({
@@ -209,7 +209,7 @@ export const NewStudentForm = z.object({
     message: "Enter a valid phone number.",
   }),
   gender: z.string().min(2, { message: "Gender must be selected" }),
-  dob: z.string().min(2, { message: "Academic start date must be selected" }),
+  dob: z.string().min(2, { message: "Date of birth must be selected" }),
   address: z
     .string()
     .min(2, { message: "Address must be at least 2 characters" }),
@@ -247,6 +247,84 @@ export const NewStudentForm = z.object({
     .min(2, { message: "Contact name must be at least 2 characters" }),
 });
 
+export const NewStaffForm = z.object({
+  firstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  lastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
+  email: z.string().email().min(2, {
+    message: "Email must be at least 2 characters.",
+  }),
+  phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  gender: z.string().optional(),
+  dob: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
+  role: z.string().min(2, { message: "Role must be selected" }),
+  emergencyContactName: z.string().optional(),
+  emergencyPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  medicalConditions: z.string().optional(),
+});
+
+export const OnboardingStaffSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(2, { message: "First name must be at least 2 characters" }),
+    lastName: z
+      .string()
+      .min(2, { message: "Last name must be at least 2 characters" }),
+    email: z.string().email({ message: "Enter a valid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters." })
+      .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+      })
+      .refine((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z.string().min(2, { message: "Enter your password" }),
+    phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+      message: "Enter a valid phone number.",
+    }),
+    role: z.string().min(2, { message: "Role must be selected" }),
+    address: z
+      .string()
+      .min(2, { message: "Address must be at least 2 characters" }),
+    city: z.string().min(2, { message: "City must be at least 2 characters" }),
+    state: z.string().min(2, { message: "State must be selected" }),
+    country: z.string().min(2, { message: "Country must be selected" }),
+    gender: z.string().optional(),
+    dob: z.string().optional(),
+    emergencyContactName: z.string().optional(),
+    emergencyPhoneNumber: z
+      .string()
+      .regex(/^(\+?\d{10,15})$/, {
+        message: "Enter a valid phone number.",
+      })
+      .optional(),
+    medicalConditions: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"], // 👈 attach the error to confirmPassword
+  });
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -260,3 +338,6 @@ export type AdministrativeDetailsSchemaType = z.infer<
 >;
 export type GeneralSettingsSchemaType = z.infer<typeof GeneralSettingsSchema>;
 export type NewStudentFormType = z.infer<typeof NewStudentForm>;
+export type NewStaffFormType = z.infer<typeof NewStaffForm>;
+
+export type OnboardingStaffSchemaType = z.infer<typeof OnboardingStaffSchema>;

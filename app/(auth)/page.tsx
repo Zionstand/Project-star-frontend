@@ -6,7 +6,7 @@ import { LoginForm } from "./_components/LoginForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Lagelu Grammar School",
+  title: "EduManage School Management",
 };
 
 const page = () => {

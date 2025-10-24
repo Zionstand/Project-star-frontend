@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { FullLogo } from "../../_components/Logo";
 
 export const metadata: Metadata = {
-  title: "Success - Set new password | Lagelu Grammar School",
+  title: "Success - Set new password | EduManage School Management",
 };
 
 const page = () => {

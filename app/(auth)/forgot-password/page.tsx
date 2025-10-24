@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { FullLogo } from "../_components/Logo";
 
 export const metadata: Metadata = {
-  title: "Forgot password | Lagelu Grammar School",
+  title: "Forgot password | EduManage School Management",
 };
 
 const page = () => {

@@ -1,16 +1,26 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export const FullLogo = () => {
+interface Props {
+  name?: string;
+  acronym?: string;
+}
+
+export const FullLogo = ({ name = "EduManage", acronym = "EMS" }: Props) => {
   return (
     <Link
       href="/"
       className={cn("group flex items-center gap-2 justify-start")}
     >
-      <Logo />
+      <Link
+        href="/"
+        className="p-3 bg-primary text-white rounded-xl flex items-center justify-center"
+      >
+        <span className="font-bold text-lg">{acronym}</span>
+      </Link>
       <div className="space-y-0">
         <h2 className="font-semibold text-lg group-hover:text-primary transition-all">
-          EduManage
+          {name}
         </h2>
         <p className="text-muted-foreground text-sm -mt-1 group-hover:text-black transition-all">
           School Management
@@ -20,13 +30,13 @@ export const FullLogo = () => {
   );
 };
 
-export const Logo = () => {
+export const Logo = ({ acronym = "EMS" }: Props) => {
   return (
     <Link
       href="/"
       className="p-3 bg-primary text-white rounded-xl flex items-center justify-center"
     >
-      <span className="font-bold text-lg">EMS</span>
+      <span className="font-bold text-lg">{acronym}</span>
     </Link>
   );
 };

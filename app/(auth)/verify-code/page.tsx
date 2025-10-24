@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { FullLogo } from "../_components/Logo";
 
 export const metadata: Metadata = {
-  title: "Verify Code | Lagelu Grammar School",
+  title: "Verify Code | EduManage School Management",
 };
 
 type SearchParams = Promise<{

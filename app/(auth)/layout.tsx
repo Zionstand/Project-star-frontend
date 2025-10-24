@@ -6,11 +6,11 @@ import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import { FullLogo } from "./_components/Logo";
+import { useRoleRedirect } from "@/hooks/use-role-redirect";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const { user } = useAuth();
+  useRoleRedirect(user);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -31,12 +31,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       // window.history.replaceState({}, "", cleanUrl);
     }
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      router.replace("/a/dashboard");
-    }
-  }, [user, router]);
 
   return (
     <div className="relative">

@@ -4,7 +4,7 @@ import { NewPasswordForm } from "../_components/NewPasswordForm";
 import { FullLogo } from "../_components/Logo";
 
 export const metadata: Metadata = {
-  title: "Set new password | Lagelu Grammar School",
+  title: "Set new password | EduManage School Management",
 };
 
 type SearchParams = Promise<{
