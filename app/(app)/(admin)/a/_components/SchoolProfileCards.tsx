@@ -9,15 +9,10 @@ import {
 import { cn, formatWord } from "@/lib/utils";
 import { useAuth } from "@/store/useAuth";
 import {
-  IconAward,
   IconBook,
-  IconBrightness2,
   IconBuilding,
   IconCalendar,
-  IconCircleDashedLetterA,
   IconSchool,
-  IconTrendingUp,
-  IconUsers,
 } from "@tabler/icons-react";
 import React from "react";
 

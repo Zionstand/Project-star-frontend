@@ -1,24 +1,30 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
+import { formatPhoneNumber, formatWord } from "@/lib/utils";
+import { User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone, IconUser } from "@tabler/icons-react";
 import React from "react";
 
-export const StaffCard = () => {
+interface Props {
+  staff: User;
+}
+
+export const StaffCard = ({ staff }: Props) => {
   return (
     <div className="space-y-4 border-b last:border-0 pb-4">
       <div className="flex items-center justify-start gap-2">
-        <UserProfilePicture />
+        <UserProfilePicture src="" alt="" size="default" />
         <div className="flex-1">
           <h3 className="font-medium text-base line-clamp-1">
-            Tomiwa Adelae
+            {staff?.firstName} {staff?.lastName}
             <Badge variant={"outlineSuccess"}>Active</Badge>
           </h3>
           <a
             className="hover:text-primary inline-block text-sm text-muted-foreground hover:underline transition-all line-clamp-1"
-            href={`mailto:alice@gmail.com`}
+            href={`mailto:${staff?.email}`}
           >
-            alicewilliams@gmail.com
+            {staff?.email}
           </a>
         </div>
         <Button size="icon" variant={"secondary"}>
@@ -28,7 +34,7 @@ export const StaffCard = () => {
       <div className="text-sm text-muted-foreground space-y-2">
         <p className="flex items-center justify-between gap-1">
           <span>Mathematics</span>
-          <Badge variant={"outlinePurple"}>Principal</Badge>
+          <Badge variant={"outlinePurple"}>{formatWord[staff?.role!]}</Badge>
         </p>
         <p className="flex items-center justify-between gap-1">
           <span>
@@ -37,10 +43,10 @@ export const StaffCard = () => {
           </span>
           <a
             className="hover:text-primary hover:underline transition-all flex items-center justify-start"
-            href={`tel:alice@gmail.com`}
+            href={`tel:${staff?.phoneNumber}`}
           >
             <IconPhone className="inline-block size-4.5" />
-            +234 802 789 7888
+            {formatPhoneNumber(staff?.phoneNumber)}
           </a>
         </p>
       </div>

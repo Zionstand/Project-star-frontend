@@ -7,45 +7,50 @@ import {
 import { cn } from "@/lib/utils";
 import {
   IconBook,
+  IconClock,
   IconSchool,
-  IconUsers,
   IconUsersGroup,
 } from "@tabler/icons-react";
 import React from "react";
 
-export const ClassesCards = () => {
+interface Props {
+  subjects: number;
+  departments: number;
+}
+
+export const SubjectsCards = ({ subjects, departments }: Props) => {
   const stats = [
     {
-      title: "Total Classes",
-      value: 4,
-      icon: IconSchool,
+      title: "Total Subjects",
+      value: subjects,
+      icon: IconBook,
       bgColor: "bg-primary/10",
       textColor: "text-primary",
-      description: "Across all levels",
+      description: "3 active",
     },
     {
-      title: "Total Students",
-      value: 3,
-      icon: IconUsersGroup,
+      title: "Departments",
+      value: departments,
+      icon: IconSchool,
       bgColor: "bg-green-500/20",
       textColor: "text-green-500",
-      description: "Enrolled students",
+      description: "Grouped by academic departments",
     },
     {
-      title: "Average Class Size",
+      title: "Teachers Assigned",
       value: 7,
-      icon: IconUsers,
+      icon: IconUsersGroup,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",
-      description: "Students per class",
+      description: "Instructors handling active subjects",
     },
     {
-      title: "Active Classes",
+      title: "Weekly Hours",
       value: 20,
-      icon: IconBook,
+      icon: IconClock,
       bgColor: "bg-orange-500/20",
       textColor: "text-orange-500",
-      description: "Currently active",
+      description: "Total instruction time",
     },
   ];
   return (

@@ -7,13 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  allClasses,
-  allRoles,
-  departments,
-  staffStatuses,
-  studentStatuses,
-} from "@/constant";
+import { allRoles, departments, staffStatuses } from "@/constant";
 import { formatWord } from "@/lib/utils";
 
 export const StaffSearchComponent = () => {

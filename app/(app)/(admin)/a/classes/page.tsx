@@ -1,78 +1,83 @@
-import React from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
+"use client";
+import React, { useEffect, useState } from "react";
 import { ClassesCards } from "../_components/ClassesCards";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  IconCategoryFilled,
-  IconDownload,
-  IconGridScan,
-  IconPlus,
-  IconTopologyFullHierarchy,
-} from "@tabler/icons-react";
-import { SubjectCatalog } from "./_components/SubjectCatalog";
-import { ClassStructures } from "./_components/ClassStructures";
+import { IconPlus } from "@tabler/icons-react";
+import { Loader } from "@/components/Loader";
+import { schoolService } from "@/lib/school";
+import { School, useAuth, User } from "@/store/useAuth";
+import { ClassSearchComponent } from "../_components/ClassSearchComponent";
+import { ClassBox } from "./_components/ClassBox";
+import { PageHeader } from "@/components/PageHeader";
+
+export type Class = {
+  level: string;
+  section: string;
+  description?: string;
+  capacity: string;
+  classRoomNumber?: string;
+
+  school: School;
+  Teacher: {
+    user: User;
+  };
+
+  id: string;
+};
 
 const page = () => {
+  const { user } = useAuth();
+
+  const [classes, setClasses] = useState<Class[]>();
+
+  console.log(classes);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!user?.schoolId) return;
+
+      try {
+        const [classes] = await Promise.all([
+          schoolService.getSchoolClasses(user?.school?.schoolID!),
+        ]);
+
+        setClasses(classes);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, [user]);
+
+  if (loading) return <Loader />;
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Classes & Subjects"
-        description="Structured curriculum management and class organization"
+        title="Classes"
+        description="Manage all classes and their details"
         primaryCTA={{
-          label: "Add Subject",
+          label: "Create Class",
           slug: "/a/classes/new",
           icon: IconPlus,
         }}
         secondaryCTA={{
-          label: "Import Curriculum",
-          slug: "/a/students/new",
-          icon: IconDownload,
+          label: "Bulk Create",
+          slug: "/a/classes/new",
+          icon: IconPlus,
         }}
       />
       <ClassesCards />
-      <Tabs defaultValue="catalog">
-        <ScrollArea>
-          <TabsList className="mb-3 w-full">
-            <TabsTrigger value="catalog">
-              <IconCategoryFilled
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Subject Catalog
-            </TabsTrigger>
-            <TabsTrigger value="structure" className="group">
-              <IconTopologyFullHierarchy
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Class Structure
-            </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
-              <IconGridScan
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Subject Mapping
-            </TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-        <TabsContent value="catalog">
-          <SubjectCatalog />
-        </TabsContent>
-        <TabsContent value="structure">
-          <ClassStructures />
-        </TabsContent>
-        <TabsContent value="mapping">
-          <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
-            Content for Tab 3
-          </p>
-        </TabsContent>
-      </Tabs>
+      <ClassSearchComponent />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {classes?.map((c) => (
+          <ClassBox key={c.id} schoolClass={c} />
+        ))}
+      </div>
     </div>
   );
 };

@@ -7,12 +7,9 @@ import {
 import { cn } from "@/lib/utils";
 import {
   IconAward,
-  IconBook,
-  IconBrightness2,
   IconCalendar,
   IconCircleDashedLetterA,
   IconTrendingUp,
-  IconUsers,
 } from "@tabler/icons-react";
 import React from "react";
 

@@ -2,23 +2,32 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
+import { formatPhoneNumber, formatWord } from "@/lib/utils";
+import { User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone } from "@tabler/icons-react";
 
-export const StaffRow = () => {
+interface Props {
+  staff: User;
+}
+
+export const StaffRow = ({ staff }: Props) => {
   return (
     <TableRow>
       <TableCell>
         <div className="flex items-center gap-3">
-          <UserProfilePicture />
+          <UserProfilePicture src="" alt="" size="default" />
           <div>
             <div className="font-medium">
-              Tomiwa Adelae <Badge variant={"outlinePurple"}>Principal</Badge>
+              {staff?.firstName} {staff?.lastName}{" "}
+              <Badge variant={"outlinePurple"}>
+                {formatWord[staff?.role!]}
+              </Badge>
             </div>
             <a
-              href=""
+              href={`mailto:${staff?.email}`}
               className="text-muted-foreground mt-0.5 text-xs hover:underline hover:text-primary"
             >
-              tomiwaadelae@gmail.com
+              {staff?.email}
             </a>
           </div>
         </div>
@@ -27,11 +36,15 @@ export const StaffRow = () => {
       <TableCell>Mathematics</TableCell>
       <TableCell>
         <a
-          href="tel:"
+          href={`tel:${staff?.phoneNumber}`}
           className="hover:underline hover:text-primary flex items-center justify-start"
         >
           <IconPhone className="inline-block size-5" />{" "}
-          <span>+234 802 787 6666</span>
+          <span>
+            {formatPhoneNumber(staff?.phoneNumber) || (
+              <span className="italic ml-1">No phone</span>
+            )}
+          </span>
         </a>
       </TableCell>
       <TableCell>

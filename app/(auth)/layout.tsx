@@ -1,9 +1,7 @@
 "use client";
 
-import { useAutoLogin } from "@/hooks/use-auto-login";
 import { PageGradient } from "./_components/PageGradient";
 import { useAuth } from "@/store/useAuth";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useRoleRedirect } from "@/hooks/use-role-redirect";

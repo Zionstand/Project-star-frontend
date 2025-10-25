@@ -25,6 +25,7 @@ import {
   IconNotebook,
   IconTrendingUp,
   IconWallet,
+  IconChalkboardTeacher,
 } from "@tabler/icons-react";
 
 export const adminNavLinks = [
@@ -62,9 +63,19 @@ export const adminNavLinks = [
         icon: IconCalendar,
       },
       {
-        title: "Classes & Subjects",
+        title: "Classes",
         url: "/a/classes",
         icon: IconBook,
+      },
+      {
+        title: "Subjects",
+        url: "/a/subjects",
+        icon: IconSchool,
+      },
+      {
+        title: "Teachers",
+        url: "/a/teachers",
+        icon: IconChalkboardTeacher,
       },
     ],
   },

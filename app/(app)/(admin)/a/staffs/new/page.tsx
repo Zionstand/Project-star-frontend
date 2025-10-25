@@ -1,11 +1,11 @@
 import React from "react";
-import { PageHeader } from "../../../../../../components/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IconFileTypeXls, IconShare, IconUserPlus } from "@tabler/icons-react";
 import { configService } from "@/lib/configs";
 import { AddStaffForm } from "../_components/AddStaffForm";
 import InviteStaff from "../_components/InviteStaff";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = async () => {
   const [jobRoles, states] = await Promise.all([

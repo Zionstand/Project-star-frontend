@@ -325,6 +325,31 @@ export const OnboardingStaffSchema = z
     path: ["confirmPassword"], // 👈 attach the error to confirmPassword
   });
 
+export const AddClassFormSchema = z.object({
+  level: z.string().min(2, { message: "Class level must be selected" }),
+  section: z.string().min(1, { message: "Section must be selected" }),
+  description: z.string().optional(),
+  teacher: z.string().min(2, { message: "Teacher must be selected" }),
+  capacity: z.string().min(2, { message: "Capacity is required" }),
+  classRoomNumber: z.string().optional(),
+});
+
+export const AddSubjectFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "Subject name must be at least 2 characters" }),
+  department: z.string().min(1, { message: "Department must be selected" }),
+  description: z.string().optional(),
+  hoursPerWeek: z
+    .string()
+    .min(1, { message: "Hours per week must be selected" }),
+  passScore: z.string().min(2, { message: "Minimum pass score is required" }),
+  classes: z
+    .array(z.string())
+    .min(1, { message: "Select at least one class level" }), // ✅ New
+  isCore: z.boolean(), // 👈 new field
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -341,3 +366,5 @@ export type NewStudentFormType = z.infer<typeof NewStudentForm>;
 export type NewStaffFormType = z.infer<typeof NewStaffForm>;
 
 export type OnboardingStaffSchemaType = z.infer<typeof OnboardingStaffSchema>;
+export type AddClassFormSchemaType = z.infer<typeof AddClassFormSchema>;
+export type AddSubjectFormSchemaType = z.infer<typeof AddSubjectFormSchema>;

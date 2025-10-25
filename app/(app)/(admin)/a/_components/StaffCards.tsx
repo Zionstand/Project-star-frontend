@@ -7,26 +7,33 @@ import {
 import { cn } from "@/lib/utils";
 import React from "react";
 
-export const StaffCards = () => {
+interface Props {
+  total: number;
+  active: number;
+  teachers: number;
+  onLeave: number;
+}
+
+export const StaffCards = ({ total, active, teachers, onLeave }: Props) => {
   const stats = [
     {
       title: "Total Staffs",
-      value: 5,
+      value: total,
       textColor: "text-black",
     },
     {
       title: "Active Staffs",
-      value: "10",
+      value: active,
       textColor: "text-green-500",
     },
     {
       title: "Teachers",
-      value: "45",
+      value: teachers,
       textColor: "text-primary",
     },
     {
       title: "On Leave",
-      value: "5",
+      value: onLeave,
       textColor: "text-orange-500",
     },
   ];

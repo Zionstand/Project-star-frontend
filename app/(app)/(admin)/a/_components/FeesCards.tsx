@@ -6,16 +6,10 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  IconAward,
-  IconBook,
-  IconBrightness2,
-  IconCalendar,
   IconCheckbox,
-  IconCircleDashedLetterA,
   IconClock,
   IconExclamationCircle,
   IconTrendingUp,
-  IconUsers,
 } from "@tabler/icons-react";
 import React from "react";
 

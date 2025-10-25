@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type School = {
+export type School = {
   id: string;
   name: string;
   acronym: string | null;
@@ -39,8 +39,10 @@ type School = {
 export type User = {
   id: string;
   email: string;
+  title?: string;
   firstName: string;
   lastName: string;
+  phoneNumber: string;
   image: string | null;
   role: string;
   school?: School;
@@ -51,7 +53,9 @@ type AuthState = {
   user: User;
   setUser: (user: User) => void;
   clearUser: () => void;
-  updateSchool: (school: School) => void; // Update school details
+  updateSchool: (school: School) => void;
+  _hasHydrated: boolean; // ✅ added
+  setHasHydrated: (hasHydrated: boolean) => void; // ✅ added
 };
 
 export const useAuth = create<AuthState>()(
@@ -62,9 +66,16 @@ export const useAuth = create<AuthState>()(
       clearUser: () => set({ user: null }),
       updateSchool: (school) =>
         set((state) => ({
-          user: state.user ? { ...state.user, school: school } : null,
+          user: state.user ? { ...state.user, school } : null,
         })),
+      _hasHydrated: false,
+      setHasHydrated: (hasHydrated) => set({ _hasHydrated: hasHydrated }),
     }),
-    { name: "auth-user" }
+    {
+      name: "auth-user",
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
+    }
   )
 );

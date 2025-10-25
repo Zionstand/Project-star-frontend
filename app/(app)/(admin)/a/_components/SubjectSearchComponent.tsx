@@ -7,12 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  allClasses,
-  studentStatuses,
-  subjectStatuses,
-  subjectTypes,
-} from "@/constant";
+import { subjectStatuses, subjectTypes } from "@/constant";
 import { formatWord } from "@/lib/utils";
 
 export const SubjectSearchComponent = () => {

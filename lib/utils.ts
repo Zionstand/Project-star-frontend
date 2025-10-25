@@ -156,11 +156,21 @@ export const formatWord: Record<string, string> = {
   "DATA ANALYST": "Data Analyst",
 };
 
-// export const getAcronym = (name?: string) => {
-//   if (!name) return "LGS"; // fallback
-//   const words = name.trim().split(/\s+/);
-//   return words
-//     .slice(0, 3)
-//     .map((word) => word[0]?.toUpperCase())
-//     .join("");
-// };
+export function formatPhoneNumber(
+  phone: string | null = "",
+  style: "international" | "local" = "international"
+): string {
+  if (!phone) return "";
+
+  // Remove all non-digit chars but keep +
+  const cleaned = phone.replace(/[^\d+]/g, "");
+
+  // Nigerian numbers start with +234 or 0
+  if (style === "international") {
+    // Format as +234 802 783 6001
+    return cleaned.replace(/^(\+234)(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3 $4");
+  } else {
+    // Convert +2348027836001 → 08027836001
+    return cleaned.replace(/^\+234(\d{3})(\d{3})(\d{4})$/, "0$1 $2 $3");
+  }
+}

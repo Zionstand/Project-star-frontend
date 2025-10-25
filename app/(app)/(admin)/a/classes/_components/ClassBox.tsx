@@ -1,0 +1,101 @@
+"use client";
+import { Card, CardContent } from "@/components/ui/card";
+import React from "react";
+import { Class } from "../page";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/store/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import {
+  IconDotsVertical,
+  IconEdit,
+  IconEye,
+  IconTrash,
+} from "@tabler/icons-react";
+import { Progress } from "@/components/ui/progress";
+
+interface Props {
+  schoolClass: Class;
+}
+
+export const ClassBox = ({ schoolClass }: Props) => {
+  const { user } = useAuth();
+
+  console.log(schoolClass);
+
+  return (
+    <Card>
+      <CardContent className="space-y-4">
+        <div>
+          <h3 className="font-medium text-base flex items-center justify-between gap-1">
+            {schoolClass.level}
+            {schoolClass.section}{" "}
+            <div className="flex items-center justify-end gap-1">
+              <Badge>Active</Badge>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="shadow-none"
+                    aria-label="Open edit menu"
+                  >
+                    <IconDotsVertical size={16} aria-hidden="true" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <IconEye />
+                    View Details
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <IconEdit />
+                    Edit Class
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-destructive">
+                    <IconTrash />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            {user?.school?.currentSession}
+          </p>
+        </div>
+        <div className="space-y-2.5 text-sm text-muted-foreground">
+          <p className="flex items-center justify-between">
+            <span>Class Teacher</span>
+            <span className="font-medium text-black">
+              {schoolClass.Teacher?.user?.title}
+              {schoolClass.Teacher.user?.firstName}{" "}
+              {schoolClass.Teacher.user?.lastName}
+            </span>
+          </p>
+          <p className="flex items-center justify-between">
+            <span>Subjects</span>
+            <span className="font-medium text-black">
+              43/{schoolClass.capacity}
+            </span>
+          </p>
+          <p>
+            <small className="text-xs flex items-center justify-between">
+              <span>Capacity</span>
+              <span>93%</span>
+            </small>
+            <Progress value={94} />
+          </p>
+          <Button className="w-full" variant={"outline"}>
+            <IconEye /> View Details
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};

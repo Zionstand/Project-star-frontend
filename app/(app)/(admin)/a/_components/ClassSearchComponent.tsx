@@ -10,12 +10,12 @@ import {
 import { allClasses, feesStatus } from "@/constant";
 import { formatWord } from "@/lib/utils";
 
-export const FeesSearchComponent = () => {
+export const ClassSearchComponent = () => {
   return (
     <Card>
       <CardContent className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex-1 w-full md:flex-2">
-          <SearchBar />
+          <SearchBar placeholder="Search classes, teachers..." />
         </div>
         <div className="w-full flex-1 grid grid-cols-2 gap-4">
           <Select>

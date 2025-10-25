@@ -20,7 +20,6 @@ import {
 import { cn } from "@/lib/utils";
 // import { adminNavLinks } from "@/constant";
 import { useSidebar } from "@/components/ui/sidebar";
-import { useRoleRedirect } from "@/hooks/use-role-redirect";
 import { useAuth } from "@/store/useAuth";
 import { roleNavMap } from "@/constant/nav-links";
 

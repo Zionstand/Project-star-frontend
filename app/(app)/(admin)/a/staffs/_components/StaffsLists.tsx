@@ -10,12 +10,19 @@ import {
 } from "@/components/ui/table";
 import { StaffRow } from "./StaffRow";
 import { StaffCard } from "./StaffCard";
+import { User } from "@/store/useAuth";
 
-export const StaffsLists = () => {
+interface Props {
+  staffs: User[] | undefined;
+}
+
+export const StaffsLists = ({ staffs }: Props) => {
   return (
     <Card className="gap-0">
       <CardHeader>
-        <h3 className="font-medium text-base">Staff members (4)</h3>
+        <h3 className="font-medium text-base">
+          Staff members ({staffs?.length})
+        </h3>
       </CardHeader>
       <CardContent className="pt-4">
         <div className="hidden md:block">
@@ -31,24 +38,16 @@ export const StaffsLists = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <StaffRow />
-              <StaffRow />
-              <StaffRow />
-              <StaffRow />
-              <StaffRow />
+              {staffs?.map((staff) => (
+                <StaffRow key={staff?.id} staff={staff} />
+              ))}
             </TableBody>
           </Table>
         </div>
         <div className="md:hidden space-y-4">
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
-          <StaffCard />
+          {staffs?.map((staff) => (
+            <StaffCard key={staff?.id} staff={staff} />
+          ))}
         </div>
       </CardContent>
     </Card>
