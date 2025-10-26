@@ -3,11 +3,40 @@ import { Button } from "@/components/ui/button";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber, formatWord } from "@/lib/utils";
 import { User } from "@/store/useAuth";
-import { IconDotsVertical, IconPhone, IconUser } from "@tabler/icons-react";
+import {
+  IconDotsVertical,
+  IconEdit,
+  IconEye,
+  IconMessage,
+  IconPhone,
+  IconTrash,
+  IconUser,
+} from "@tabler/icons-react";
 import React from "react";
+import { Class } from "../../classes/page";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+
+export interface ExtendedUser extends NonNullable<User> {
+  Teacher?: {
+    classes: Class[];
+    assignments: {
+      id: true;
+      Subject: {
+        name: string;
+        department: string;
+      };
+    }[];
+  };
+}
 
 interface Props {
-  staff: User;
+  staff: ExtendedUser | null;
 }
 
 export const StaffCard = ({ staff }: Props) => {
@@ -17,7 +46,7 @@ export const StaffCard = ({ staff }: Props) => {
         <UserProfilePicture src="" alt="" size="default" />
         <div className="flex-1">
           <h3 className="font-medium text-base line-clamp-1">
-            {staff?.firstName} {staff?.lastName}
+            {staff?.firstName} {staff?.lastName}{" "}
             <Badge variant={"outlineSuccess"}>Active</Badge>
           </h3>
           <a
@@ -27,13 +56,58 @@ export const StaffCard = ({ staff }: Props) => {
             {staff?.email}
           </a>
         </div>
-        <Button size="icon" variant={"secondary"}>
-          <IconDotsVertical />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" variant={"secondary"}>
+              <IconDotsVertical />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link href={`/a/staffs/${staff?.id}`}>
+                <IconEye />
+                View Details
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <IconEdit />
+              Edit Staff
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <IconMessage />
+              Send Message
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive">
+              <IconTrash />
+              Remove Staff
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="text-sm text-muted-foreground space-y-2">
         <p className="flex items-center justify-between gap-1">
-          <span>Mathematics</span>
+          <span>
+            {staff?.role === "TEACHER" && staff?.Teacher?.assignments && (
+              <div className="flex gap-1">
+                {staff.Teacher.assignments.slice(0, 1).map((a, index) => (
+                  <Badge key={index} variant="secondary">
+                    {a.Subject.name}
+                  </Badge>
+                ))}
+
+                {staff.Teacher.assignments.length > 1 && (
+                  <Badge variant="secondary">
+                    +{staff.Teacher.assignments.length - 1}
+                  </Badge>
+                )}
+              </div>
+            )}
+            {staff?.role === "ADMINISTRATOR" && "Administration"}
+            {staff?.role === "PRINCIPAL" && "Administration"}
+            {staff?.role === "BURSAR" && "Finances"}
+            {staff?.role === "LIBRARIAN" && "Library Services"}
+            {staff?.role === "COUNSELOR" && "Library Student Services"}
+          </span>
           <Badge variant={"outlinePurple"}>{formatWord[staff?.role!]}</Badge>
         </p>
         <p className="flex items-center justify-between gap-1">
@@ -45,8 +119,12 @@ export const StaffCard = ({ staff }: Props) => {
             className="hover:text-primary hover:underline transition-all flex items-center justify-start"
             href={`tel:${staff?.phoneNumber}`}
           >
-            <IconPhone className="inline-block size-4.5" />
-            {formatPhoneNumber(staff?.phoneNumber)}
+            <IconPhone className="inline-block size-4.5" />{" "}
+            {staff?.phoneNumber ? (
+              formatPhoneNumber(staff?.phoneNumber)
+            ) : (
+              <span className="italic">No phone</span>
+            )}
           </a>
         </p>
       </div>

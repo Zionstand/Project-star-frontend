@@ -15,6 +15,16 @@ interface Props {
     slug: string;
     icon: any;
   };
+  destructiveCTA?: {
+    label: string;
+    slug: string;
+    icon: any;
+  };
+  outlineCTA?: {
+    label: string;
+    slug: string;
+    icon: any;
+  };
 }
 
 export const PageHeader = ({
@@ -22,6 +32,8 @@ export const PageHeader = ({
   description,
   primaryCTA,
   secondaryCTA,
+  outlineCTA,
+  destructiveCTA,
 }: Props) => {
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
@@ -33,10 +45,18 @@ export const PageHeader = ({
       </div>
       <div className="flex items-center justify-end gap-2 w-full md:w-auto">
         {secondaryCTA && (
-          <Button className="flex-1 md:flex-auto" asChild variant={"outline"}>
+          <Button className="flex-1 md:flex-auto" asChild variant={"secondary"}>
             <Link href={secondaryCTA.slug}>
               <secondaryCTA.icon />
               {secondaryCTA.label}
+            </Link>
+          </Button>
+        )}
+        {outlineCTA && (
+          <Button className="flex-1 md:flex-auto" variant={"outline"} asChild>
+            <Link href={outlineCTA.slug}>
+              <outlineCTA.icon />
+              {outlineCTA.label}
             </Link>
           </Button>
         )}
@@ -45,6 +65,18 @@ export const PageHeader = ({
             <Link href={primaryCTA.slug}>
               <primaryCTA.icon />
               {primaryCTA.label}
+            </Link>
+          </Button>
+        )}
+        {destructiveCTA && (
+          <Button
+            className="flex-1 md:flex-auto"
+            variant={"destructive"}
+            asChild
+          >
+            <Link href={destructiveCTA.slug}>
+              <destructiveCTA.icon />
+              {destructiveCTA.label}
             </Link>
           </Button>
         )}

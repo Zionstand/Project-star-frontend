@@ -8,6 +8,7 @@ import { configService } from "@/lib/configs";
 import { useAuth } from "@/store/useAuth";
 import { Loader } from "@/components/Loader";
 import { AddSubjectForm } from "./_components/AddSubjectForm";
+import { toast } from "sonner";
 
 const page = () => {
   const { user } = useAuth();
@@ -29,8 +30,8 @@ const page = () => {
 
         setDepartments(departments);
         setClassLevels(classLevels);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
       } finally {
         setLoading(false);
       }

@@ -11,7 +11,7 @@ export const StudentCard = () => {
         <UserProfilePicture />
         <div className="flex-1">
           <h3 className="font-medium text-base line-clamp-1">
-            Tomiwa Adelae Ademola Evelyn Opara timetable
+            Tomiwa Adelae Ademola
             <Badge variant={"outlineSuccess"}>Active</Badge>
           </h3>
           <a

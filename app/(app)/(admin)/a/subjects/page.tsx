@@ -15,6 +15,7 @@ import { Loader } from "@/components/Loader";
 import { SubjectsCards } from "./_components/SubjectsCards";
 import { configService } from "@/lib/configs";
 import { PageHeader } from "@/components/PageHeader";
+import { toast } from "sonner";
 
 export type Subject = {
   name: string;
@@ -48,8 +49,8 @@ const page = () => {
 
         setSubjects(subjects);
         setDepartments(departments);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
       } finally {
         setLoading(false);
       }

@@ -5,9 +5,23 @@ import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber, formatWord } from "@/lib/utils";
 import { User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone } from "@tabler/icons-react";
+import { Class } from "../../classes/page";
+
+export interface ExtendedUser extends NonNullable<User> {
+  Teacher?: {
+    classes: Class[];
+    assignments: {
+      id: true;
+      Subject: {
+        name: string;
+        department: string;
+      };
+    }[];
+  };
+}
 
 interface Props {
-  staff: User;
+  staff: ExtendedUser | null;
 }
 
 export const StaffRow = ({ staff }: Props) => {
@@ -18,10 +32,7 @@ export const StaffRow = ({ staff }: Props) => {
           <UserProfilePicture src="" alt="" size="default" />
           <div>
             <div className="font-medium">
-              {staff?.firstName} {staff?.lastName}{" "}
-              <Badge variant={"outlinePurple"}>
-                {formatWord[staff?.role!]}
-              </Badge>
+              {staff?.firstName} {staff?.lastName}
             </div>
             <a
               href={`mailto:${staff?.email}`}
@@ -33,7 +44,9 @@ export const StaffRow = ({ staff }: Props) => {
         </div>
       </TableCell>
       <TableCell>EMP2025001</TableCell>
-      <TableCell>Mathematics</TableCell>
+      <TableCell>
+        <Badge variant={"outlinePurple"}>{formatWord[staff?.role!]}</Badge>
+      </TableCell>
       <TableCell>
         <a
           href={`tel:${staff?.phoneNumber}`}
@@ -49,6 +62,28 @@ export const StaffRow = ({ staff }: Props) => {
       </TableCell>
       <TableCell>
         <Badge variant={"outlineSuccess"}>Active</Badge>
+      </TableCell>
+      <TableCell>
+        {staff?.role === "TEACHER" && staff?.Teacher?.assignments && (
+          <>
+            {staff.Teacher.assignments.slice(0, 2).map((a, index) => (
+              <Badge key={index} variant="secondary">
+                {a.Subject.name}
+              </Badge>
+            ))}
+
+            {staff.Teacher.assignments.length > 2 && (
+              <Badge variant="secondary">
+                +{staff.Teacher.assignments.length - 2}
+              </Badge>
+            )}
+          </>
+        )}
+        {staff?.role === "ADMINISTRATOR" && "Administration"}
+        {staff?.role === "PRINCIPAL" && "Administration"}
+        {staff?.role === "BURSAR" && "Finances"}
+        {staff?.role === "LIBRARIAN" && "Library Services"}
+        {staff?.role === "COUNSELOR" && "Library Student Services"}
       </TableCell>
       <TableCell className="text-right">
         <Button size="icon" variant={"secondary"}>

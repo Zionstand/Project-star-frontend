@@ -75,7 +75,6 @@ export const AddSubjectForm = ({ departments, classLevels }: Props) => {
         );
         toast.success(res.data.message);
         form.reset();
-        console.log(values);
       } catch (error: any) {
         toast.error(error.response?.data?.message || "An error occurred");
       }

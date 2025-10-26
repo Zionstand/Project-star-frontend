@@ -1,3 +1,4 @@
+import { Class } from "@/app/(app)/(admin)/a/classes/page";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -44,9 +45,19 @@ export type User = {
   lastName: string;
   phoneNumber: string;
   image: string | null;
+  employeeID: string | null;
+  dob: string | null;
+  createdAt: string | null;
+  city: string | null;
+  address: string | null;
+  state: string | null;
+  country: string | null;
+  emergencyContactName: string | null;
+  emergencyPhoneNumber: string | null;
   role: string;
   school?: School;
   schoolId: string;
+  classes?: Class[];
 } | null;
 
 type AuthState = {

@@ -9,6 +9,7 @@ import { configService } from "@/lib/configs";
 import { schoolService } from "@/lib/school";
 import { useAuth, User } from "@/store/useAuth";
 import { Loader } from "@/components/Loader";
+import { toast } from "sonner";
 
 const page = () => {
   const { user } = useAuth();
@@ -33,8 +34,8 @@ const page = () => {
         setTeachers(teachers);
         setClassLevels(classLevels);
         setClassSections(classSections);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
       } finally {
         setLoading(false);
       }

@@ -1,13 +1,18 @@
 import api from "./api";
 
 export const schoolService = {
-  getSchool: async (id: string) => {
-    const res = await api.get(`/schools/${id}`);
+  getSchool: async (schoolID: string) => {
+    const res = await api.get(`/schools/${schoolID}`);
     return res.data;
   },
 
-  getSchoolStaffs: async (id: string) => {
-    const res = await api.get(`/schools/${id}/staffs`);
+  getSchoolStaffs: async (schoolID: string) => {
+    const res = await api.get(`/schools/${schoolID}/staffs`);
+    return res.data;
+  },
+
+  getSchoolStaff: async (schoolID: string, staffID: string | string[]) => {
+    const res = await api.get(`/schools/${schoolID}/staffs/${staffID}`);
     return res.data;
   },
 
@@ -23,6 +28,19 @@ export const schoolService = {
 
   getSchoolSubjects: async (schoolID: string) => {
     const res = await api.get(`/subjects/${schoolID}`);
+    return res.data;
+  },
+
+  getSchoolClassDetails: async (
+    schoolID: string,
+    classID: string | string[]
+  ) => {
+    const res = await api.get(`/classes/${schoolID}/${classID}`);
+    return res.data;
+  },
+
+  getTeacherAssignments: async (schoolID: string) => {
+    const res = await api.get(`/schools/${schoolID}/assign-teachers`);
     return res.data;
   },
 };

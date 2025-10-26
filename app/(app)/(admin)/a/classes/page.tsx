@@ -8,6 +8,7 @@ import { School, useAuth, User } from "@/store/useAuth";
 import { ClassSearchComponent } from "../_components/ClassSearchComponent";
 import { ClassBox } from "./_components/ClassBox";
 import { PageHeader } from "@/components/PageHeader";
+import { toast } from "sonner";
 
 export type Class = {
   level: string;
@@ -29,8 +30,6 @@ const page = () => {
 
   const [classes, setClasses] = useState<Class[]>();
 
-  console.log(classes);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,8 +42,8 @@ const page = () => {
         ]);
 
         setClasses(classes);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
       } finally {
         setLoading(false);
       }

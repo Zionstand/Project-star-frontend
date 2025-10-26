@@ -350,6 +350,21 @@ export const AddSubjectFormSchema = z.object({
   isCore: z.boolean(), // 👈 new field
 });
 
+export const AssignTeacherFormSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("CLASS"),
+    teacher: z.string().min(2, { message: "Teacher must be selected" }),
+    class: z.string().min(2, { message: "Class must be selected" }),
+    subject: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("SUBJECT"),
+    teacher: z.string().min(2, { message: "Teacher must be selected" }),
+    subject: z.string().min(2, { message: "Subject must be selected" }),
+    class: z.string().optional(),
+  }),
+]);
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -368,3 +383,6 @@ export type NewStaffFormType = z.infer<typeof NewStaffForm>;
 export type OnboardingStaffSchemaType = z.infer<typeof OnboardingStaffSchema>;
 export type AddClassFormSchemaType = z.infer<typeof AddClassFormSchema>;
 export type AddSubjectFormSchemaType = z.infer<typeof AddSubjectFormSchema>;
+export type AssignTeacherFormSchemaType = z.infer<
+  typeof AssignTeacherFormSchema
+>;

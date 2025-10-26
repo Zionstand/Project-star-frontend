@@ -18,6 +18,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 interface Props {
   schoolClass: Class;
@@ -25,8 +26,6 @@ interface Props {
 
 export const ClassBox = ({ schoolClass }: Props) => {
   const { user } = useAuth();
-
-  console.log(schoolClass);
 
   return (
     <Card>
@@ -91,8 +90,10 @@ export const ClassBox = ({ schoolClass }: Props) => {
             </small>
             <Progress value={94} />
           </p>
-          <Button className="w-full" variant={"outline"}>
-            <IconEye /> View Details
+          <Button asChild className="w-full" variant={"outline"}>
+            <Link href={`/a/classes/${schoolClass.id}`}>
+              <IconEye /> View Details
+            </Link>
           </Button>
         </div>
       </CardContent>

@@ -15,6 +15,7 @@ export const useSignout = () => {
       router.push("/?logout=true");
     } catch (error) {
       toast.error("Oops! Failed to logout");
+      router.push("/?logout=true");
     } finally {
       useAuth.getState().clearUser();
       router.push("/?logout=true");

@@ -8,12 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { StaffRow } from "./StaffRow";
+import { ExtendedUser, StaffRow } from "./StaffRow";
 import { StaffCard } from "./StaffCard";
 import { User } from "@/store/useAuth";
 
 interface Props {
-  staffs: User[] | undefined;
+  staffs: User[] | undefined | ExtendedUser[];
 }
 
 export const StaffsLists = ({ staffs }: Props) => {
@@ -31,9 +31,10 @@ export const StaffsLists = ({ staffs }: Props) => {
               <TableRow className="hover:bg-transparent">
                 <TableHead>Name</TableHead>
                 <TableHead>Employee ID</TableHead>
-                <TableHead>Department</TableHead>
+                <TableHead>Role</TableHead>
                 <TableHead>Contact</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Subjects</TableHead>
                 <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>

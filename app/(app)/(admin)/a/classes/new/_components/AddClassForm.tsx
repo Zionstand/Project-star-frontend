@@ -51,8 +51,6 @@ export const AddClassForm = ({
   classLevels,
   teachers,
 }: Props) => {
-  console.log(classLevels, classSections);
-
   const router = useRouter();
   const { user } = useAuth();
   const [pending, startTransition] = useTransition();
