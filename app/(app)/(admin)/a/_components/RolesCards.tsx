@@ -6,50 +6,50 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  IconBook,
-  IconSchool,
+  IconCheckbox,
+  IconClock,
+  IconExclamationCircle,
+  IconLock,
+  IconRestore,
+  IconShield,
+  IconTrendingUp,
   IconUsers,
-  IconUsersGroup,
 } from "@tabler/icons-react";
 import React from "react";
 
-interface Props {
-  classes: number | undefined;
-}
-
-export const ClassesCards = ({ classes }: Props) => {
+export const RolesCards = () => {
   const stats = [
     {
-      title: "Total Classes",
-      value: classes,
-      icon: IconSchool,
+      title: "Total Users",
+      value: "1,264",
+      icon: IconUsers,
       bgColor: "bg-primary/10",
       textColor: "text-primary",
-      description: "Across all levels",
+      description: "All roles combined",
     },
     {
-      title: "Total Students",
-      value: 3,
-      icon: IconUsersGroup,
+      title: "Active Roles",
+      value: "9",
+      icon: IconShield,
       bgColor: "bg-green-500/20",
       textColor: "text-green-500",
-      description: "Enrolled students",
+      description: "Roles type defined",
     },
     {
-      title: "Average Class Size",
-      value: 7,
-      icon: IconUsers,
-      bgColor: "bg-purple-500/20",
-      textColor: "text-purple-500",
-      description: "Students per class",
-    },
-    {
-      title: "Active Classes",
-      value: classes,
-      icon: IconBook,
+      title: "Permission Groups",
+      value: 1,
+      icon: IconLock,
       bgColor: "bg-orange-500/20",
       textColor: "text-orange-500",
-      description: "Currently active",
+      description: "Access Categories",
+    },
+    {
+      title: "Recent Changes",
+      value: "23",
+      icon: IconRestore,
+      bgColor: "bg-purple-500/20",
+      textColor: "text-purple-500",
+      description: "Last 7 days",
     },
   ];
   return (

@@ -71,11 +71,6 @@ const page = () => {
           slug: "/a/subjects/new",
           icon: IconPlus,
         }}
-        secondaryCTA={{
-          label: "Import Curriculum",
-          slug: "/a/subjects/new",
-          icon: IconDownload,
-        }}
       />
       <SubjectsCards
         subjects={subjects.length}

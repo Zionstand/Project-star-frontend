@@ -14,13 +14,7 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 import { Class } from "../../classes/page";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
+import { StaffActions } from "./StaffActions";
 
 export interface ExtendedUser extends NonNullable<User> {
   Teacher?: {
@@ -56,33 +50,7 @@ export const StaffCard = ({ staff }: Props) => {
             {staff?.email}
           </a>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon" variant={"secondary"}>
-              <IconDotsVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link href={`/a/staffs/${staff?.id}`}>
-                <IconEye />
-                View Details
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <IconEdit />
-              Edit Staff
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <IconMessage />
-              Send Message
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive">
-              <IconTrash />
-              Remove Staff
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <StaffActions id={staff?.id} />
       </div>
       <div className="text-sm text-muted-foreground space-y-2">
         <p className="flex items-center justify-between gap-1">

@@ -6,6 +6,7 @@ import { formatPhoneNumber, formatWord } from "@/lib/utils";
 import { User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone } from "@tabler/icons-react";
 import { Class } from "../../classes/page";
+import { StaffActions } from "./StaffActions";
 
 export interface ExtendedUser extends NonNullable<User> {
   Teacher?: {
@@ -86,9 +87,7 @@ export const StaffRow = ({ staff }: Props) => {
         {staff?.role === "COUNSELOR" && "Library Student Services"}
       </TableCell>
       <TableCell className="text-right">
-        <Button size="icon" variant={"secondary"}>
-          <IconDotsVertical />
-        </Button>
+        <StaffActions id={staff?.id} />
       </TableCell>
     </TableRow>
   );

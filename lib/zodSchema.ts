@@ -325,45 +325,110 @@ export const OnboardingStaffSchema = z
     path: ["confirmPassword"], // 👈 attach the error to confirmPassword
   });
 
-export const AddClassFormSchema = z.object({
-  level: z.string().min(2, { message: "Class level must be selected" }),
-  section: z.string().min(1, { message: "Section must be selected" }),
-  description: z.string().optional(),
-  teacher: z.string().min(2, { message: "Teacher must be selected" }),
-  capacity: z.string().min(2, { message: "Capacity is required" }),
-  classRoomNumber: z.string().optional(),
-});
+export const AddClassFormSchema = z
+  .object({
+    level: z.string().min(2, { message: "Class level must be selected" }),
+    section: z.string().min(1, { message: "Section must be selected" }),
+    description: z.string().optional(),
+    department: z.string().optional(),
+    teacherId: z.string().min(2, { message: "Teacher must be selected" }),
+    capacity: z.string().min(2, { message: "Capacity is required" }),
+    classRoomNumber: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    // check if level is SS1, SS2, or SS3
+    const seniorLevels = ["SS1", "SS2", "SS3"];
+    if (seniorLevels.includes(data.level) && !data.department) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["department"],
+        message: "Department is required for SS1, SS2, or SS3 levels",
+      });
+    }
+  });
 
-export const AddSubjectFormSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Subject name must be at least 2 characters" }),
-  department: z.string().min(1, { message: "Department must be selected" }),
-  description: z.string().optional(),
-  hoursPerWeek: z
-    .string()
-    .min(1, { message: "Hours per week must be selected" }),
-  passScore: z.string().min(2, { message: "Minimum pass score is required" }),
-  classes: z
+export const AddSubjectFormSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, { message: "Subject name must be at least 2 characters" }),
+    department: z.string().optional(),
+    description: z.string().optional(),
+    hoursPerWeek: z
+      .string()
+      .min(1, { message: "Hours per week must be selected" }),
+    passScore: z.string().min(2, { message: "Minimum pass score is required" }),
+    classes: z
+      .array(z.string())
+      .min(1, { message: "Select at least one class level" }),
+    isCore: z.boolean(),
+  })
+  .superRefine((data, ctx) => {
+    const seniorLevels = ["SS1", "SS2", "SS3"];
+    // check if any class in the array is a senior level
+    const hasSeniorLevel = data.classes.some((cls) =>
+      seniorLevels.includes(cls)
+    );
+
+    if (hasSeniorLevel && !data.department) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["department"],
+        message: "Department is required for SS1, SS2, or SS3 levels",
+      });
+    }
+  });
+
+export const AssignTeacherFormSchema = z.object({
+  type: z.enum(["CLASS", "SUBJECT"]),
+  teacher: z.string().min(2, { message: "Teacher is required" }),
+  class: z.string().optional(),
+  subjects: z
     .array(z.string())
-    .min(1, { message: "Select at least one class level" }), // ✅ New
-  isCore: z.boolean(), // 👈 new field
+    .min(1, { message: "At least one subject must be selected" }),
 });
 
-export const AssignTeacherFormSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("CLASS"),
-    teacher: z.string().min(2, { message: "Teacher must be selected" }),
-    class: z.string().min(2, { message: "Class must be selected" }),
-    subject: z.string().optional(),
-  }),
-  z.object({
-    type: z.literal("SUBJECT"),
-    teacher: z.string().min(2, { message: "Teacher must be selected" }),
-    subject: z.string().min(2, { message: "Subject must be selected" }),
-    class: z.string().optional(),
-  }),
-]);
+export const StaffImportSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email"),
+  phoneNumber: z
+    .string()
+    .min(7, "Phone number required")
+    .optional()
+    .or(z.literal("")), // allow blank but treat as invalid
+  role: z.string().min(1, "Role is required"),
+  dob: z.any().optional(),
+  gender: z.string().min(1, "Gender is required"),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+});
+
+export const EditProfileFormSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email"),
+  phoneNumber: z
+    .string()
+    .min(7, "Phone number required")
+    .optional()
+    .or(z.literal("")), // allow blank but treat as invalid
+  dob: z.any().optional(),
+  gender: z.string().optional(),
+  address: z.string().optional(),
+  employeeID: z.string().optional(),
+  joinedDate: z.string().optional(),
+  department: z.string().optional(),
+  title: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
+  emergencyContactName: z.string().optional(),
+  emergencyPhoneNumber: z.string().optional(),
+  image: z.string().optional(),
+  medicalConditions: z.string().optional(),
+});
 
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
@@ -386,3 +451,5 @@ export type AddSubjectFormSchemaType = z.infer<typeof AddSubjectFormSchema>;
 export type AssignTeacherFormSchemaType = z.infer<
   typeof AssignTeacherFormSchema
 >;
+export type StaffImportSchemaType = z.infer<typeof StaffImportSchema>;
+export type EditProfileFormSchemaType = z.infer<typeof EditProfileFormSchema>;

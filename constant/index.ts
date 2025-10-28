@@ -322,3 +322,4 @@ export const timezones = [
 ];
 
 export const genders = ["Male", "Female"];
+export const titles = ["Mr.", "Mrs.", "Miss", "Master"];

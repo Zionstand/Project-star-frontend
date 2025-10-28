@@ -72,9 +72,17 @@ export const ClassBox = ({ schoolClass }: Props) => {
           <p className="flex items-center justify-between">
             <span>Class Teacher</span>
             <span className="font-medium text-black">
-              {schoolClass.Teacher?.user?.title}
-              {schoolClass.Teacher.user?.firstName}{" "}
-              {schoolClass.Teacher.user?.lastName}
+              {schoolClass.Teacher ? (
+                `${
+                  schoolClass.Teacher?.user?.title !== null
+                    ? schoolClass.Teacher.user?.title
+                    : ""
+                } ${schoolClass.Teacher.user?.firstName} ${
+                  schoolClass.Teacher.user?.lastName
+                }`
+              ) : (
+                <p className="italic">Not assigned</p>
+              )}
             </span>
           </p>
           <p className="flex items-center justify-between">

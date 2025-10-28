@@ -84,7 +84,11 @@ const page = () => {
         }}
       />
       <ClassDetailsCards />
-      <ClassTeacherBox teacher={classDetails.Teacher.user} />
+      <ClassTeacherBox
+        teacher={
+          classDetails.Teacher !== null ? classDetails.Teacher.user : null
+        }
+      />
       <ClassInformationBox
         location={classDetails.classRoomNumber}
         academicYear={user?.school?.currentSession}

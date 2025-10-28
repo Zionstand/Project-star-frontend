@@ -11,6 +11,11 @@ export const schoolService = {
     return res.data;
   },
 
+  getSchoolUsers: async (schoolID: string) => {
+    const res = await api.get(`/schools/${schoolID}/users`);
+    return res.data;
+  },
+
   getSchoolStaff: async (schoolID: string, staffID: string | string[]) => {
     const res = await api.get(`/schools/${schoolID}/staffs/${staffID}`);
     return res.data;
@@ -41,6 +46,11 @@ export const schoolService = {
 
   getTeacherAssignments: async (schoolID: string) => {
     const res = await api.get(`/schools/${schoolID}/assign-teachers`);
+    return res.data;
+  },
+
+  getUserSchema: async (modelName: string) => {
+    const res = await api.get(`/schema/${modelName}`);
     return res.data;
   },
 };

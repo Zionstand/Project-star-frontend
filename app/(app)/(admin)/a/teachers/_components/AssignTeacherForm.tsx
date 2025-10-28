@@ -1,58 +1,38 @@
 "use client";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardContent } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import {
-  AssignTeacherFormSchema,
-  AssignTeacherFormSchemaType,
-} from "@/lib/zodSchema";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import api from "@/lib/api";
-import {
-  IconAlertSquareRounded,
-  IconBook,
-  IconBuilding,
-  IconClipboardHeart,
-  IconMapPin2,
-  IconUser,
-  IconUsers,
-} from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormControl,
 } from "@/components/ui/form";
-import { RequiredAsterisk } from "@/components/RequiredAsterisk";
-import { Input } from "@/components/ui/input";
-import { Loader } from "@/components/Loader";
-import { Button } from "@/components/ui/button";
-import * as RPNInput from "react-phone-number-input";
-import {
-  CountrySelect,
-  FlagComponent,
-  PhoneInput,
-} from "@/components/PhoneNumberInput";
-import DateSelector from "@/components/DateSelector";
 import {
   Select,
-  SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectContent,
+  SelectItem,
 } from "@/components/ui/select";
-import { allClasses, genders, relationships, sections } from "@/constant";
-import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { formatWord } from "@/lib/utils";
-import { useAuth, User } from "@/store/useAuth";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
+import { Loader } from "@/components/Loader";
+import MultipleSelector, { Option } from "@/components/ui/multiselect";
+import {
+  AssignTeacherFormSchema,
+  AssignTeacherFormSchemaType,
+} from "@/lib/zodSchema";
+import api from "@/lib/api";
+import { useAuth, User } from "@/store/useAuth";
 import { Class } from "../../classes/page";
 import { Subject } from "../../subjects/page";
+import z from "zod";
 
 interface Props {
   teachers: User[] | undefined;
@@ -65,19 +45,19 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
   const { user } = useAuth();
   const [pending, startTransition] = useTransition();
 
-  const form = useForm<AssignTeacherFormSchemaType>({
+  const form = useForm<z.infer<typeof AssignTeacherFormSchema>>({
     resolver: zodResolver(AssignTeacherFormSchema),
     defaultValues: {
+      type: "SUBJECT",
       teacher: "",
-      type: "CLASS",
       class: "",
-      subject: "",
+      subjects: [],
     },
   });
 
   const type = form.watch("type");
 
-  function onSubmit(values: AssignTeacherFormSchemaType) {
+  async function onSubmit(values: AssignTeacherFormSchemaType) {
     startTransition(async () => {
       try {
         const res = await api.post(
@@ -92,36 +72,39 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
     });
   }
 
+  const subjectOptions: Option[] =
+    subjects?.map((s) => ({
+      value: s.id,
+      label: `${s.name} (${s.department})`,
+    })) ?? [];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {/* Assignment Type */}
         <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Assignment Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={"CLASS"}>
-                    <IconUsers />
-                    Class Teacher
-                  </SelectItem>
-                  <SelectItem value={"SUBJECT"}>
-                    <IconBook />
-                    Subject Teacher
-                  </SelectItem>
+                  <SelectItem value="CLASS">Class Teacher</SelectItem>
+                  <SelectItem value="SUBJECT">Subject Teacher</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* Select Teacher */}
         <FormField
           control={form.control}
           name="teacher"
@@ -160,7 +143,9 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
             </FormItem>
           )}
         />
-        {type === "CLASS" ? (
+
+        {/* Class + Multiple Subjects for CLASS TYPE */}
+        {type === "CLASS" && (
           <FormField
             control={form.control}
             name="class"
@@ -186,33 +171,35 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
               </FormItem>
             )}
           />
-        ) : (
-          <FormField
-            control={form.control}
-            name="subject"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Select Subject</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select subject" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {subjects?.map((subject) => (
-                      <SelectItem value={subject.id} key={subject.id}>
-                        {subject.name} ({subject.department})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         )}
-        <div className="flex items-center justify-end gap-2">
+
+        <FormField
+          control={form.control}
+          name="subjects"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Subjects Taught</FormLabel>
+              <MultipleSelector
+                defaultOptions={subjectOptions}
+                placeholder="Select subjects"
+                value={subjectOptions.filter((opt) =>
+                  field.value.includes(opt.value)
+                )}
+                onChange={(selected) => {
+                  field.onChange(selected.map((s) => s.value));
+                }}
+                emptyIndicator={
+                  <p className="text-center text-sm text-muted-foreground">
+                    No subjects found
+                  </p>
+                }
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex items-center justify-end gap-2 pt-4">
           <Button
             onClick={() => router.back()}
             type="button"

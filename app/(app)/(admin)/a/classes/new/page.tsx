@@ -10,6 +10,7 @@ import { schoolService } from "@/lib/school";
 import { useAuth, User } from "@/store/useAuth";
 import { Loader } from "@/components/Loader";
 import { toast } from "sonner";
+import { ImportClasses } from "../_components/ImportClasses";
 
 const page = () => {
   const { user } = useAuth();
@@ -17,6 +18,7 @@ const page = () => {
   const [teachers, setTeachers] = useState<User[]>();
   const [classLevels, setClassLevels] = useState<any>();
   const [classSections, setClassSections] = useState<any>();
+  const [departments, setDepartments] = useState<any>();
 
   const [loading, setLoading] = useState(true);
 
@@ -25,15 +27,18 @@ const page = () => {
       if (!user?.schoolId) return;
 
       try {
-        const [teachers, classSections, classLevels] = await Promise.all([
-          schoolService.getSchoolTeachers(user?.schoolId!),
-          configService.getCategory("CLASS_SECTION"),
-          configService.getCategory("CLASS_LEVEL"),
-        ]);
+        const [teachers, classSections, classLevels, departments] =
+          await Promise.all([
+            schoolService.getSchoolTeachers(user?.schoolId!),
+            configService.getCategory("CLASS_SECTION"),
+            configService.getCategory("CLASS_LEVEL"),
+            configService.getCategory("SCHOOL_DEPARTMENT"),
+          ]);
 
         setTeachers(teachers);
         setClassLevels(classLevels);
         setClassSections(classSections);
+        setDepartments(departments);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -78,9 +83,12 @@ const page = () => {
             classLevels={classLevels?.items}
             classSections={classSections?.items}
             teachers={teachers}
+            departments={departments.items}
           />
         </TabsContent>
-        <TabsContent value="import">{/* <ImportStaff /> */}</TabsContent>
+        <TabsContent value="import">
+          <ImportClasses />
+        </TabsContent>
       </Tabs>
     </div>
   );

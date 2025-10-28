@@ -31,7 +31,7 @@ interface StudentFormData {
   lastName: string;
   email: string;
   phone: string;
-  dateOfBirth: string;
+  dob: string;
   gender: string;
   class: string;
   section: string;
@@ -103,7 +103,7 @@ John,Doe,john.doe@student.school.com,+234 801 234 5678,2008-05-15,Male,JSS1,A,ST
           lastName: "Doe",
           email: "john.doe@student.school.com",
           phone: "+234 801 234 5678",
-          dateOfBirth: "2008-05-15",
+          dob: "2008-05-15",
           gender: "Male",
           class: "JSS1",
           section: "A",
@@ -127,7 +127,7 @@ John,Doe,john.doe@student.school.com,+234 801 234 5678,2008-05-15,Male,JSS1,A,ST
           lastName: "Smith",
           email: "jane.smith@student.school.com",
           phone: "+234 804 567 8901",
-          dateOfBirth: "2007-08-22",
+          dob: "2007-08-22",
           gender: "Female",
           class: "SS2",
           section: "B",
@@ -151,7 +151,7 @@ John,Doe,john.doe@student.school.com,+234 801 234 5678,2008-05-15,Male,JSS1,A,ST
           lastName: "Test",
           email: "invalid-email",
           phone: "123456",
-          dateOfBirth: "2009-01-10",
+          dob: "2009-01-10",
           gender: "Male",
           class: "JSS3",
           section: "C",

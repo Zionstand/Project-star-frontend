@@ -66,6 +66,14 @@ export const AddSubjectForm = ({ departments, classLevels }: Props) => {
     },
   });
 
+  const selectedClasses = form.watch("classes") || [];
+  const seniorLevels = ["SS1", "SS2", "SS3"];
+
+  // showDepartment will be true if any selected class is a senior level
+  const showDepartment = selectedClasses.some((cls) =>
+    seniorLevels.includes(cls)
+  );
+
   function onSubmit(values: AddSubjectFormSchemaType) {
     startTransition(async () => {
       try {
@@ -92,7 +100,11 @@ export const AddSubjectForm = ({ departments, classLevels }: Props) => {
             </h3>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              className={`grid gap-4 ${
+                showDepartment ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+              }`}
+            >
               <FormField
                 control={form.control}
                 name="name"
@@ -108,35 +120,40 @@ export const AddSubjectForm = ({ departments, classLevels }: Props) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="department"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Department <RequiredAsterisk />
-                    </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select department" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {departments.map((department) => (
-                          <SelectItem
-                            value={department.name}
-                            key={department.id}
-                          >
-                            {department.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {showDepartment && (
+                <FormField
+                  control={form.control}
+                  name="department"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Department <RequiredAsterisk />
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select department" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {departments.map((department) => (
+                            <SelectItem
+                              value={department.name}
+                              key={department.id}
+                            >
+                              {department.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
             <FormField
               control={form.control}

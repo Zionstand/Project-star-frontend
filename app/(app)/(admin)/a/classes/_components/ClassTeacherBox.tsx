@@ -26,29 +26,43 @@ export const ClassTeacherBox = ({ teacher }: Props) => {
       </CardHeader>
       <CardContent className="flex items-start justify-start gap-2">
         <UserProfilePicture
-          src={teacher?.image}
-          alt={`${teacher?.firstName}'s picture`}
+          src={teacher !== null ? teacher?.image : ""}
+          alt={`${teacher !== null && teacher?.firstName}'s picture`}
         />
         <div className="flex-1 space-y-2">
           <h2 className="font-medium text-base md:text-lg">
-            {teacher?.title} {teacher?.firstName} {teacher?.lastName}
+            {teacher !== null ? (
+              `${teacher.title} ${teacher.firstName} ${teacher.lastName}`
+            ) : (
+              <p className="italic">No teacher assigned</p>
+            )}
           </h2>
           <div className="text-muted-foreground text-sm md:text-base space-y-1">
             <p className="text-sm flex items-center justify-start gap-1">
               <IconPhone className="size-4" />
-              {teacher?.phoneNumber ? (
-                formatPhoneNumber(teacher?.phoneNumber)
+              {teacher !== null ? (
+                teacher?.phoneNumber ? (
+                  formatPhoneNumber(teacher?.phoneNumber)
+                ) : (
+                  <span className="italic">No phone</span>
+                )
               ) : (
                 <span className="italic">No phone</span>
               )}
             </p>
-            <a
-              href={`mailto:${teacher?.email}`}
-              className="text-sm flex items-center justify-start gap-1 hover:underline hover:text-primary"
-            >
-              <IconMail className="size-4" />
-              {teacher?.email}
-            </a>
+            {teacher !== null ? (
+              <a
+                href={`mailto:${teacher?.email}`}
+                className="text-sm flex items-center justify-start gap-1 hover:underline hover:text-primary"
+              >
+                <IconMail className="size-4" />
+                {teacher?.email}
+              </a>
+            ) : (
+              <p className="italic flex items-center justify-start gap-1">
+                <IconMail className="size-4" /> No email
+              </p>
+            )}
           </div>
         </div>
         <Button variant={"outline"}>

@@ -64,13 +64,13 @@ const page = () => {
           slug: "/a/classes/new",
           icon: IconPlus,
         }}
-        secondaryCTA={{
-          label: "Bulk Create",
-          slug: "/a/classes/new",
-          icon: IconPlus,
-        }}
+        // secondaryCTA={{
+        //   label: "Bulk Create",
+        //   slug: "/a/classes/new",
+        //   icon: IconPlus,
+        // }}
       />
-      <ClassesCards />
+      <ClassesCards classes={classes?.length} />
       <ClassSearchComponent />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {classes?.map((c) => (

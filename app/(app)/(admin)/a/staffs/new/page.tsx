@@ -6,6 +6,7 @@ import { configService } from "@/lib/configs";
 import { AddStaffForm } from "../_components/AddStaffForm";
 import InviteStaff from "../_components/InviteStaff";
 import { PageHeader } from "@/components/PageHeader";
+import { ImportStaff } from "../_components/ImportStaff";
 
 const page = async () => {
   const [jobRoles, states] = await Promise.all([
@@ -52,7 +53,9 @@ const page = async () => {
         <TabsContent value="manual">
           <AddStaffForm states={states.items} jobRoles={jobRoles.items} />
         </TabsContent>
-        <TabsContent value="import">{/* <ImportStaff /> */}</TabsContent>
+        <TabsContent value="import">
+          <ImportStaff />
+        </TabsContent>
         <TabsContent value="invite">
           <InviteStaff />
         </TabsContent>

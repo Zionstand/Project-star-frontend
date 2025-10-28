@@ -24,6 +24,8 @@ import { DEFAULT_PROFILE_IMAGE } from "@/constant";
 import { useSignout } from "@/hooks/use-signout";
 import { useAuth } from "@/store/useAuth";
 import { formatWord } from "@/lib/utils";
+import { IconUser } from "@tabler/icons-react";
+import Link from "next/link";
 
 export function AdminDropdown() {
   const handleSignout = useSignout();
@@ -44,7 +46,7 @@ export function AdminDropdown() {
           </Avatar>
           <div className="text-left hidden md:block">
             <p className="font-medium text-sm">
-              {user?.firstName} {user?.lastName}
+              {user?.title} {user?.firstName} {user?.lastName}
             </p>
             <p className="text-xs font-normal text-muted-foreground">
               {formatWord[user.role]}
@@ -60,7 +62,7 @@ export function AdminDropdown() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="text-foreground truncate text-sm font-medium">
-            {user?.firstName} {user?.lastName}
+            {user?.title} {user?.firstName} {user?.lastName}
           </span>
           <span className="text-muted-foreground truncate text-xs font-normal">
             {formatWord[user.role]} - {user.email}
@@ -68,28 +70,11 @@ export function AdminDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 1</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 2</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 3</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 4</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 5</span>
+          <DropdownMenuItem asChild>
+            <Link href={`/profile/${user.username}`}>
+              <IconUser size={16} className="opacity-60" aria-hidden="true" />
+              <span>View profile</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

@@ -43,7 +43,7 @@ export const SubjectCatalog = ({ subjects }: Props) => {
               <div className="space-y-1">
                 <p className="text-sm font-medium lg:text-base">Details:</p>
                 <ul className="text-sm text-muted-foreground list-inside list-disc space-y-1">
-                  <li>Department of {subject.department}</li>
+                  <li>Department of {subject.department.toUpperCase()}</li>
                   <li>{subject.hoursPerWeek} hours/week</li>
                   <li>Pass score is {subject.passScore}</li>
                 </ul>

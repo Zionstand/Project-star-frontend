@@ -9,6 +9,7 @@ import { useAuth } from "@/store/useAuth";
 import { Loader } from "@/components/Loader";
 import { AddSubjectForm } from "./_components/AddSubjectForm";
 import { toast } from "sonner";
+import { ImportSubjects } from "./_components/ImportSubjects";
 
 const page = () => {
   const { user } = useAuth();
@@ -75,7 +76,9 @@ const page = () => {
             classLevels={classLevels?.items}
           />
         </TabsContent>
-        <TabsContent value="import">{/* <ImportStaff /> */}</TabsContent>
+        <TabsContent value="import">
+          <ImportSubjects />
+        </TabsContent>
       </Tabs>
     </div>
   );

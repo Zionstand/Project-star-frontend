@@ -44,12 +44,18 @@ interface Props {
     value: string;
   }[];
   teachers: User[] | undefined;
+  departments: {
+    id: string;
+    name: string;
+    value: string;
+  }[];
 }
 
 export const AddClassForm = ({
   classSections,
   classLevels,
   teachers,
+  departments,
 }: Props) => {
   const router = useRouter();
   const { user } = useAuth();
@@ -60,12 +66,16 @@ export const AddClassForm = ({
     defaultValues: {
       level: "",
       section: "",
+      department: "",
       description: "",
-      teacher: "",
+      teacherId: "",
       capacity: "",
       classRoomNumber: "",
     },
   });
+
+  const selectedLevel = form.watch("level");
+  const showDepartment = ["SS1", "SS2", "SS3"].includes(selectedLevel);
 
   function onSubmit(values: AddClassFormSchemaType) {
     startTransition(async () => {
@@ -93,12 +103,19 @@ export const AddClassForm = ({
             </h3>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+              className={`grid gap-4 ${
+                showDepartment
+                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                  : "grid-cols-1 md:grid-cols-2"
+              }`}
+            >
+              {/* Class Level */}
               <FormField
                 control={form.control}
                 name="level"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>
                       Class Level <RequiredAsterisk />
                     </FormLabel>
@@ -120,11 +137,13 @@ export const AddClassForm = ({
                   </FormItem>
                 )}
               />
+
+              {/* Section */}
               <FormField
                 control={form.control}
                 name="section"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>
                       Class Section <RequiredAsterisk />
                     </FormLabel>
@@ -146,6 +165,42 @@ export const AddClassForm = ({
                   </FormItem>
                 )}
               />
+
+              {/* Department (conditionally visible) */}
+              {showDepartment && (
+                <FormField
+                  control={form.control}
+                  name="department"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2 lg:col-span-1 transition-all duration-300">
+                      <FormLabel>
+                        Department <RequiredAsterisk />
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select department" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {departments.map((department) => (
+                            <SelectItem
+                              value={department.name}
+                              key={department.id}
+                            >
+                              {department.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
             <FormField
               control={form.control}
@@ -176,7 +231,7 @@ export const AddClassForm = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="teacher"
+                name="teacherId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>

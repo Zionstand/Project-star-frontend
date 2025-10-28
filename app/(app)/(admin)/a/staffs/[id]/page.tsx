@@ -20,6 +20,12 @@ import { Class } from "../../classes/page";
 import { StaffProfile } from "../_components/StaffProfile";
 import { StaffContactInformation } from "../_components/StaffContactInformation";
 import { StaffPerformance } from "../_components/StaffPerformance";
+import { StaffHandled } from "../_components/StaffHandled";
+import { StaffClasses } from "../_components/StaffClasses";
+import { StaffQualifications } from "../_components/StaffQualifications";
+import { StaffCertifications } from "../_components/StaffCertifications";
+import { StaffSalary } from "../_components/StaffSalary";
+import { StaffBankDetails } from "../_components/StaffBankDetails";
 
 export interface ExtendedUser extends NonNullable<User> {
   Teacher?: {
@@ -82,26 +88,38 @@ const page = () => {
         }}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
-        <div className="grid gap-4 col-span-1 lg:col-span-3">
-          <StaffProfile
-            firstName={staff.firstName}
-            lastName={staff.lastName}
-            email={staff.email}
-            employeeID={staff.employeeID}
-            role={staff.role}
-            image={staff.image}
-            title={staff.title}
-            dob={staff.dob}
-            joinedDate={staff.createdAt}
-          />
-          <StaffContactInformation
-            email={staff.email}
-            phoneNumber={staff.phoneNumber}
-            address={`${staff.address}, ${staff.city}, ${staff.state}, ${staff.country}`}
-            emergencyContactName={staff.emergencyContactName}
-            emergencyPhoneNumber={staff.emergencyPhoneNumber}
-          />
-          <StaffPerformance />
+        <div className="col-span-1 lg:col-span-3">
+          <div className="grid gap-4 ">
+            <StaffProfile
+              firstName={staff.firstName}
+              lastName={staff.lastName}
+              email={staff.email}
+              employeeID={staff.employeeID}
+              role={staff.role}
+              image={staff.image}
+              title={staff.title}
+              dob={staff.dob}
+              joinedDate={staff.createdAt}
+            />
+            <StaffContactInformation
+              email={staff.email}
+              phoneNumber={staff.phoneNumber}
+              address={`${staff.address}, ${staff.city}, ${staff.state}, ${staff.country}`}
+              emergencyContactName={staff.emergencyContactName}
+              emergencyPhoneNumber={staff.emergencyPhoneNumber}
+            />
+            <StaffPerformance />
+          </div>
+        </div>
+        <div className="lg:col-span-4">
+          <div className="grid gap-4">
+            <StaffHandled assignments={staff.Teacher?.assignments} />
+            <StaffClasses classes={staff.Teacher?.classes} />
+            <StaffQualifications />
+            <StaffCertifications />
+            <StaffSalary />
+            <StaffBankDetails />
+          </div>
         </div>
       </div>
     </div>

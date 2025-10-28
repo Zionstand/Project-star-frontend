@@ -43,9 +43,12 @@ export type User = {
   title?: string;
   firstName: string;
   lastName: string;
+  username: School;
   phoneNumber: string;
   image: string | null;
   employeeID: string | null;
+  department: string | null;
+  medicalConditions: string | null;
   dob: string | null;
   createdAt: string | null;
   city: string | null;
@@ -55,6 +58,7 @@ export type User = {
   emergencyContactName: string | null;
   emergencyPhoneNumber: string | null;
   role: string;
+  gender: string | null;
   school?: School;
   schoolId: string;
   classes?: Class[];
