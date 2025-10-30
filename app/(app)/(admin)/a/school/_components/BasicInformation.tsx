@@ -17,9 +17,11 @@ import {
   IconBell,
   IconBuildings,
   IconEye,
+  IconPencil,
+  IconPlus,
   IconTarget,
 } from "@tabler/icons-react";
-import React, { useEffect, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import {
   SchoolIdentitySchema,
@@ -39,6 +41,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Loader } from "@/components/Loader";
 import api from "@/lib/api";
 import { toast } from "sonner";
+import { LogoUpload } from "@/components/LogoUpload";
+import Image from "next/image";
 
 interface Props {
   schoolTypes: {
@@ -56,6 +60,8 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
   const searchParams = useSearchParams();
   const updateSchool = useAuth((s) => s.updateSchool);
   const [pending, startTransition] = useTransition();
+  const [logoPending, startLogoTransition] = useTransition();
+  const [showModal, setShowModal] = useState(false);
 
   const { user } = useAuth();
   const edit = searchParams.get("edit") === "true";
@@ -102,10 +108,60 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
       }
     });
   }
+  const [logo, setLogo] = useState<string>(user?.school?.logo || "");
+
+  const handleUpload = (croppedImage: string) => {
+    setLogo(croppedImage);
+
+    startLogoTransition(async () => {
+      // Convert base64 → File
+      const byteString = atob(croppedImage.split(",")[1]);
+      const mimeString = croppedImage.split(",")[0].split(":")[1].split(";")[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++)
+        ia[i] = byteString.charCodeAt(i);
+      const blob = new Blob([ab], { type: mimeString });
+      const file = new File([blob], "profile-picture.jpg", {
+        type: mimeString,
+      });
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await api.post(
+          `/upload/logo/${user?.school?.id}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        console.log(res);
+
+        toast.success(res.data.message);
+        updateSchool(res.data.school); // ✅ update store
+        setLogo(res.data.imageUrl); // ✅ update image preview
+      } catch (error: any) {
+        console.error(error);
+        toast.error(error.response?.data?.message || "Upload failed");
+      }
+    });
+  };
 
   return (
     <Card>
       <CardContent>
+        <LogoUpload
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onUpload={(cropped) => {
+            setShowModal(false);
+            handleUpload(cropped);
+          }}
+          currentLogo={logo || user?.school?.logo}
+        />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-6">
@@ -119,8 +175,49 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
                   </p>
                 </div>
                 <div className="flex flex-col md:flex-row items-start justify-start gap-4">
-                  <div className="flex-1 border-2 border-dashed border-muted-foreground rounded-lg w-full py-10 flex items-center justify-center bg-accent">
-                    <IconBuildings className="text-muted-foreground size-14" />
+                  <div className="relative flex-1">
+                    {user?.school?.logo ? (
+                      <div className="rounded-lg overflow-hidden bg-red-300">
+                        <Image
+                          src={user.school.logo}
+                          alt={`${user.school.name}'s logo`}
+                          width={1000}
+                          height={1000}
+                          className="object-cover h-40"
+                        />
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-muted-foreground rounded-lg w-full py-10 flex items-center justify-center bg-accent">
+                        <IconBuildings className="text-muted-foreground size-14" />
+                      </div>
+                    )}
+
+                    {edit && (
+                      <Button
+                        className="absolute text-xs shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20 bottom-[-15px] left-[50%] translate-x-[-50%]  "
+                        variant={"outline"}
+                        size={"sm"}
+                        type="button"
+                        onClick={() => setShowModal(true)}
+                        disabled={logoPending}
+                      >
+                        {logoPending ? (
+                          <Loader text="" />
+                        ) : (
+                          <>
+                            {user?.school?.logo ? (
+                              <>
+                                <IconPencil size={8} /> Edit
+                              </>
+                            ) : (
+                              <>
+                                <IconPlus size={8} /> Add
+                              </>
+                            )}
+                          </>
+                        )}
+                      </Button>
+                    )}
                   </div>
                   <div className="flex-3 w-full space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -156,7 +253,7 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
                               <Input
                                 readOnly={!edit}
                                 disabled={!edit}
-                                placeholder="LGS"
+                                placeholder="EMS"
                                 {...field}
                               />
                             </FormControl>

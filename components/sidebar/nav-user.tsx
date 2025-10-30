@@ -27,8 +27,11 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/store/useAuth";
 import { DEFAULT_PROFILE_IMAGE } from "@/constant";
+import { useSignout } from "@/hooks/use-signout";
 
 export function NavUser() {
+  const handleSignout = useSignout();
+
   const { isMobile } = useSidebar();
   const { user } = useAuth();
 
@@ -44,7 +47,7 @@ export function NavUser() {
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage
                   src={user?.image || DEFAULT_PROFILE_IMAGE}
-                  alt={user?.firstName || ""}
+                  alt={`${user?.firstName}'s picture` || ""}
                 />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
@@ -103,7 +106,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

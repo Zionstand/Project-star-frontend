@@ -12,6 +12,7 @@ const page = () => {
 
   const [states, setStates] = useState<any>([]);
   const [countries, setCountries] = useState<any>([]);
+  const [departments, setDepartments] = useState<any>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -20,13 +21,15 @@ const page = () => {
       if (!user?.schoolId) return;
 
       try {
-        const [states, countries] = await Promise.all([
+        const [states, countries, departments] = await Promise.all([
           configService.getCategory("STATE"),
           configService.getCategory("COUNTRY"),
+          configService.getCategory("SCHOOL_DEPARTMENT"),
         ]);
 
         setStates(states);
         setCountries(countries);
+        setDepartments(departments);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -49,6 +52,7 @@ const page = () => {
         states={states.items}
         countries={countries.items}
         user={user}
+        departments={departments.items}
       />
     </div>
   );

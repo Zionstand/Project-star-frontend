@@ -3,6 +3,7 @@
 import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/store/useAuth";
+import Image from "next/image";
 
 export const FullLogo = () => {
   const { user } = useAuth();
@@ -39,11 +40,23 @@ export const Logo = () => {
       className={cn("flex items-center gap-2", isCollapsed && "justify-center")}
     >
       {/* FullLogo icon */}
-      <div className="p-3 bg-white rounded-xl flex items-center justify-center">
-        <span className="text-primary font-bold text-lg">
-          {user?.school?.acronym}
-        </span>
-      </div>
+      {user?.school?.logo ? (
+        <div className="rounded-lg overflow-hidden">
+          <Image
+            src={user.school.logo}
+            alt={`${user.school.name}'s logo`}
+            width={1000}
+            height={1000}
+            className="object-cover size-[55px]"
+          />
+        </div>
+      ) : (
+        <div className="p-3 bg-white rounded-lg flex items-center justify-center">
+          <span className="text-primary font-bold text-lg">
+            {user?.school?.acronym}
+          </span>
+        </div>
+      )}
     </div>
   );
 };

@@ -336,7 +336,7 @@ export const ContactDetails = ({ states, countries }: Props) => {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="info@lgs.com"
+                            placeholder="info@EMS.com"
                             type="email"
                             readOnly={!edit}
                             disabled={!edit}
@@ -355,7 +355,7 @@ export const ContactDetails = ({ states, countries }: Props) => {
                         <FormLabel>Website </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="www.lgs.com"
+                            placeholder="www.EMS.com"
                             readOnly={!edit}
                             disabled={!edit}
                             {...field}

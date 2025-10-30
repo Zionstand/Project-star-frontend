@@ -41,8 +41,11 @@ export function AdminDropdown() {
           className="h-auto p-0 hover:bg-transparent gap-4"
         >
           <Avatar>
-            <AvatarImage src={DEFAULT_PROFILE_IMAGE} alt="Profile image" />
-            <AvatarFallback>LGS</AvatarFallback>
+            <AvatarImage
+              src={user?.image || DEFAULT_PROFILE_IMAGE}
+              alt={`${user?.firstName}'s picture` || ""}
+            />
+            <AvatarFallback>EMS</AvatarFallback>
           </Avatar>
           <div className="text-left hidden md:block">
             <p className="font-medium text-sm">

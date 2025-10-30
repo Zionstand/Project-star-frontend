@@ -21,7 +21,7 @@ export const UserProfilePicture = ({
       width={1000}
       height={1000}
       className={cn(
-        "rounded-full size-[45px] md:size-[55px] lg:size-[65px]",
+        "rounded-full object-cover size-[45px] md:size-[55px] lg:size-[65px]",
         size === "sm" && "size-[25px] md:size-[35px] lg:size-[45px]",
         size === "lg" && "size-[100px] md:size-[120px] lg:size-[150px]"
       )}

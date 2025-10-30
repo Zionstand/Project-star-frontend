@@ -62,6 +62,12 @@ import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { Badge } from "@/components/ui/badge";
 import DateSelector from "@/components/DateSelector";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  FileWithMeta,
+  UploadPhotosModal,
+} from "@/components/UploadPhotosModal";
+import { ProfilePictureUpload } from "@/components/ProfilePictureUpload";
+import { env } from "@/lib/env";
 
 interface Props {
   user: User;
@@ -73,14 +79,32 @@ interface Props {
     id: string;
     name: string;
   }[];
+  departments: {
+    id: string;
+    name: string;
+    value: string;
+  }[];
 }
 
-export function EditProfileForm({ user, states, countries }: Props) {
+export function EditProfileForm({
+  user,
+  states,
+  countries,
+  departments,
+}: Props) {
   const router = useRouter();
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleImport = (files: FileWithMeta[]) => {
+    console.log("Imported files:", files);
+    // Process your files here
+  };
 
   const setUser = useAuth((s) => s.setUser);
 
   const [pending, startTransition] = useTransition();
+  const [photoPending, startPhotoTransition] = useTransition();
 
   const form = useForm<EditProfileFormSchemaType>({
     resolver: zodResolver(EditProfileFormSchema),
@@ -108,7 +132,10 @@ export function EditProfileForm({ user, states, countries }: Props) {
   function onSubmit(data: EditProfileFormSchemaType) {
     startTransition(async () => {
       try {
-        const res = await api.put(`/auth/${user?.id}`, data);
+        const res = await api.put(`/auth/${user?.id}`, {
+          ...data,
+          image: profilePic || user?.image, // 👈 ensure cropped image is sent
+        });
         setUser(res.data.user);
         toast.success(res.data.message);
         router.back();
@@ -118,24 +145,84 @@ export function EditProfileForm({ user, states, countries }: Props) {
     });
   }
 
+  const [profilePic, setProfilePic] = useState<string>("");
+
+  const handleUpload = (croppedImage: string) => {
+    setProfilePic(croppedImage);
+
+    startPhotoTransition(async () => {
+      // Convert base64 → File
+      const byteString = atob(croppedImage.split(",")[1]);
+      const mimeString = croppedImage.split(",")[0].split(":")[1].split(";")[0];
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++)
+        ia[i] = byteString.charCodeAt(i);
+      const blob = new Blob([ab], { type: mimeString });
+      const file = new File([blob], "profile-picture.jpg", {
+        type: mimeString,
+      });
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await api.post(`/upload/profile/${user?.id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        console.log(res);
+
+        toast.success(res.data.message);
+        setUser(res.data.user); // ✅ update store
+        setProfilePic(res.data.imageUrl); // ✅ update image preview
+      } catch (error: any) {
+        console.error(error);
+        toast.error(error.response?.data?.message || "Upload failed");
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
+      {/* <UploadPhotosModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onImport={handleImport}
+      /> */}
+      <ProfilePictureUpload
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onUpload={(cropped) => {
+          setShowModal(false);
+          handleUpload(cropped);
+        }}
+        currentImage={profilePic || user?.image}
+      />
       <Card>
         <CardContent className="flex items-center justify-start gap-4">
-          <div className="relative overflow-hidden">
+          <div className="relative">
             <UserProfilePicture
               size="lg"
-              src={user?.image}
+              src={profilePic || user?.image}
               alt={`${user?.firstName}'s picture`}
             />
             <div className="bg-black/20 rounded-full size-full absolute top-0 left-0" />
             <Button
-              className="absolute bottom-1/2 translate-y-1/2 left-[50%] translate-x-[-50%] shadow-[0_3px_10px_rgb(0,0,0,0.2)] "
+              className="absolute text-xs shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-20 bottom-[-15px] left-[50%] translate-x-[-50%]  "
               variant={"outline"}
               size={"sm"}
               type="button"
+              onClick={() => setShowModal(true)}
+              disabled={photoPending}
             >
-              <IconPencil /> Edit
+              {photoPending ? (
+                <Loader text="" />
+              ) : (
+                <>
+                  <IconPencil size={8} /> Edit
+                </>
+              )}
             </Button>
           </div>
           <div className="space-y-1.5">
@@ -326,7 +413,36 @@ export function EditProfileForm({ user, states, countries }: Props) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />{" "}
+              />
+              <FormField
+                control={form.control}
+                name="department"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Department <RequiredAsterisk />
+                    </FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select department" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {departments.map((department) => (
+                          <SelectItem
+                            value={department.name}
+                            key={department.id}
+                          >
+                            {department.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="joinedDate"

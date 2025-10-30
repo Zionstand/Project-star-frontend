@@ -36,10 +36,10 @@ const page = async () => {
       />
       <SchoolProfileCards />
       <Suspense fallback={<p>Loading contact details...</p>}>
-        <Tabs defaultValue="basicInformation">
+        <Tabs defaultValue="basic-information">
           <ScrollArea>
             <TabsList className="mb-3 w-full">
-              <TabsTrigger value="basicInformation">
+              <TabsTrigger value="basic-information">
                 <IconBuildings
                   className="-ms-0.5 me-1.5 opacity-60"
                   size={16}
@@ -74,7 +74,7 @@ const page = async () => {
             </TabsList>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
-          <TabsContent value="basicInformation">
+          <TabsContent value="basic-information">
             <BasicInformation
               schoolTypes={schoolTypes.items}
               ownershipTypes={ownershipTypes.items}

@@ -14,6 +14,7 @@ import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatDate, formatPhoneNumber, formatWord } from "@/lib/utils";
 import { useAuth } from "@/store/useAuth";
 import {
+  IconBuilding,
   IconCalendar,
   IconClipboardHeart,
   IconHash,
@@ -152,6 +153,19 @@ const page = () => {
             <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
               <Shield size={16} className="text-muted-foreground" />
               <span>{formatWord[user?.role!]}</span>
+            </div>
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-medium">Department</p>
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+              <IconBuilding size={16} className="text-muted-foreground" />
+              <span>
+                {user?.department || (
+                  <span className="italic text-muted-foreground">
+                    No department
+                  </span>
+                )}
+              </span>
             </div>
           </div>
           <div className="space-y-1">
