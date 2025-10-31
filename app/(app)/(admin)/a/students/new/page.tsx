@@ -1,11 +1,12 @@
+"use client";
 import React from "react";
-import { PageHeader } from "../../../../../../components/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IconFileTypeXls, IconUserPlus } from "@tabler/icons-react";
 import { AddStudentForm } from "../_components/AddStudentForm";
 import { configService } from "@/lib/configs";
 import { ImportStudent } from "../_components/ImportStudent";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = async () => {
   const states = await configService.getCategory("STATE");
@@ -15,6 +16,7 @@ const page = async () => {
       <PageHeader
         title="Add Student"
         description="Add a new student manually or import from Excel/CSV"
+        back
       />
       <Tabs defaultValue="manual">
         <ScrollArea>
