@@ -1,10 +1,14 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import { IconArrowLeft } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Props {
   title: string;
   description?: string;
+  back?: boolean;
   primaryCTA?: {
     label: string;
     slug: string;
@@ -34,14 +38,23 @@ export const PageHeader = ({
   secondaryCTA,
   outlineCTA,
   destructiveCTA,
+  back,
 }: Props) => {
+  const router = useRouter();
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
-      <div className="space-y-1">
-        <h1 className="font-medium text-3xl lg:text-4xl">{title}</h1>
-        <p className="text-sm md:text-base text-muted-foreground font-normal">
-          {description}
-        </p>
+      <div className="flex items-start justify-start gap-2">
+        {back && (
+          <Button onClick={() => router.back()} size="icon" variant={"ghost"}>
+            <IconArrowLeft />
+          </Button>
+        )}
+        <div className="space-y-1">
+          <h1 className="font-medium text-3xl lg:text-4xl">{title}</h1>
+          <p className="text-sm md:text-base text-muted-foreground font-normal">
+            {description}
+          </p>
+        </div>
       </div>
       <div className="flex items-center justify-end gap-2 w-full md:w-auto">
         {secondaryCTA && (

@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
+"use client";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   IconAward,
   IconBook,
@@ -16,12 +16,44 @@ import { AcademicSettings } from "./_components/AcademicSettings";
 import { AdministrativeDetails } from "./_components/AdministrativeDetails";
 import { useAuth } from "@/store/useAuth";
 import { configService } from "@/lib/configs";
+import { PageHeader } from "@/components/PageHeader";
+import { Loader } from "@/components/Loader";
+import { toast } from "sonner";
 
-const page = async () => {
-  const schoolTypes = await configService.getCategory("SCHOOL_TYPE");
-  const ownershipTypes = await configService.getCategory("OWNERSHIP_TYPE");
-  const states = await configService.getCategory("STATE");
-  const countries = await configService.getCategory("COUNTRY");
+const page = () => {
+  const [schoolTypes, setSchoolTypes] = useState<any>();
+  const [ownershipTypes, setOwnershipTypes] = useState<any>();
+  const [states, setStates] = useState<any>();
+  const [countries, setCountries] = useState<any>();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchConfigs = async () => {
+      try {
+        const [schoolTypes, ownershipTypes, states, countries] =
+          await Promise.all([
+            configService.getCategory("SCHOOL_TYPE"),
+            configService.getCategory("OWNERSHIP_TYPE"),
+            configService.getCategory("STATE"),
+            configService.getCategory("COUNTRY"),
+          ]);
+
+        setSchoolTypes(schoolTypes);
+        setOwnershipTypes(ownershipTypes);
+        setStates(states);
+        setCountries(countries);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConfigs();
+  }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <div className="space-y-6">

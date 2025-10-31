@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
 import { IconDownload, IconPlus } from "@tabler/icons-react";
 import { StudentCards } from "../_components/StudentCards";
 import { StudentSearchComponent } from "../_components/StudentSearchComponent";
 import { StudentsLists } from "./_components/StudentsLists";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = () => {
   return (

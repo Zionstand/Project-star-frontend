@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
 import {
   IconBrandStackoverflow,
   IconDownload,
@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { PaymentOverview } from "./_components/PaymentOverview";
 import { FeeStructures } from "./_components/FeeStructures";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = () => {
   return (

@@ -1,5 +1,5 @@
+"use client";
 import React from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
 import {
   IconAward,
   IconCalendar,
@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AssessmentTypes } from "./_components/AssessmentTypes";
 import { GradingSchemes } from "./_components/GradingSchemes";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = () => {
   return (

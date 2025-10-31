@@ -1,3 +1,4 @@
+"use client";
 import { PageHeader } from "@/components/PageHeader";
 import { AttendanceSearchComponent } from "../_components/AttendanceSearchComponent";
 

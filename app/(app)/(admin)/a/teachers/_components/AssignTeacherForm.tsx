@@ -48,7 +48,7 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
   const form = useForm<z.infer<typeof AssignTeacherFormSchema>>({
     resolver: zodResolver(AssignTeacherFormSchema),
     defaultValues: {
-      type: "SUBJECT",
+      type: "CLASS",
       teacher: "",
       class: "",
       subjects: [],
@@ -183,7 +183,7 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
                 defaultOptions={subjectOptions}
                 placeholder="Select subjects"
                 value={subjectOptions.filter((opt) =>
-                  field.value.includes(opt.value)
+                  field?.value?.includes(opt.value)
                 )}
                 onChange={(selected) => {
                   field.onChange(selected.map((s) => s.value));

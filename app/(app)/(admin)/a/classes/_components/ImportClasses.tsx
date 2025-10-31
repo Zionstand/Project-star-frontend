@@ -150,6 +150,7 @@ export function ImportClasses() {
 
         if (!item.level) errors.push("Level is required");
         if (!item.section) errors.push("Section is required");
+        if (!item.capacity) errors.push("Capacity is required");
         if (item.capacity && item.capacity < 0)
           errors.push("Capacity cannot be negative");
 

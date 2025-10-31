@@ -379,14 +379,42 @@ export const AddSubjectFormSchema = z
     }
   });
 
-export const AssignTeacherFormSchema = z.object({
-  type: z.enum(["CLASS", "SUBJECT"]),
-  teacher: z.string().min(2, { message: "Teacher is required" }),
-  class: z.string().optional(),
-  subjects: z
-    .array(z.string())
-    .min(1, { message: "At least one subject must be selected" }),
-});
+export const AssignTeacherFormSchema = z
+  .object({
+    type: z.enum(["CLASS", "SUBJECT"]),
+    teacher: z.string().min(2, { message: "Teacher is required" }),
+    class: z.string().optional(),
+    subjects: z
+      .array(z.string())
+      .min(1, { message: "At least one subject must be selected" })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      // if type is CLASS, class is required
+      if (data.type === "CLASS") {
+        return !!data.class;
+      }
+      return true;
+    },
+    {
+      message: "Class is required",
+      path: ["class"],
+    }
+  )
+  .refine(
+    (data) => {
+      // if type is SUBJECT, subjects must be provided
+      if (data.type === "SUBJECT") {
+        return data.subjects && data.subjects.length > 0;
+      }
+      return true;
+    },
+    {
+      message: "At least one subject must be selected",
+      path: ["subjects"],
+    }
+  );
 
 export const StaffImportSchema = z.object({
   firstName: z.string().min(1, "First name is required"),

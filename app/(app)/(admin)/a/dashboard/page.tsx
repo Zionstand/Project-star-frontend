@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
@@ -11,8 +12,41 @@ import {
 import { RecentActivityBox } from "../_components/RecentActivityBox";
 import { PageHeader } from "@/components/PageHeader";
 import { DashboardCards } from "@/components/DashboardCards";
+import { useEffect, useState } from "react";
+import { Class } from "../classes/page";
+import { useAuth } from "@/store/useAuth";
+import { schoolService } from "@/lib/school";
+import { toast } from "sonner";
+import { Loader } from "@/components/Loader";
+import Link from "next/link";
 
 const page = () => {
+  const { user } = useAuth();
+
+  const [classes, setClasses] = useState<Class[]>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!user?.schoolId) return;
+
+      try {
+        const [classes] = await Promise.all([
+          schoolService.getSchoolClasses(user?.school?.schoolID!),
+        ]);
+
+        setClasses(classes);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, [user]);
+
+  if (loading) return <Loader />;
   const stats = [
     {
       title: "Total Students",
@@ -24,7 +58,7 @@ const page = () => {
     },
     {
       title: "Active classes",
-      value: "32",
+      value: `${classes?.length}`,
       icon: IconBook,
       bgColor: "bg-green-500/20",
       textColor: "text-green-500",
@@ -56,7 +90,7 @@ const page = () => {
       color: "text-primary",
       bgColor: "bg-primary/10",
       hoverBorder: "hover:border-primary",
-      slug: "/",
+      slug: "/a/students/new",
     },
     {
       title: "Create subject",
@@ -65,7 +99,7 @@ const page = () => {
       color: "text-green-500",
       bgColor: "bg-green-500/10",
       hoverBorder: "hover:border-green-500",
-      slug: "/",
+      slug: "/a/subjects/new",
     },
     {
       title: "Schedule Event",
@@ -74,7 +108,7 @@ const page = () => {
       color: "text-purple-500",
       bgColor: "bg-purple-500/10",
       hoverBorder: "hover:border-purple-500",
-      slug: "/",
+      slug: "/#",
     },
   ];
 
@@ -159,7 +193,8 @@ const page = () => {
                 ) => {
                   const Icon = icon;
                   return (
-                    <div
+                    <Link
+                      href={slug}
                       key={index}
                       className={cn(
                         "flex items-center gap-2 cursor-pointer rounded-md p-3 border border-transparent transition-colors",
@@ -176,7 +211,7 @@ const page = () => {
                           {description}
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   );
                 }
               )}

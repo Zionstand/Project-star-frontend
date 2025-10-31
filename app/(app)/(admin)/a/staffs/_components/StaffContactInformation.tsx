@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { formatPhoneNumber } from "@/lib/utils";
 import {
   IconMail,
   IconMapPin2,
@@ -52,7 +53,7 @@ export const StaffContactInformation = ({
                 className="hover:underline hover:text-primary"
                 href={`tel:${phoneNumber}`}
               >
-                {phoneNumber}
+                {formatPhoneNumber(phoneNumber)}
               </a>
             ) : (
               <span className="italic">No phone</span>
@@ -94,7 +95,7 @@ export const StaffContactInformation = ({
                 className="hover:underline hover:text-primary"
                 href={`tel:${emergencyPhoneNumber}`}
               >
-                {emergencyPhoneNumber}
+                {formatPhoneNumber(emergencyPhoneNumber)}
               </a>
             ) : (
               <span className="italic">No phone</span>

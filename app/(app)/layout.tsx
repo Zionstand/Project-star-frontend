@@ -1,15 +1,19 @@
 "use client";
 import { ReactNode } from "react";
 import { useAuth } from "@/store/useAuth";
-import { useRoleRedirect } from "@/hooks/use-role-redirect";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { AppSidebarHeader } from "@/components/sidebar/app-sidebar-header";
 import { useAutoRefresh } from "@/hooks/use-auto-refresh";
+import { redirectByRole } from "@/hooks/use-role-redirect";
+import { useRouter } from "next/navigation";
+import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  useRoleRedirect(user);
+  const router = useRouter();
+  redirectByRole(user, router);
+  useSchoolFetcher();
   // useAutoRefresh();
 
   return (

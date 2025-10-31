@@ -46,7 +46,7 @@ import {
 } from "@/lib/zodSchema";
 import { Textarea } from "@/components/ui/textarea";
 import DateSelector from "@/components/DateSelector";
-import { useRoleRedirect } from "@/hooks/use-role-redirect";
+import { redirectByRole } from "@/hooks/use-role-redirect";
 
 interface Props {
   jobRoles: {
@@ -179,7 +179,7 @@ export function OnboardingStaffForm({
         );
         setUser(res.data.user);
         toast.success(res.data.message);
-        useRoleRedirect(res.data.user);
+        redirectByRole(res.data.user, router);
       } catch (error: any) {
         toast.error(error.response.data.message);
       }

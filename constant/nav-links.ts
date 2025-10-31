@@ -47,39 +47,6 @@ export const adminNavLinks = [
     ],
   },
   {
-    title: "School Setup",
-    url: "#",
-    icon: IconSchool,
-    isActive: true,
-    items: [
-      {
-        title: "School Profile",
-        url: "/a/school",
-        icon: IconSchool,
-      },
-      {
-        title: "Academic Calendar",
-        url: "/a/school/calendar",
-        icon: IconCalendar,
-      },
-      {
-        title: "Classes",
-        url: "/a/classes",
-        icon: IconBook,
-      },
-      {
-        title: "Subjects",
-        url: "/a/subjects",
-        icon: IconSchool,
-      },
-      {
-        title: "Teachers",
-        url: "/a/teachers",
-        icon: IconChalkboardTeacher,
-      },
-    ],
-  },
-  {
     title: "Management",
     url: "#",
     icon: IconUsers,
@@ -98,6 +65,39 @@ export const adminNavLinks = [
         title: "Roles & Permissions",
         url: "/a/roles",
         icon: IconShield,
+      },
+    ],
+  },
+  {
+    title: "School Setup",
+    url: "#",
+    icon: IconSchool,
+    isActive: true,
+    items: [
+      {
+        title: "School Profile",
+        url: "/a/school",
+        icon: IconSchool,
+      },
+      {
+        title: "Academic Calendar",
+        url: "/a/school/calendar",
+        icon: IconCalendar,
+      },
+      {
+        title: "Teachers",
+        url: "/a/teachers",
+        icon: IconChalkboardTeacher,
+      },
+      {
+        title: "Classes",
+        url: "/a/classes",
+        icon: IconBook,
+      },
+      {
+        title: "Subjects",
+        url: "/a/subjects",
+        icon: IconSchool,
       },
     ],
   },

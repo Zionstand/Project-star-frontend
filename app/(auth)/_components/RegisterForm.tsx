@@ -41,7 +41,7 @@ import {
 import { years } from "@/constant";
 import { cn, formatWord } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
-import { useRoleRedirect } from "@/hooks/use-role-redirect";
+import { redirectByRole } from "@/hooks/use-role-redirect";
 
 interface Props {
   schoolTypes: {
@@ -178,7 +178,7 @@ export function RegisterForm({
         const res = await api.post("/auth/register/school", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        useRoleRedirect(res.data.user);
+        redirectByRole(res.data.user, router);
       } catch (error: any) {
         toast.error(error.response.data.message);
       }

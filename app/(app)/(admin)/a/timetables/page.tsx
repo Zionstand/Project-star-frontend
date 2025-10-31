@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
 import { IconDownload, IconPlus } from "@tabler/icons-react";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = () => {
   return (

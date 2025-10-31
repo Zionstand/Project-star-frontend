@@ -57,7 +57,7 @@ import {
 import { genders, titles, years } from "@/constant";
 import { cn, formatWord } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
-import { useRoleRedirect } from "@/hooks/use-role-redirect";
+
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { Badge } from "@/components/ui/badge";
 import DateSelector from "@/components/DateSelector";
@@ -95,11 +95,6 @@ export function EditProfileForm({
   const router = useRouter();
 
   const [showModal, setShowModal] = useState(false);
-
-  const handleImport = (files: FileWithMeta[]) => {
-    console.log("Imported files:", files);
-    // Process your files here
-  };
 
   const setUser = useAuth((s) => s.setUser);
 
@@ -170,8 +165,6 @@ export function EditProfileForm({
         const res = await api.post(`/upload/profile/${user?.id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-
-        console.log(res);
 
         toast.success(res.data.message);
         setUser(res.data.user); // ✅ update store

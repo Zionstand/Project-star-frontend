@@ -7,9 +7,8 @@ import { Loader } from "@/components/Loader";
 import { TeachersCards } from "../_components/TeachersCard";
 import { PageHeader } from "@/components/PageHeader";
 import { SearchBar } from "@/components/Searchbar";
-import { ExtendedUser, TeacherLists } from "./TeacherLists";
+import { ExtendedUser, TeacherLists } from "./_components/TeacherLists";
 import { Card, CardContent } from "@/components/ui/card";
-import { Class } from "../classes/page";
 import { toast } from "sonner";
 
 const page = () => {
@@ -41,6 +40,7 @@ const page = () => {
   }, [user]);
 
   if (loading) return <Loader />;
+
   return (
     <div className="space-y-6">
       <PageHeader

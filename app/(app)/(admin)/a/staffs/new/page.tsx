@@ -19,6 +19,7 @@ const page = async () => {
       <PageHeader
         title="Add Staff"
         description="Add a new staff manually or import from Excel/CSV or invite"
+        back
       />
       <Tabs defaultValue="manual">
         <ScrollArea>

@@ -4,7 +4,7 @@ import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { User } from "@/store/useAuth";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
-import { Class } from "../classes/page";
+import { Class } from "../../classes/page";
 
 export interface ExtendedUser extends NonNullable<User> {
   Teacher?: {

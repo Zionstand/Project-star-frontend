@@ -55,6 +55,7 @@ const page = () => {
       <PageHeader
         title="Create new class"
         description="Add a new class to the school system"
+        back
       />
       <Tabs defaultValue="manual">
         <ScrollArea>

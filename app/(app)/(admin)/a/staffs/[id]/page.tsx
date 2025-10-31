@@ -86,6 +86,7 @@ const page = () => {
           slug: `/a/staffs/${staff?.id}/edit`,
           icon: IconEdit,
         }}
+        back
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
         <div className="col-span-1 lg:col-span-3">

@@ -138,8 +138,6 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
           }
         );
 
-        console.log(res);
-
         toast.success(res.data.message);
         updateSchool(res.data.school); // ✅ update store
         setLogo(res.data.imageUrl); // ✅ update image preview

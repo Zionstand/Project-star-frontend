@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
-import { PageHeader } from "../../../../../components/PageHeader";
 import { IconDeviceFloppy } from "@tabler/icons-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { General } from "./_components/General";
+import { PageHeader } from "@/components/PageHeader";
 
 const page = () => {
   return (

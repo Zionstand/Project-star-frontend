@@ -82,6 +82,7 @@ const page = () => {
           slug: `/a/classes/${classDetails?.id}/edit`,
           icon: IconEdit,
         }}
+        back
       />
       <ClassDetailsCards />
       <ClassTeacherBox

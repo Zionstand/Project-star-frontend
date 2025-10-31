@@ -49,6 +49,7 @@ const page = () => {
       <PageHeader
         title="Assign Teacher"
         description="Assign a teacher to a class or subject"
+        back
       />
       <AssignTeacherForm
         teachers={teachers}
