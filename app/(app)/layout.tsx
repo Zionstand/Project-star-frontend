@@ -12,8 +12,8 @@ import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 export default function Layout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const router = useRouter();
-  redirectByRole(user, router);
   useSchoolFetcher();
+  redirectByRole(user, router);
   // useAutoRefresh();
 
   return (
