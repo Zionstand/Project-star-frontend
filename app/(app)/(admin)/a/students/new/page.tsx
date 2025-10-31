@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IconFileTypeXls, IconUserPlus } from "@tabler/icons-react";
@@ -7,9 +7,32 @@ import { AddStudentForm } from "../_components/AddStudentForm";
 import { configService } from "@/lib/configs";
 import { ImportStudent } from "../_components/ImportStudent";
 import { PageHeader } from "@/components/PageHeader";
+import { toast } from "sonner";
+import { Loader } from "@/components/Loader";
 
-const page = async () => {
-  const states = await configService.getCategory("STATE");
+const page = () => {
+  const [states, setStates] = useState<any>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchConfigs = async () => {
+      try {
+        const [states] = await Promise.all([
+          configService.getCategory("STATE"),
+        ]);
+
+        setStates(states);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConfigs();
+  }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <div className="space-y-6">
