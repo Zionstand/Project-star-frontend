@@ -202,49 +202,48 @@ export const NewStudentForm = z.object({
   lastName: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters" }),
+  otherName: z
+    .string()
+    .min(2, { message: "Other name must be at least 2 characters" }),
   email: z.string().email().min(2, {
     message: "Email must be at least 2 characters.",
   }),
-  phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
-    message: "Enter a valid phone number.",
-  }),
-  gender: z.string().min(2, { message: "Gender must be selected" }),
-  dob: z.string().min(2, { message: "Date of birth must be selected" }),
-  address: z
+  phoneNumber: z
     .string()
-    .min(2, { message: "Address must be at least 2 characters" }),
-  city: z.string().min(2, { message: "City must be at least 2 characters" }),
-  state: z.string().min(2, { message: "State must be selected" }),
-  country: z.string().min(2, { message: "Country must be selected" }),
-  studentClass: z.string().min(2, { message: "Class must be selected" }),
-  section: z.string().min(2, { message: "section must be selected" }),
-  admissionNumber: z
+    .trim()
+    .optional()
+    .refine((val) => !val || /^(\+?\d{10,15})$/.test(val), {
+      message: "Enter a valid phone number (e.g. +2348012345678)",
+    }),
+  gender: z.string().optional(),
+  dob: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  country: z.string().optional(),
+  classId: z.string().min(2, { message: "Class must be selected" }),
+  candidateNumber: z
     .string()
-    .min(2, { message: "Admission number must be selected" }),
-  parentFirstName: z
+    .min(2, { message: "Candidate number must be selected" }),
+  examScore: z.string().min(2, { message: "Exam score must be included" }),
+  parentFirstName: z.string().optional(),
+  parentLastName: z.string().optional(),
+  parentEmail: z
     .string()
-    .min(2, { message: "First name must be at least 2 characters" }),
-  parentLastName: z
+    .trim()
+    .optional()
+    .refine((val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+      message: "Enter a valid email address",
+    }),
+  parentPhoneNumber: z
     .string()
-    .min(2, { message: "Last name must be at least 2 characters" }),
-  parentEmail: z.string().email().min(2, {
-    message: "Email must be at least 2 characters.",
-  }),
-  parentPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
-    message: "Enter a valid phone number.",
-  }),
-  parentRelationship: z
-    .string()
-    .min(2, { message: "Relationship must be selected" }),
-  emergencyContactName: z
-    .string()
-    .min(2, { message: "Contact name must be at least 2 characters" }),
-  emergencyPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
-    message: "Enter a valid phone number.",
-  }),
-  medicalConditions: z
-    .string()
-    .min(2, { message: "Contact name must be at least 2 characters" }),
+    .trim()
+    .optional()
+    .refine((val) => !val || /^(\+?\d{10,15})$/.test(val), {
+      message: "Enter a valid phone number (e.g. +2348012345678)",
+    }),
+  parentRelationship: z.string().optional(),
+  medicalConditions: z.string().optional(),
 });
 
 export const NewStaffForm = z.object({

@@ -4,26 +4,11 @@ import { ClassesCards } from "../_components/ClassesCards";
 import { IconPlus } from "@tabler/icons-react";
 import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
-import { School, useAuth, User } from "@/store/useAuth";
+import { Class, School, useAuth, User } from "@/store/useAuth";
 import { ClassSearchComponent } from "../_components/ClassSearchComponent";
 import { ClassBox } from "./_components/ClassBox";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
-
-export type Class = {
-  level: string;
-  section: string;
-  description?: string;
-  capacity: string;
-  classRoomNumber?: string;
-
-  school: School;
-  Teacher: {
-    user: User;
-  };
-
-  id: string;
-};
 
 const page = () => {
   const { user } = useAuth();

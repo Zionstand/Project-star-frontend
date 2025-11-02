@@ -5,23 +5,36 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IconFileTypeXls, IconUserPlus } from "@tabler/icons-react";
 import { AddStudentForm } from "../_components/AddStudentForm";
 import { configService } from "@/lib/configs";
-import { ImportStudent } from "../_components/ImportStudent";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
+import { schoolService } from "@/lib/school";
+import { useAuth } from "@/store/useAuth";
+import { Class } from "../../classes/page";
+import { ImportStudents } from "../_components/ImportStudents";
 
 const page = () => {
+  const { user } = useAuth();
   const [states, setStates] = useState<any>();
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [countries, setCountries] = useState<any>([]);
   const [loading, setLoading] = useState(true);
+
+  console.log(classes);
 
   useEffect(() => {
     const fetchConfigs = async () => {
+      if (!user) return;
       try {
-        const [states] = await Promise.all([
+        const [states, classes, countries] = await Promise.all([
           configService.getCategory("STATE"),
+          schoolService.getSchoolClasses(user?.school?.schoolID!),
+          configService.getCategory("COUNTRY"),
         ]);
 
         setStates(states);
+        setClasses(classes);
+        setCountries(countries);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -30,7 +43,7 @@ const page = () => {
     };
 
     fetchConfigs();
-  }, []);
+  }, [user]);
 
   if (loading) return <Loader />;
 
@@ -64,10 +77,14 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="manual">
-          <AddStudentForm states={states.items} />
+          <AddStudentForm
+            states={states.items}
+            classes={classes}
+            countries={countries.items}
+          />
         </TabsContent>
         <TabsContent value="import">
-          <ImportStudent />
+          <ImportStudents />
         </TabsContent>
       </Tabs>
     </div>

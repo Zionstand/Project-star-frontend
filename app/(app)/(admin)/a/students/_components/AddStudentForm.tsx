@@ -43,16 +43,24 @@ import {
 import { allClasses, genders, relationships, sections } from "@/constant";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import { Class } from "../../classes/page";
+import { useAuth } from "@/store/useAuth";
 
 interface Props {
   states: {
     id: string;
     name: string;
   }[];
+  classes: Class[];
+  countries: {
+    id: string;
+    name: string;
+  }[];
 }
 
-export const AddStudentForm = ({ states }: Props) => {
+export const AddStudentForm = ({ states, classes, countries }: Props) => {
   const router = useRouter();
+  const { user } = useAuth();
   const [pending, startTransition] = useTransition();
 
   const form = useForm<NewStudentFormType>({
@@ -60,13 +68,14 @@ export const AddStudentForm = ({ states }: Props) => {
     defaultValues: {
       firstName: "",
       lastName: "",
+      otherName: "",
       email: "",
       phoneNumber: "",
       dob: "",
       gender: "",
-      studentClass: "",
-      section: "",
-      admissionNumber: "",
+      classId: "",
+      candidateNumber: "",
+      examScore: "",
       address: "",
       city: "",
       state: "",
@@ -75,8 +84,6 @@ export const AddStudentForm = ({ states }: Props) => {
       parentFirstName: "",
       parentPhoneNumber: "",
       parentRelationship: "",
-      emergencyContactName: "",
-      emergencyPhoneNumber: "",
       medicalConditions: "",
     },
   });
@@ -84,10 +91,11 @@ export const AddStudentForm = ({ states }: Props) => {
   function onSubmit(values: NewStudentFormType) {
     startTransition(async () => {
       try {
-        // const res = await api.put(`/schools/${user?.school?.id}`, values);
+        console.log(values);
+        const res = await api.post(`/students/${user?.school?.id}`, values);
         // updateSchool(res.data.school);
-        // toast.success(res.data.message);
-        // router.replace(`/a/school`);
+        toast.success(res.data.message);
+        form.reset();
       } catch (error: any) {
         toast.error(error.response?.data?.message || "An error occurred");
       }
@@ -113,7 +121,7 @@ export const AddStudentForm = ({ states }: Props) => {
                     <IconUser className="text-primary inline-block" />
                     <span>Personal Information</span>
                   </h3>
-                  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <FormField
                       control={form.control}
                       name="firstName"
@@ -148,6 +156,24 @@ export const AddStudentForm = ({ states }: Props) => {
                     />
                     <FormField
                       control={form.control}
+                      name="otherName"
+                      render={({ field }) => (
+                        <FormItem className="md:col-span-2 lg:col-span-1">
+                          <FormLabel>
+                            Other name
+                            <RequiredAsterisk />
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter other name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
@@ -171,10 +197,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="phoneNumber"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Primary Phone
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Primary Phone</FormLabel>
                           <FormControl>
                             <RPNInput.default
                               className="flex rounded-md shadow-xs"
@@ -198,9 +221,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="dob"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Date of Birth <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Date of Birth</FormLabel>
                           <FormControl>
                             <DateSelector field={field} />
                           </FormControl>
@@ -213,10 +234,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="gender"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Gender
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Gender</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
@@ -246,10 +264,10 @@ export const AddStudentForm = ({ states }: Props) => {
                     <IconBuilding className="text-primary inline-block" />
                     <span>Academic Information</span>
                   </h3>
-                  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
-                      name="studentClass"
+                      name="classId"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
@@ -266,9 +284,10 @@ export const AddStudentForm = ({ states }: Props) => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {allClasses.map((c, index) => (
-                                <SelectItem value={c.value} key={index}>
-                                  {c.value}
+                              {classes.map((c) => (
+                                <SelectItem value={c.id} key={c.id}>
+                                  {c.level}
+                                  {c.section}
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -279,46 +298,16 @@ export const AddStudentForm = ({ states }: Props) => {
                     />
                     <FormField
                       control={form.control}
-                      name="section"
+                      name="candidateNumber"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Section
-                            <RequiredAsterisk />
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select section" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {sections.map((section, index) => (
-                                <SelectItem value={section} key={index}>
-                                  {section}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />{" "}
-                    <FormField
-                      control={form.control}
-                      name="admissionNumber"
-                      render={({ field }) => (
-                        <FormItem className="md:col-span-2 lg:col-span-1">
-                          <FormLabel>
-                            Admission Number
+                            Candidate Number
                             <RequiredAsterisk />
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Enter student admission number"
+                              placeholder="Enter candidate number"
                               {...field}
                             />
                           </FormControl>
@@ -326,7 +315,23 @@ export const AddStudentForm = ({ states }: Props) => {
                         </FormItem>
                       )}
                     />
-                  </div>{" "}
+                    <FormField
+                      control={form.control}
+                      name="examScore"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Exam score
+                            <RequiredAsterisk />
+                          </FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter score" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
                 <Separator />
                 <div className="space-y-4">
@@ -334,16 +339,13 @@ export const AddStudentForm = ({ states }: Props) => {
                     <IconMapPin2 className="text-primary inline-block" />
                     <span>Address Information</span>
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name="address"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Street Address
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Street Address</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="123 Education Avenue, Lagelu Local Government"
@@ -354,54 +356,73 @@ export const AddStudentForm = ({ states }: Props) => {
                         </FormItem>
                       )}
                     />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="city"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              City
-                              <RequiredAsterisk />
-                            </FormLabel>
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Ibadan" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
                             <FormControl>
-                              <Input placeholder="Ibadan" {...field} />
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select state" />
+                              </SelectTrigger>
                             </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="state"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              State
-                              <RequiredAsterisk />
-                            </FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              value={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select state" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {states.map((state) => (
-                                  <SelectItem value={state.name} key={state.id}>
-                                    {state.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                            <SelectContent>
+                              {states.map((state) => (
+                                <SelectItem value={state.name} key={state.id}>
+                                  {state.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select country" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {countries.map((country, index) => (
+                                <SelectItem value={country.name} key={index}>
+                                  {country.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>{" "}
                 <Separator />
@@ -416,10 +437,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="parentFirstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Parent first name
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Parent first name</FormLabel>
                           <FormControl>
                             <Input placeholder="Enter first name" {...field} />
                           </FormControl>
@@ -432,10 +450,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="parentLastName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Parent last name
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Parent last name</FormLabel>
                           <FormControl>
                             <Input placeholder="Enter last name" {...field} />
                           </FormControl>
@@ -448,10 +463,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="parentEmail"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Parent email
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Parent email</FormLabel>
                           <FormControl>
                             <Input
                               type="email"
@@ -468,10 +480,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="parentPhoneNumber"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Parent phone
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Parent phone</FormLabel>
                           <FormControl>
                             <RPNInput.default
                               className="flex rounded-md shadow-xs"
@@ -493,10 +502,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="parentRelationship"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Relationship
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Relationship</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
@@ -523,58 +529,6 @@ export const AddStudentForm = ({ states }: Props) => {
                 <Separator />
                 <div className="space-y-4">
                   <h3 className="font-medium text-sm flex items-center justify-start gap-1">
-                    <IconAlertSquareRounded className="text-primary inline-block" />
-                    <span>Emergency Contact</span>
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="emergencyContactName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              Emergency name
-                              <RequiredAsterisk />
-                            </FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter name" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="emergencyPhoneNumber"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              Emergency phone
-                              <RequiredAsterisk />
-                            </FormLabel>
-                            <FormControl>
-                              <RPNInput.default
-                                className="flex rounded-md shadow-xs"
-                                international
-                                flagComponent={FlagComponent}
-                                countrySelectComponent={CountrySelect}
-                                inputComponent={PhoneInput}
-                                placeholder="+2348012345679"
-                                value={field.value}
-                                onChange={(value) => field.onChange(value)}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-                </div>{" "}
-                <Separator />
-                <div className="space-y-4">
-                  <h3 className="font-medium text-sm flex items-center justify-start gap-1">
                     <IconClipboardHeart className="text-primary inline-block" />
                     <span>Medical Information</span>
                   </h3>
@@ -584,10 +538,7 @@ export const AddStudentForm = ({ states }: Props) => {
                       name="medicalConditions"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Medical conditions/allergies
-                            <RequiredAsterisk />
-                          </FormLabel>
+                          <FormLabel>Medical conditions/allergies</FormLabel>
                           <FormControl>
                             <Textarea
                               placeholder="Enter any medical conditions or allergies (or 'None')"
@@ -612,7 +563,7 @@ export const AddStudentForm = ({ states }: Props) => {
                     Cancel
                   </Button>
                   <Button disabled={pending} type="submit">
-                    {pending ? <Loader text="Saving..." /> : "Save changes"}
+                    {pending ? <Loader text="Adding..." /> : "Add student"}
                   </Button>
                 </div>
               </div>

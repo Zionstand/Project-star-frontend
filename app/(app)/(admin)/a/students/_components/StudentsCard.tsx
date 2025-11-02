@@ -1,18 +1,17 @@
 import React from "react";
 import { StudentCard } from "./StudentCard";
+import { User } from "@/store/useAuth";
 
-export const StudentsCard = () => {
+interface Props {
+  students: User[];
+}
+
+export const StudentsCard = ({ students }: Props) => {
   return (
     <div className="md:hidden space-y-4">
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
-      <StudentCard />
+      {students.map((student) => (
+        <StudentCard key={student?.id} student={student} />
+      ))}
     </div>
   );
 };

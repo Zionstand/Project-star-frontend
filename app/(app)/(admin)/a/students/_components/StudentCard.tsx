@@ -1,24 +1,30 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
+import { formatPhoneNumber } from "@/lib/utils";
+import { User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone, IconUser } from "@tabler/icons-react";
 import React from "react";
 
-export const StudentCard = () => {
+interface Props {
+  student: User;
+}
+
+export const StudentCard = ({ student }: Props) => {
   return (
     <div className="space-y-4 border-b last:border-0 pb-4">
       <div className="flex items-center justify-start gap-2">
         <UserProfilePicture />
         <div className="flex-1">
           <h3 className="font-medium text-base line-clamp-1">
-            Tomiwa Adelae Ademola
+            {student?.firstName} {student?.lastName} {student?.otherName}
             <Badge variant={"outlineSuccess"}>Active</Badge>
           </h3>
           <a
             className="hover:text-primary text-sm text-muted-foreground hover:underline transition-all line-clamp-1"
-            href={`mailto:alice@gmail.com`}
+            href={`mailto:${student?.email}`}
           >
-            alicewilliams@gmail.com
+            {student?.email}
           </a>
         </div>
         <Button size="icon" variant={"secondary"}>
@@ -27,7 +33,10 @@ export const StudentCard = () => {
       </div>
       <div className="text-sm text-muted-foreground space-y-2">
         <p>
-          <span>JSS1 - Section A</span>
+          <span>
+            {student?.Student.Class.level} - Section{" "}
+            {student?.Student.Class.section}
+          </span>
         </p>
         <p className="flex items-center justify-between gap-1">
           <span>
@@ -39,7 +48,11 @@ export const StudentCard = () => {
             href={`tel:alice@gmail.com`}
           >
             <IconPhone className="inline-block size-4.5" />
-            +234 802 789 7888
+            {student?.phoneNumber ? (
+              formatPhoneNumber(student?.phoneNumber)
+            ) : (
+              <span className="italic">No phone</span>
+            )}
           </a>
         </p>
       </div>

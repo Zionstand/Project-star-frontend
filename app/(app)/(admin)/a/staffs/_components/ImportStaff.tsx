@@ -658,7 +658,7 @@ export const ImportStaff = () => {
             <Separator />
             <div className="flex items-center justify-end gap-2">
               <Button
-                onClick={() => router.push("/a/staffs")}
+                onClick={() => router.back()}
                 type="button"
                 variant="secondary"
               >

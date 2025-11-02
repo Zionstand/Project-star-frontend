@@ -1,6 +1,24 @@
-import { Class } from "@/app/(app)/(admin)/a/classes/page";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
+export type Teacher = {
+  id?: string;
+  user: User;
+};
+
+export type Class = {
+  id: string;
+  level: string;
+  section: string | null;
+  capacity: string | null;
+  classRoomNumber: string | null;
+  description: string | null;
+  department: string | null;
+  Teacher: Teacher | null;
+  schoolId: string;
+  createdAt: string | null;
+  updatedAt: string | null;
+};
 
 export type School = {
   id: string;
@@ -37,13 +55,18 @@ export type School = {
   updatedAt: Date | null;
 } | null;
 
+export type Student = {
+  Class: Class;
+};
+
 export type User = {
   id: string;
   email: string;
   title?: string;
   firstName: string;
   lastName: string;
-  username: School;
+  otherName: string;
+  username: string;
   phoneNumber: string;
   image: string | null;
   employeeID: string | null;
@@ -59,9 +82,10 @@ export type User = {
   emergencyPhoneNumber: string | null;
   role: string;
   gender: string | null;
-  school?: School;
   schoolId: string;
-  classes?: Class[];
+  school?: School | null;
+  classes?: Class[] | null;
+  Student: Student;
 } | null;
 
 type AuthState = {

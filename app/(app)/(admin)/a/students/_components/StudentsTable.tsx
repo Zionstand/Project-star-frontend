@@ -6,8 +6,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StudentRow } from "./StudentRow";
+import { User } from "@/store/useAuth";
 
-export const StudentsTable = () => {
+interface Props {
+  students: User[];
+}
+
+export const StudentsTable = ({ students }: Props) => {
   return (
     <div className="hidden md:block">
       <Table>
@@ -21,11 +26,9 @@ export const StudentsTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <StudentRow />
-          <StudentRow />
-          <StudentRow />
-          <StudentRow />
-          <StudentRow />
+          {students.map((student) => (
+            <StudentRow student={student} key={student?.id} />
+          ))}
         </TableBody>
       </Table>
     </div>

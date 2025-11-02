@@ -1,10 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
-import { User } from "@/store/useAuth";
+import { Class, User } from "@/store/useAuth";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
-import { Class } from "../../classes/page";
 
 export interface ExtendedUser extends NonNullable<User> {
   Teacher?: {

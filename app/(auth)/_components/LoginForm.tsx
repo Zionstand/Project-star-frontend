@@ -26,8 +26,7 @@ import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
-import { FullLogo } from "./Logo";
-import { redirectByRole } from "@/hooks/use-role-redirect";
+import { useRoleRedirect } from "@/hooks/use-role-redirect";
 
 export function LoginForm() {
   const router = useRouter();
@@ -51,7 +50,7 @@ export function LoginForm() {
         const res = await api.post("/auth/login", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        redirectByRole(res.data.user, router);
+        useRoleRedirect(res.data.user);
       } catch (error: any) {
         toast.error(error.response.data.message);
       }

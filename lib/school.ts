@@ -53,4 +53,9 @@ export const schoolService = {
     const res = await api.get(`/schema/${modelName}`);
     return res.data;
   },
+
+  getStudents: async (schoolId: string) => {
+    const res = await api.get(`/students/${schoolId}`);
+    return res.data;
+  },
 };

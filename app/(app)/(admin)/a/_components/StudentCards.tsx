@@ -7,11 +7,15 @@ import {
 import { cn } from "@/lib/utils";
 import React from "react";
 
-export const StudentCards = () => {
+interface Props {
+  students: number;
+}
+
+export const StudentCards = ({ students }: Props) => {
   const stats = [
     {
       title: "Total Students",
-      value: "1,278",
+      value: `${students}`,
       textColor: "text-black",
     },
     {

@@ -4,12 +4,12 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { PageGradient } from "../(auth)/_components/PageGradient";
-import { redirectByRole } from "@/hooks/use-role-redirect";
+import { useRoleRedirect } from "@/hooks/use-role-redirect";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user } = useAuth();
-  redirectByRole(user, router);
+  useRoleRedirect(user);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
