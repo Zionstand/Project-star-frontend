@@ -8,10 +8,11 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import React from "react";
+
 interface Props {
-  location?: string;
+  location?: string | null;
   academicYear?: string | null;
-  capacity: string;
+  capacity: string | null;
 }
 
 export const ClassInformationBox = ({

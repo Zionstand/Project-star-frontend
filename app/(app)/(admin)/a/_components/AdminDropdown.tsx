@@ -52,7 +52,9 @@ export function AdminDropdown() {
               {user?.title} {user?.firstName} {user?.lastName}
             </p>
             <p className="text-xs font-normal text-muted-foreground">
-              {formatWord[user.role]}
+              {formatWord[user.role]}{" "}
+              {user.role === "STUDENT" &&
+                `- ${user.Student.desiredClass || "No class"}`}
             </p>
           </div>
           <ChevronDownIcon

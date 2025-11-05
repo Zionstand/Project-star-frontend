@@ -2,39 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { IconFileTypeXls, IconUserPlus } from "@tabler/icons-react";
+import { IconFileTypeXls, IconShare, IconUserPlus } from "@tabler/icons-react";
 import { AddStudentForm } from "../_components/AddStudentForm";
 import { configService } from "@/lib/configs";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
-import { useAuth } from "@/store/useAuth";
-import { Class } from "../../classes/page";
+import { Class, useAuth } from "@/store/useAuth";
 import { ImportStudents } from "../_components/ImportStudents";
+import InviteStudent from "../_components/InviteStudent";
 
 const page = () => {
   const { user } = useAuth();
   const [states, setStates] = useState<any>();
   const [classes, setClasses] = useState<Class[]>([]);
   const [countries, setCountries] = useState<any>([]);
+  const [departments, setDepartments] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-
-  console.log(classes);
 
   useEffect(() => {
     const fetchConfigs = async () => {
       if (!user) return;
       try {
-        const [states, classes, countries] = await Promise.all([
+        const [states, classes, countries, departments] = await Promise.all([
           configService.getCategory("STATE"),
           schoolService.getSchoolClasses(user?.school?.schoolID!),
           configService.getCategory("COUNTRY"),
+          configService.getCategory("SCHOOL_DEPARTMENT"),
         ]);
 
         setStates(states);
         setClasses(classes);
         setCountries(countries);
+        setDepartments(departments);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -73,6 +74,14 @@ const page = () => {
               />
               Import from file
             </TabsTrigger>
+            <TabsTrigger value="invite" className="group">
+              <IconShare
+                className="-ms-0.5 me-1.5 opacity-60"
+                size={16}
+                aria-hidden="true"
+              />
+              Invite Link
+            </TabsTrigger>
           </TabsList>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
@@ -81,10 +90,14 @@ const page = () => {
             states={states.items}
             classes={classes}
             countries={countries.items}
+            departments={departments.items}
           />
         </TabsContent>
         <TabsContent value="import">
           <ImportStudents />
+        </TabsContent>
+        <TabsContent value="invite">
+          <InviteStudent />
         </TabsContent>
       </Tabs>
     </div>

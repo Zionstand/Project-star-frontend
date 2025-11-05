@@ -10,13 +10,12 @@ import {
 } from "@tabler/icons-react";
 import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
-import { School, useAuth, User } from "@/store/useAuth";
+import { Class, School, useAuth, User } from "@/store/useAuth";
 import { PageHeader } from "@/components/PageHeader";
 import { useParams, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Class } from "../../classes/page";
 import { StaffProfile } from "../_components/StaffProfile";
 import { StaffContactInformation } from "../_components/StaffContactInformation";
 import { StaffPerformance } from "../_components/StaffPerformance";

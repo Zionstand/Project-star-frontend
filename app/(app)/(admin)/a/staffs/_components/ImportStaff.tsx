@@ -373,7 +373,6 @@ export const ImportStaff = () => {
         `Processed ${validated.length} rows — review before importing.`
       );
     } catch (err) {
-      console.error(err);
       toast.error("Failed to parse file");
     }
   };

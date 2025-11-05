@@ -29,7 +29,6 @@ import {
   FlagComponent,
   PhoneInput,
 } from "@/components/PhoneNumberInput";
-import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import {
   Select,
   SelectContent,
@@ -37,23 +36,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { genders, years } from "@/constant";
+import { genders, relationships, years } from "@/constant";
 import { cn, formatWord } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import {
-  OnboardingStaffSchema,
-  OnboardingStaffSchemaType,
+  OnboardingStudentSchema,
+  OnboardingStudentSchemaType,
 } from "@/lib/zodSchema";
 import { Textarea } from "@/components/ui/textarea";
 import DateSelector from "@/components/DateSelector";
 import { useRoleRedirect } from "@/hooks/use-role-redirect";
 
 interface Props {
-  jobRoles: {
+  classLevels: {
+    id: string;
+    name: string;
+    value: string;
+  }[];
+  countries: {
     id: string;
     name: string;
   }[];
-  countries: {
+  departments: {
     id: string;
     name: string;
   }[];
@@ -65,12 +69,13 @@ interface Props {
   acronym: string;
 }
 
-export function OnboardingStaffForm({
-  jobRoles,
+export function OnboardingStudentForm({
+  classLevels,
   countries,
   states,
   schoolID,
   acronym,
+  departments,
 }: Props) {
   const router = useRouter();
 
@@ -80,27 +85,25 @@ export function OnboardingStaffForm({
 
   const [pending, startTransition] = useTransition();
 
-  const form = useForm<OnboardingStaffSchemaType>({
-    resolver: zodResolver(OnboardingStaffSchema),
-    mode: "all", // ✅ Validate only after user leaves the field
+  const form = useForm<OnboardingStudentSchemaType>({
+    resolver: zodResolver(OnboardingStudentSchema),
+    mode: "onChange", // ✅ Validate only after user leaves the field
     reValidateMode: "onChange", // ✅ Revalidate when field changes to clear old errors
     defaultValues: {
       firstName: "",
       lastName: "",
+      otherName: "",
       email: "",
       password: "",
       confirmPassword: "",
       phoneNumber: "",
-      medicalConditions: "",
-      role: "",
-      emergencyContactName: "",
-      emergencyPhoneNumber: "",
+      candidateNumber: "",
+      examScore: "",
       address: "",
       city: "",
       state: "",
       country: "",
-      dob: "",
-      gender: "",
+      previousSchool: "",
     },
   });
 
@@ -108,7 +111,9 @@ export function OnboardingStaffForm({
   const password = form.watch("password");
   const confirmPassword = form.watch("confirmPassword");
 
-  // 🧩 When password or confirmPassword changes, recheck the match
+  const selectedLevel = form.watch("level");
+  const showDepartment = ["SS1", "SS2", "SS3"].includes(selectedLevel);
+
   useEffect(() => {
     if (confirmPassword !== "" || password !== "") {
       form.trigger("confirmPassword");
@@ -154,30 +159,32 @@ export function OnboardingStaffForm({
   };
 
   const handleNext = async () => {
-    const step1Fields: (keyof OnboardingStaffSchemaType)[] = [
+    const step1Fields: (keyof OnboardingStudentSchemaType)[] = [
       "firstName",
       "lastName",
       "email",
       "password",
       "confirmPassword",
       "phoneNumber",
-      "role",
+      "candidateNumber",
+      "examScore",
     ];
+
     const isStep1Valid = await form.trigger(step1Fields, { shouldFocus: true });
+
     if (isStep1Valid) {
+      if (password !== confirmPassword)
+        return toast.error("Passwords do not match");
       setStep(2);
     } else {
       toast.error("Please fill all required fields correctly.");
     }
   };
 
-  function onSubmit(data: OnboardingStaffSchemaType) {
+  function onSubmit(data: OnboardingStudentSchemaType) {
     startTransition(async () => {
       try {
-        const res = await api.post(
-          `/schools/${schoolID}/staff/onboarding`,
-          data
-        );
+        const res = await api.post(`/students/${schoolID}/onboarding`, data);
         setUser(res.data.user);
         toast.success(res.data.message);
         useRoleRedirect(res.data.user);
@@ -195,23 +202,21 @@ export function OnboardingStaffForm({
             Create an account
           </h3>
           <p className="text-sm text-muted-foreground">
-            Create your staff account to get started with {acronym}’s workspace.
+            Create your student account to get started with {acronym}’s
+            workspace.
           </p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {step === 1 && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <FormField
                     control={form.control}
                     name="firstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          First name
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>First name</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter your first name"
@@ -227,10 +232,7 @@ export function OnboardingStaffForm({
                     name="lastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Last name
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>Last name</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter your last name"
@@ -243,13 +245,28 @@ export function OnboardingStaffForm({
                   />
                   <FormField
                     control={form.control}
+                    name="otherName"
+                    render={({ field }) => (
+                      <FormItem className="md:col-span-2 lg:col-span-1">
+                        <FormLabel>Other name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your other name"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Email Address
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>Email Address</FormLabel>
                         <FormControl>
                           <Input placeholder="example@lagelu.com" {...field} />
                         </FormControl>
@@ -262,10 +279,7 @@ export function OnboardingStaffForm({
                     name="phoneNumber"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Primary Phone
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>Primary Phone</FormLabel>
                         <FormControl>
                           <RPNInput.default
                             className="flex rounded-md shadow-xs"
@@ -313,59 +327,203 @@ export function OnboardingStaffForm({
                   />
                   <FormField
                     control={form.control}
-                    name="role"
+                    name="dob"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Job role
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>Date of Birth</FormLabel>
+                        <FormControl>
+                          <DateSelector field={field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="previousSchool"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Previous School</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter previous school"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="candidateNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Candidate Number</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter candidate number"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="examScore"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Exam score</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter score" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="level"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormLabel>Class</FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select role" />
+                              <SelectValue placeholder="Select level" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {jobRoles
-                              .filter((role) => role.name !== "ADMINISTRATOR")
-                              .map((role, index) => (
-                                <SelectItem value={role.name} key={index}>
-                                  {formatWord[role.name]}
-                                </SelectItem>
-                              ))}
+                            {classLevels.map((level) => (
+                              <SelectItem value={level.value} key={level.id}>
+                                {level.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                </div>
-                <FormField
-                  control={form.control}
-                  name="dob"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Date of Birth</FormLabel>
-                      <FormControl>
-                        <DateSelector field={field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  {showDepartment && (
+                    <FormField
+                      control={form.control}
+                      name="department"
+                      render={({ field }) => (
+                        <FormItem className="col-span-2 lg:col-span-1 transition-all duration-300">
+                          <FormLabel></FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select department" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {departments.map((department) => (
+                                <SelectItem
+                                  value={department.name}
+                                  key={department.id}
+                                >
+                                  {department.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   )}
-                />
+                </div>
+
+                {/* <div
+                  className={cn(
+                    "grid grid-cols-1 gap-4",
+                    showDepartment && "md:grid-cols-2"
+                  )}
+                >
+                  <FormField
+                    control={form.control}
+                    name="level"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormLabel>
+                          Class
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select level" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {classLevels.map((level) => (
+                              <SelectItem value={level.value} key={level.id}>
+                                {level.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {showDepartment && (
+                    <FormField
+                      control={form.control}
+                      name="department"
+                      render={({ field }) => (
+                        <FormItem className="col-span-2 lg:col-span-1 transition-all duration-300">
+                          <FormLabel>
+                          
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select department" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {departments.map((department) => (
+                                <SelectItem
+                                  value={department.name}
+                                  key={department.id}
+                                >
+                                  {department.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                </div> */}
+
                 <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="password">
-                        Password
-                        <RequiredAsterisk />
-                      </FormLabel>
+                      <FormLabel htmlFor="password">Password</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
@@ -461,10 +619,7 @@ export function OnboardingStaffForm({
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Confirm password
-                        <RequiredAsterisk />
-                      </FormLabel>
+                      <FormLabel>Confirm password</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
@@ -518,10 +673,7 @@ export function OnboardingStaffForm({
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>
-                        Address
-                        <RequiredAsterisk />
-                      </FormLabel>
+                      <FormLabel>Address</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Enter complete address"
@@ -538,10 +690,7 @@ export function OnboardingStaffForm({
                     name="city"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          City
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>City</FormLabel>
                         <FormControl>
                           <Input placeholder="Ibadan" {...field} />
                         </FormControl>
@@ -554,10 +703,7 @@ export function OnboardingStaffForm({
                     name="state"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          State
-                          <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel>State</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
@@ -584,9 +730,7 @@ export function OnboardingStaffForm({
                     name="country"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>
-                          Country <RequiredAsterisk />
-                        </FormLabel>
+                        <FormLabel></FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
@@ -609,16 +753,15 @@ export function OnboardingStaffForm({
                     )}
                   />
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="emergencyContactName"
+                    name="parentFirstName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Emergency name</FormLabel>
+                        <FormLabel>Parent first name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter name" {...field} />
+                          <Input placeholder="Enter first name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -626,10 +769,40 @@ export function OnboardingStaffForm({
                   />
                   <FormField
                     control={form.control}
-                    name="emergencyPhoneNumber"
+                    name="parentLastName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Emergency phone</FormLabel>
+                        <FormLabel>Parent last name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter last name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="parentEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Parent email</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="Enter parent email"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="parentPhoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Parent phone</FormLabel>
                         <FormControl>
                           <RPNInput.default
                             className="flex rounded-md shadow-xs"
@@ -642,6 +815,33 @@ export function OnboardingStaffForm({
                             onChange={(value) => field.onChange(value)}
                           />
                         </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="parentRelationship"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Relationship</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select relationship" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {relationships.map((relationship, index) => (
+                              <SelectItem value={relationship} key={index}>
+                                {relationship}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -663,6 +863,7 @@ export function OnboardingStaffForm({
                     </FormItem>
                   )}
                 />
+
                 <div className="grid grid-cols-2 gap-4">
                   <Button
                     onClick={() => setStep(1)}

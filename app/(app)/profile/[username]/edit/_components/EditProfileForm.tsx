@@ -170,7 +170,6 @@ export function EditProfileForm({
         setUser(res.data.user); // ✅ update store
         setProfilePic(res.data.imageUrl); // ✅ update image preview
       } catch (error: any) {
-        console.error(error);
         toast.error(error.response?.data?.message || "Upload failed");
       }
     });

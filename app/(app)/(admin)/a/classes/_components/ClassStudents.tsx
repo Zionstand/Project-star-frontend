@@ -12,8 +12,8 @@ export const ClassStudents = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         <SearchBar />
-        <StudentsTable />
-        <StudentsCard />
+        {/* <StudentsTable />
+        <StudentsCard /> */}
       </CardContent>
     </Card>
   );

@@ -172,7 +172,6 @@ export function ImportSubjects() {
       setShowPreview(true);
       toast.success(`Processed ${validated.length} rows successfully`);
     } catch (err) {
-      console.error(err);
       toast.error("Failed to parse file");
     }
   };
@@ -272,7 +271,6 @@ export function ImportSubjects() {
 
         // router.push("/a/subjects");
       } catch (error: any) {
-        console.error(error);
         toast.error(
           error.response?.data?.message || "An unexpected error occurred"
         );

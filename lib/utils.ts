@@ -154,6 +154,7 @@ export const formatWord: Record<string, string> = {
   BURSAR: "Bursar",
   "IT SUPPORT": "IT Support",
   "DATA ANALYST": "Data Analyst",
+  STUDENT: "Student",
 };
 
 export function formatPhoneNumber(

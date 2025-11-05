@@ -142,7 +142,6 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
         updateSchool(res.data.school); // ✅ update store
         setLogo(res.data.imageUrl); // ✅ update image preview
       } catch (error: any) {
-        console.error(error);
         toast.error(error.response?.data?.message || "Upload failed");
       }
     });

@@ -43,8 +43,7 @@ import {
 import { allClasses, genders, relationships, sections } from "@/constant";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Class } from "../../classes/page";
-import { useAuth } from "@/store/useAuth";
+import { Class, useAuth } from "@/store/useAuth";
 
 interface Props {
   states: {
@@ -56,9 +55,18 @@ interface Props {
     id: string;
     name: string;
   }[];
+  departments: {
+    id: string;
+    name: string;
+  }[];
 }
 
-export const AddStudentForm = ({ states, classes, countries }: Props) => {
+export const AddStudentForm = ({
+  states,
+  classes,
+  countries,
+  departments,
+}: Props) => {
   const router = useRouter();
   const { user } = useAuth();
   const [pending, startTransition] = useTransition();
@@ -88,12 +96,30 @@ export const AddStudentForm = ({ states, classes, countries }: Props) => {
     },
   });
 
+  const selectedClassId = form.watch("classId");
+
+  const selectedClass = classes.find((c) => c.id === selectedClassId);
+
+  const showDepartment = ["SS1", "SS2", "SS3"].includes(
+    selectedClass?.level ?? ""
+  );
+
   function onSubmit(values: NewStudentFormType) {
+    const selectedClass = classes.find((c) => c.id === values.classId);
+    const seniorLevels = ["SS1", "SS2", "SS3"];
+
+    if (
+      selectedClass &&
+      seniorLevels.includes(selectedClass.level) &&
+      !values.department
+    ) {
+      toast.error("Department is required for SS1, SS2, or SS3 levels");
+      return;
+    }
+
     startTransition(async () => {
       try {
-        console.log(values);
         const res = await api.post(`/students/${user?.school?.id}`, values);
-        // updateSchool(res.data.school);
         toast.success(res.data.message);
         form.reset();
       } catch (error: any) {
@@ -267,31 +293,16 @@ export const AddStudentForm = ({ states, classes, countries }: Props) => {
                   <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
-                      name="classId"
+                      name="previousSchool"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>
-                            Class
-                            <RequiredAsterisk />
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select class" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {classes.map((c) => (
-                                <SelectItem value={c.id} key={c.id}>
-                                  {c.level}
-                                  {c.section}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <FormLabel>Previous School</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter previous school"
+                              {...field}
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -331,6 +342,71 @@ export const AddStudentForm = ({ states, classes, countries }: Props) => {
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="classId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Class
+                            <RequiredAsterisk />
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select class" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {classes.map((c) => (
+                                <SelectItem value={c.id} key={c.id}>
+                                  {c.level}
+                                  {c.section}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {showDepartment && (
+                      <FormField
+                        control={form.control}
+                        name="department"
+                        render={({ field }) => (
+                          <FormItem className="col-span-2 lg:col-span-1 transition-all duration-300">
+                            <FormLabel>
+                              Department <RequiredAsterisk />
+                            </FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select department" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {departments.map((department) => (
+                                  <SelectItem
+                                    value={department.name}
+                                    key={department.id}
+                                  >
+                                    {department.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
                   </div>
                 </div>
                 <Separator />

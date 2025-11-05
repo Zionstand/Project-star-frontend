@@ -161,7 +161,6 @@ export function ImportClasses() {
       setShowPreview(true);
       toast.success(`Processed ${validated.length} rows successfully`);
     } catch (err) {
-      console.error(err);
       toast.error("Failed to parse file");
     }
   };
@@ -274,7 +273,6 @@ export function ImportClasses() {
         // Optionally redirect or refresh after a delay
         // router.push("/a/classes");
       } catch (error: any) {
-        console.error(error);
         toast.error(
           error.response?.data?.message || "An unexpected error occurred"
         );

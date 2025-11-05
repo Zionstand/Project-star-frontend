@@ -1,9 +1,8 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
-import { Class } from "../page";
 import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/store/useAuth";
+import { Class, useAuth } from "@/store/useAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,

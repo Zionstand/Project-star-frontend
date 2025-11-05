@@ -6,15 +6,14 @@ import { useAuth, User } from "@/store/useAuth";
 import { useSignout } from "./use-signout";
 
 /** ✅ Hook version (auto-redirect when needed) */
-export function useRoleRedirect(user: User) {
+export function useRoleRedirect(user: any) {
   const router = useRouter();
   const pathname = usePathname();
   const handleSignout = useSignout();
-  const setSchool = useAuth((s) => s.updateSchool);
   const hasFetchedSchool = useRef(false);
 
   useEffect(() => {
-    if (!user || user.schoolId) return;
+    if (!user || !user.schoolId) return;
 
     console.log(user);
 
@@ -47,7 +46,7 @@ export function useRoleRedirect(user: User) {
     //       console.error("Failed to fetch school:", err);
     //     });
     // }
-  }, [user, pathname, router, setSchool, handleSignout]);
+  }, [user, pathname, router, handleSignout]);
 }
 
 /** ✅ Utility version (imperative redirect for logo click, etc.) */

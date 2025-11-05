@@ -6,7 +6,7 @@ import React from "react";
 interface Props {
   src?: string | undefined | null;
   alt?: string;
-  size?: "sm" | "default" | "lg";
+  size?: "sm" | "default" | "lg" | "md";
 }
 
 export const UserProfilePicture = ({
@@ -23,6 +23,7 @@ export const UserProfilePicture = ({
       className={cn(
         "rounded-full object-cover size-[45px] md:size-[55px] lg:size-[65px]",
         size === "sm" && "size-[25px] md:size-[35px] lg:size-[45px]",
+        size === "md" && "size-[55px] md:size-[85px] lg:size-[120px]",
         size === "lg" && "size-[100px] md:size-[120px] lg:size-[150px]"
       )}
     />

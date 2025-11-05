@@ -58,4 +58,37 @@ export const schoolService = {
     const res = await api.get(`/students/${schoolId}`);
     return res.data;
   },
+
+  getStudentsPendingApproval: async (schoolId: string) => {
+    const res = await api.get(`/students/${schoolId}/pending-approval`);
+    return res.data;
+  },
+
+  getRejectedStudentsApproval: async (schoolId: string) => {
+    const res = await api.get(`/students/${schoolId}/rejected-approval`);
+    return res.data;
+  },
+
+  getStudentDocuments: async (id: string, schoolId: string) => {
+    const res = await api.get(`/students/${id}/${schoolId}/documents`);
+    return res.data;
+  },
+
+  getStudentTimelines: async (id: string, schoolId: string) => {
+    const res = await api.get(`/students/${id}/${schoolId}/timeline`);
+    return res.data;
+  },
+
+  getPendingStudentDetails: async (
+    schoolId: string,
+    username: string | string[]
+  ) => {
+    const res = await api.get(`/students/pending/${username}/${schoolId}`);
+    return res.data;
+  },
+
+  getStudentDetails: async (schoolId: string, username: string | string[]) => {
+    const res = await api.get(`/students/${username}/${schoolId}`);
+    return res.data;
+  },
 };

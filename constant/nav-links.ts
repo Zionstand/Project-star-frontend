@@ -26,6 +26,7 @@ import {
   IconTrendingUp,
   IconWallet,
   IconChalkboardTeacher,
+  IconFileCertificate,
 } from "@tabler/icons-react";
 
 export const adminNavLinks = [
@@ -501,6 +502,68 @@ export const bursarNavLinks = [
   },
 ];
 
+export const studentNavLinks = [
+  {
+    title: "Main",
+    url: "#",
+    icon: IconLayout,
+    items: [
+      {
+        title: "Dashboard",
+        url: "/s/dashboard",
+        icon: IconLayout,
+      },
+    ],
+  },
+  {
+    title: "Academic",
+    url: "#",
+    icon: IconFileDescription,
+    isActive: true,
+    items: [
+      {
+        title: "My Assignments",
+        url: "/s/assignments",
+        icon: IconFileDescription,
+      },
+      {
+        title: "My Grades",
+        url: "/s/grades",
+        icon: IconFileCertificate,
+      },
+      {
+        title: "My Timetable",
+        url: "/s/timetables",
+        icon: IconClock,
+      },
+    ],
+  },
+  {
+    title: "Communication",
+    url: "#",
+    icon: IconMessage,
+    items: [
+      {
+        title: "Messages",
+        url: "/messages",
+        icon: IconMessage,
+      },
+    ],
+  },
+  {
+    title: "System",
+    url: "#",
+    icon: IconSettings,
+    items: [
+      {
+        title: "Settings",
+        url: "/s/settings",
+        icon: IconSettings,
+      },
+    ],
+  },
+];
+
 export const roleNavMap: Record<string, any[]> = {
   ADMINISTRATOR: adminNavLinks,
   TEACHER: teacherNavLinks,
@@ -508,6 +571,6 @@ export const roleNavMap: Record<string, any[]> = {
   "DATA ANALYST": dataAnalystNavLinks,
   LIBRARIAN: librarianNavLinks,
   BURSAR: bursarNavLinks,
-  //   STUDENT: studentNavLinks,
+  STUDENT: studentNavLinks,
   //   PARENT: parentNavLinks,
 };

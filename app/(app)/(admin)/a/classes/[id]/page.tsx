@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
-import { School, useAuth, User } from "@/store/useAuth";
+import { Class, School, useAuth, User } from "@/store/useAuth";
 import { PageHeader } from "@/components/PageHeader";
 import { useParams, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
@@ -20,21 +20,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ClassStudents } from "../_components/ClassStudents";
 import { ClassSubjects } from "../_components/ClassSubjects";
-
-export type Class = {
-  level: string;
-  section: string;
-  description?: string;
-  capacity: string;
-  classRoomNumber?: string;
-
-  school: School;
-  Teacher: {
-    user: User;
-  };
-
-  id: string;
-};
 
 const page = () => {
   const { user } = useAuth();

@@ -1,3 +1,4 @@
+import { metadata } from "./../app/layout";
 import z, { optional } from "zod";
 
 export const RegisterSchema = z
@@ -244,6 +245,8 @@ export const NewStudentForm = z.object({
     }),
   parentRelationship: z.string().optional(),
   medicalConditions: z.string().optional(),
+  department: z.string().optional(),
+  previousSchool: z.string().optional(),
 });
 
 export const NewStaffForm = z.object({
@@ -457,6 +460,173 @@ export const EditProfileFormSchema = z.object({
   medicalConditions: z.string().optional(),
 });
 
+export const OnboardingStudentSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(2, { message: "First name must be at least 2 characters" }),
+    otherName: z
+      .string()
+      .min(2, { message: "Other name must be at least 2 characters" }),
+    lastName: z
+      .string()
+      .min(2, { message: "Last name must be at least 2 characters" }),
+    email: z.string().email({ message: "Enter a valid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters." })
+      .refine((val) => /[a-z]/.test(val), {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .refine((val) => /[A-Z]/.test(val), {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .refine((val) => /[0-9]/.test(val), {
+        message: "Password must contain at least one number.",
+      })
+      .refine((val) => /[!@#$%^&*(),.?":{}|<>]/.test(val), {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z.string().min(2, { message: "Enter your password" }),
+    phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+      message: "Enter a valid phone number.",
+    }),
+    address: z
+      .string()
+      .min(2, { message: "Address must be at least 2 characters" }),
+    city: z.string().min(2, { message: "City must be at least 2 characters" }),
+    dob: z.string().min(2, { message: "Date of birth must be selected" }),
+    gender: z.string().min(2, { message: "Gender must be selected" }),
+    level: z.string().min(2, { message: "Level must be selected" }),
+    state: z.string().min(2, { message: "State must be selected" }),
+    country: z.string().min(2, { message: "Country must be selected" }),
+    candidateNumber: z
+      .string()
+      .min(2, { message: "Candidate number must be included" }),
+    examScore: z.string().min(2, { message: "Exam score must be included" }),
+    parentFirstName: z
+      .string()
+      .min(2, { message: "First name must be at least 2 characters" }),
+    parentLastName: z
+      .string()
+      .min(2, { message: "Last name must be at least 2 characters" }),
+    parentEmail: z
+      .string()
+      .trim()
+      .min(2, { message: "Email must be at least 2 characters" })
+      .refine((val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+        message: "Enter a valid email address",
+      }),
+    parentPhoneNumber: z
+      .string()
+      .trim()
+      .min(2, { message: "Phone number must be at least 2 characters" })
+      .refine((val) => !val || /^(\+?\d{10,15})$/.test(val), {
+        message: "Enter a valid phone number (e.g. +2348012345678)",
+      }),
+    parentRelationship: z
+      .string()
+      .min(2, { message: "Relationship must be selected" }),
+    medicalConditions: z.string().optional(),
+    department: z.string().optional(),
+    previousSchool: z
+      .string()
+      .min(2, { message: "Please enter your last school name" }),
+  })
+  .superRefine(({ password, confirmPassword, level, department }, ctx) => {
+    if (password !== confirmPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match",
+        path: ["confirmPassword"], // attach to confirmPassword field
+      });
+    }
+    // check if level is SS1, SS2, or SS3
+    const seniorLevels = ["SS1", "SS2", "SS3"];
+    if (seniorLevels.includes(level) && !department) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["department"],
+        message: "Department is required for SS1, SS2, or SS3 levels",
+      });
+    }
+  });
+
+export const PersonalInformationFormSchema = z.object({
+  firstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  otherName: z
+    .string()
+    .min(2, { message: "Other name must be at least 2 characters" }),
+  lastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
+  email: z.string().email({ message: "Enter a valid email address" }),
+  phoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
+    message: "Enter a valid phone number.",
+  }),
+  address: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters" }),
+  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  dob: z.string().min(2, { message: "Date of birth must be selected" }),
+  gender: z.string().min(2, { message: "Gender must be selected" }),
+  state: z.string().min(2, { message: "State must be selected" }),
+  country: z.string().min(2, { message: "Country must be selected" }),
+  medicalConditions: z.string().optional(),
+});
+
+export const ParentInformationFormSchema = z.object({
+  parentFirstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  parentLastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
+  parentEmail: z
+    .string()
+    .trim()
+    .min(2, { message: "Email must be at least 2 characters" })
+    .refine((val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+      message: "Enter a valid email address",
+    }),
+  parentPhoneNumber: z
+    .string()
+    .trim()
+    .min(2, { message: "Phone number must be at least 2 characters" })
+    .refine((val) => !val || /^(\+?\d{10,15})$/.test(val), {
+      message: "Enter a valid phone number (e.g. +2348012345678)",
+    }),
+  parentRelationship: z
+    .string()
+    .min(2, { message: "Relationship must be selected" }),
+});
+
+export const EducationInformationFormSchema = z
+  .object({
+    level: z.string().min(2, { message: "Level must be selected" }),
+    candidateNumber: z
+      .string()
+      .min(2, { message: "Candidate number must be included" }),
+    examScore: z.string().min(2, { message: "Exam score must be included" }),
+    department: z.string().optional(),
+    previousSchool: z
+      .string()
+      .min(2, { message: "Please enter your last school name" }),
+  })
+  .superRefine(({ level, department }, ctx) => {
+    // check if level is SS1, SS2, or SS3
+    const seniorLevels = ["SS1", "SS2", "SS3"];
+    if (seniorLevels.includes(level) && !department) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["department"],
+        message: "Department is required for SS1, SS2, or SS3 levels",
+      });
+    }
+  });
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -472,7 +642,6 @@ export type GeneralSettingsSchemaType = z.infer<typeof GeneralSettingsSchema>;
 export type NewStudentFormType = z.infer<typeof NewStudentForm>;
 export type NewStaffFormType = z.infer<typeof NewStaffForm>;
 
-export type OnboardingStaffSchemaType = z.infer<typeof OnboardingStaffSchema>;
 export type AddClassFormSchemaType = z.infer<typeof AddClassFormSchema>;
 export type AddSubjectFormSchemaType = z.infer<typeof AddSubjectFormSchema>;
 export type AssignTeacherFormSchemaType = z.infer<
@@ -480,3 +649,16 @@ export type AssignTeacherFormSchemaType = z.infer<
 >;
 export type StaffImportSchemaType = z.infer<typeof StaffImportSchema>;
 export type EditProfileFormSchemaType = z.infer<typeof EditProfileFormSchema>;
+export type OnboardingStaffSchemaType = z.infer<typeof OnboardingStaffSchema>;
+export type OnboardingStudentSchemaType = z.infer<
+  typeof OnboardingStudentSchema
+>;
+export type PersonalInformationFormSchemaType = z.infer<
+  typeof PersonalInformationFormSchema
+>;
+export type ParentInformationFormSchemaType = z.infer<
+  typeof ParentInformationFormSchema
+>;
+export type EducationInformationFormSchemaType = z.infer<
+  typeof EducationInformationFormSchema
+>;

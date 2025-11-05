@@ -6,6 +6,19 @@ export type Teacher = {
   user: User;
 };
 
+export type Document = {
+  id: string;
+  name: string;
+  remarks: string;
+  reviewedAt: string;
+  reviewedBy: string;
+  status: string;
+  type: string;
+  createdAt: string;
+  url: string;
+  verified: boolean;
+};
+
 export type Class = {
   id: string;
   level: string;
@@ -57,6 +70,25 @@ export type School = {
 
 export type Student = {
   Class: Class;
+  LGA: string | null;
+  candidateNumber: string;
+  desiredClass: string | null;
+  examScore: string;
+  id: string;
+  isApproved: boolean;
+  isRejected: boolean;
+  applicationStatus: string;
+  previousSchool: string | null;
+  rejectionReason: string | null;
+  ParentStudentLink: {
+    parent: Parent;
+    relation: string;
+  }[];
+  documents: Document[];
+};
+
+export type Parent = {
+  user: User;
 };
 
 export type User = {
@@ -69,6 +101,7 @@ export type User = {
   username: string;
   phoneNumber: string;
   image: string | null;
+  occupation: string | null;
   employeeID: string | null;
   department: string | null;
   medicalConditions: string | null;

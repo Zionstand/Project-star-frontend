@@ -163,7 +163,6 @@ export const UploadPhotosModal = ({
   const handleUrlUpload = () => {
     if (urlInput.trim()) {
       // Handle URL upload logic here
-      console.log("Uploading from URL:", urlInput);
       setUrlInput("");
     }
   };
