@@ -1,3 +1,4 @@
+import { StudentActions } from "@/components/StudentActions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
@@ -27,9 +28,7 @@ export const StudentCard = ({ student }: Props) => {
             {student?.email}
           </a>
         </div>
-        <Button size="icon" variant={"secondary"}>
-          <IconDotsVertical />
-        </Button>
+        <StudentActions username={student?.username!} />
       </div>
       <div className="text-sm text-muted-foreground space-y-2">
         <p>

@@ -1,5 +1,6 @@
 "use client";
 import { Loader } from "@/components/Loader";
+import { StudentApprovalModal } from "@/components/StudentApprovalModal";
 import { StudentRejectionModal } from "@/components/StudentRejectionModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import api from "@/lib/api";
 import { formatDate, formatPhoneNumber } from "@/lib/utils";
-import { useAuth, User } from "@/store/useAuth";
+import { Class, useAuth, User } from "@/store/useAuth";
 import { IconBan, IconCheck, IconEye } from "@tabler/icons-react";
 import Link from "next/link";
 import React, { useState, useTransition } from "react";
@@ -20,52 +21,20 @@ interface Props {
     type: "approved" | "rejected",
     student?: User
   ) => void;
+  classes: Class[];
 }
 
 export const ApprovalStudentBox = ({
   student,
   onStudentStatusChange,
+  classes,
 }: Props) => {
   const { user } = useAuth();
 
   const [isVisible, setIsVisible] = useState(true); // ✅ fade control
-  const [pendingApprove, startApproveTransition] = useTransition();
-  const [pendingReject, startRejectTransition] = useTransition();
   const [studentRejectModalOpen, setStudentRejectModalOpen] = useState(false);
-
-  const handleApprove = () => {
-    startApproveTransition(async () => {
-      try {
-        const res = await api.post(
-          `/students/${user?.schoolId}/approval/${student?.id}`
-        );
-
-        toast.success(res.data.message);
-        setIsVisible(false);
-
-        onStudentStatusChange(student?.id!, "approved");
-      } catch (error: any) {
-        toast.error(error.response?.data?.message || "An error occurred");
-      }
-    });
-  };
-
-  const handleReject = () => {
-    startRejectTransition(async () => {
-      try {
-        const res = await api.post(
-          `/students/${user?.schoolId}/rejection/${student?.id}`
-        );
-
-        toast.success(res.data.message);
-        // ✅ fade away then remove
-        setIsVisible(false);
-        onStudentStatusChange(student?.id!, "rejected");
-      } catch (error: any) {
-        toast.error(error.response?.data?.message || "An error occurred");
-      }
-    });
-  };
+  const [studentApprovalModalOpen, setStudentApprovalModalOpen] =
+    useState(false);
 
   return (
     isVisible && (
@@ -167,28 +136,22 @@ export const ApprovalStudentBox = ({
                   <div className="space-y-0.5 col-span-2">
                     <p className="font-medium">Documents Submitted:</p>
                     <div className="flex gap-2 overflow-x-auto whitespace-nowrap p-1 custom-scroll">
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
-                      <Badge variant={"secondary"}>Birth certificate</Badge>
+                      {student?.Student.documents.map((document) => (
+                        <Badge key={document.id} variant={"secondary"}>
+                          {document.name
+                            .split("_")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")}
+                        </Badge>
+                      ))}
+                      {student?.Student.documents.length === 0 && (
+                        <Badge variant={"secondary"}>
+                          No document submitted
+                        </Badge>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -196,39 +159,27 @@ export const ApprovalStudentBox = ({
             </div>
           </div>
           <div className="flex-1 w-full grid grid-cols-3 lg:grid-cols-1 gap-2">
-            <Button disabled={pendingApprove} asChild>
+            <Button asChild>
               <Link href={`/a/students/approval/${student?.username}`}>
                 <IconEye />
                 Review
               </Link>
             </Button>
             <Button
-              disabled={pendingApprove}
               variant={"success"}
-              onClick={handleApprove}
+              onClick={() => setStudentApprovalModalOpen(true)}
+              disabled={student?.Student.isApproved}
             >
-              {pendingApprove ? (
-                <Loader text="Approving..." />
-              ) : (
-                <>
-                  <IconCheck />
-                  Approve
-                </>
-              )}
+              <IconCheck />
+              Approve
             </Button>
             <Button
-              disabled={pendingReject || student?.Student.isRejected}
+              disabled={student?.Student.isRejected}
               onClick={() => setStudentRejectModalOpen(true)}
               variant={"outlineDestructive"}
             >
-              {pendingReject ? (
-                <Loader text="Rejecting..." />
-              ) : (
-                <>
-                  <IconBan />
-                  Reject
-                </>
-              )}
+              <IconBan />
+              Reject
             </Button>
           </div>
         </CardContent>
@@ -237,6 +188,17 @@ export const ApprovalStudentBox = ({
             open={studentRejectModalOpen}
             onClose={() => {
               setStudentRejectModalOpen(false);
+              setIsVisible(false);
+            }}
+            student={student}
+          />
+        )}
+        {studentApprovalModalOpen && (
+          <StudentApprovalModal
+            classes={classes}
+            open={studentApprovalModalOpen}
+            onClose={() => {
+              setStudentApprovalModalOpen(false);
               setIsVisible(false);
             }}
             student={student}

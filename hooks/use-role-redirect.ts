@@ -15,8 +15,6 @@ export function useRoleRedirect(user: any) {
   useEffect(() => {
     if (!user || !user.schoolId) return;
 
-    console.log(user);
-
     const path = getDashboardPath(user.role);
     if (!path) return;
 
@@ -30,8 +28,6 @@ export function useRoleRedirect(user: any) {
     if (isAtRoleRoot && pathname !== path) {
       router.replace(path);
     }
-
-    console.log("yesss");
 
     // // Fetch school only once
     // if (!hasFetchedSchool.current) {

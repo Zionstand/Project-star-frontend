@@ -6,13 +6,19 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { formatMoneyInput } from "@/lib/utils";
+import { Label } from "./ui/label";
 
 interface Props {
   placeholder?: string;
   search?: string;
+  label?: string;
 }
 
-export const SearchBar = ({ placeholder = "Search...", search }: Props) => {
+export const SearchBar = ({
+  placeholder = "Search...",
+  search,
+  label,
+}: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -78,35 +84,38 @@ export const SearchBar = ({ placeholder = "Search...", search }: Props) => {
   };
 
   return (
-    <div className="flex items-center relative justify-between bg-muted w-full rounded-lg">
-      <Input
-        className="peer ps-9 pe-9"
-        placeholder={placeholder}
-        value={query}
-        onChange={handleChange}
-      />
-      <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-        {isLoading ? (
-          <LoaderCircleIcon
-            className="animate-spin"
-            size={16}
-            role="status"
-            aria-label="Loading..."
-          />
-        ) : (
-          <SearchIcon size={16} aria-hidden="true" />
+    <div className="w-full">
+      {label && <Label>{label}</Label>}
+      <div className="flex items-center relative justify-between bg-muted rounded-lg">
+        <Input
+          className="peer ps-9 pe-9"
+          placeholder={placeholder}
+          value={query}
+          onChange={handleChange}
+        />
+        <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+          {isLoading ? (
+            <LoaderCircleIcon
+              className="animate-spin"
+              size={16}
+              role="status"
+              aria-label="Loading..."
+            />
+          ) : (
+            <SearchIcon size={16} aria-hidden="true" />
+          )}
+        </div>
+        {query && (
+          <Button
+            size="icon"
+            variant={"ghost"}
+            className="absolute right-1"
+            onClick={() => setQuery("")}
+          >
+            <X />
+          </Button>
         )}
       </div>
-      {query && (
-        <Button
-          size="icon"
-          variant={"ghost"}
-          className="absolute right-1"
-          onClick={() => setQuery("")}
-        >
-          <X />
-        </Button>
-      )}
     </div>
   );
 };

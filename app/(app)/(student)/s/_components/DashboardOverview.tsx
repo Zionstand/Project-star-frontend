@@ -142,7 +142,6 @@ export const DashboardOverview = ({
           </CardContent>
         </Card>
       </div>
-
       <div className="lg:col-span-2">
         <div className="grid gap-4">
           <Card>

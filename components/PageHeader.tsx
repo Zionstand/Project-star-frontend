@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Props {
-  title: string;
-  description?: string;
+  title: String | React.ReactNode;
+  description?: string | React.ReactNode;
   back?: boolean;
   primaryCTA?: {
     label: string;

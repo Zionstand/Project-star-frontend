@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber, formatWord } from "@/lib/utils";
-import { User } from "@/store/useAuth";
-import { IconDotsVertical, IconPhone } from "@tabler/icons-react";
-import { Class } from "../../classes/page";
+import { Class, User } from "@/store/useAuth";
+import { IconPhone } from "@tabler/icons-react";
 import { StaffActions } from "./StaffActions";
 
 export interface ExtendedUser extends NonNullable<User> {

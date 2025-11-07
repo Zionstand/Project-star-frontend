@@ -1,9 +1,8 @@
 "use client";
 import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
-import { useAuth, User } from "@/store/useAuth";
+import { Class, useAuth, User } from "@/store/useAuth";
 import React, { useEffect, useState } from "react";
-import { Class } from "../../classes/page";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/PageHeader";
 import { AssignTeacherForm } from "../_components/AssignTeacherForm";

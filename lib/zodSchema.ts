@@ -627,6 +627,18 @@ export const EducationInformationFormSchema = z
     }
   });
 
+export const NewAssignmentFormSchema = z.object({
+  type: z.string(),
+  title: z.string().min(1),
+  description: z.string().min(1),
+  instructions: z.string().optional(),
+  totalMarks: z.string().min(1),
+  classId: z.string().min(1),
+  subjectId: z.string().min(1),
+  due: z.string().min(1),
+  attachments: z.any().optional(),
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -661,4 +673,7 @@ export type ParentInformationFormSchemaType = z.infer<
 >;
 export type EducationInformationFormSchemaType = z.infer<
   typeof EducationInformationFormSchema
+>;
+export type NewAssignmentFormSchemaType = z.infer<
+  typeof NewAssignmentFormSchema
 >;

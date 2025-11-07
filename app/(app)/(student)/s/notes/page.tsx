@@ -1,0 +1,136 @@
+"use client";
+import { AccountPendingModal } from "@/components/AccountPendingModal";
+import { Assignment, useAuth } from "@/store/useAuth";
+import { useEffect, useState } from "react";
+import { RejectedApprovalBanner } from "../_components/RejectedApprovalBanner";
+import { PageHeader } from "@/components/PageHeader";
+import { studentService } from "@/lib/student";
+import { Loader } from "@/components/Loader";
+import { toast } from "sonner";
+import { SearchBar } from "@/components/Searchbar";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  IconCalendar,
+  IconClock,
+  IconEye,
+  IconFileDescription,
+  IconFileText,
+  IconUpload,
+} from "@tabler/icons-react";
+import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+const ItemCard = ({ item }: { item: Assignment }) => {
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex flex-col lg:flex-row items-start gap-4 justify-between">
+          <div className="flex items-start gap-4 flex-1">
+            <div className={`p-3 rounded-lg bg-green-500/10`}>
+              <IconFileText className="w-6 h-6 text-green-500" />
+            </div>
+
+            <div className="flex-1 space-y-3">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-semibold text-lg">{item.title}</h3>
+                  <Badge variant={"outlineSuccess"} className="text-xs">
+                    {item.type}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <IconFileDescription className="w-4 h-4" />
+                  <span>{item.subject.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <IconCalendar className="w-4 h-4" />
+                  <span>Assigned: {formatDate(item.createdAt)}</span>
+                </div>
+                <div className="flex text-red-600 items-center gap-2">
+                  <IconClock className="w-4 h-4" />
+                  <span>Due: {formatDate(item.dueDate)}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <IconClock className="w-4 h-4" />
+                  <span>
+                    Teacher: {item.Teacher.user?.title}{" "}
+                    {item.Teacher.user?.firstName} {item.Teacher.user?.lastName}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 ml-4 w-full lg:w-auto">
+            <Button
+              variant="outline"
+              className="w-full lg:w-auto hover:bg-gray-100"
+            >
+              <IconEye className="w-4 h-4" /> <span>View</span>
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const page = () => {
+  const { user } = useAuth();
+
+  const [notes, setNotes] = useState<Assignment[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!user?.schoolId) return;
+
+      try {
+        const [notes] = await Promise.all([
+          studentService.getStudentNotes(user?.school?.id!, user.id),
+        ]);
+
+        setNotes(notes);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, [user]);
+
+  if (loading) return <Loader />;
+
+  console.log(notes);
+
+  return (
+    <div className="space-y-6">
+      {user?.Student.applicationStatus === "pending" && <AccountPendingModal />}
+      {user?.Student.applicationStatus === "rejected" && (
+        <RejectedApprovalBanner reasons={user.Student.rejectionReason} />
+      )}
+      <PageHeader
+        title="My Notes"
+        description="View all your notes from your classes"
+      />
+      <SearchBar placeholder="Search notes..." />
+      <div className="space-y-6">
+        {notes.map((document) => (
+          <ItemCard key={document.id} item={document} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default page;

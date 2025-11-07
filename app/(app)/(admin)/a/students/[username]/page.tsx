@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import api from "@/lib/api";
 import { schoolService } from "@/lib/school";
-import { cn, formatDate, formatPhoneNumber } from "@/lib/utils";
+import { calculateAge, cn, formatDate, formatPhoneNumber } from "@/lib/utils";
 import { Class, useAuth, User } from "@/store/useAuth";
 import {
   IconActivity,
@@ -23,16 +23,21 @@ import {
   IconBuilding,
   IconCalendar,
   IconCheck,
+  IconClock,
   IconDotsVertical,
   IconDownload,
   IconEye,
   IconFileDescription,
   IconMail,
   IconMapPin2,
+  IconPencil,
   IconPhone,
   IconSchool,
+  IconTrash,
+  IconTrendingUp,
   IconUser,
   IconUsers,
+  IconWallet,
   IconX,
 } from "@tabler/icons-react";
 import { useParams } from "next/navigation";
@@ -50,24 +55,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { StudentRejectionModal } from "@/components/StudentRejectionModal";
 import { StudentApprovalModal } from "@/components/StudentApprovalModal";
+import { Progress } from "@/components/ui/progress";
 
 const page = () => {
   const { user } = useAuth();
 
   const { username } = useParams();
-  const [pendingApproval, startApprovalTransition] = useTransition();
-  const [pendingRejection, startRejectionTransition] = useTransition();
-  const [pendingApproveStudent, startApproveStudentTransition] =
-    useTransition();
 
   const [student, setStudent] = useState<User>();
-  const [rejectModalOpen, setRejectModalOpen] = useState(false);
-  const [classes, setClasses] = useState<Class[]>([]);
-  const [studentRejectModalOpen, setStudentRejectModalOpen] = useState(false);
-  const [studentApprovalModalOpen, setStudentApprovalModalOpen] =
-    useState(false);
-  const [rejectRemark, setRejectRemark] = useState("");
-  const [selectedDocument, setSelectedDocument] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -75,16 +70,12 @@ const page = () => {
       if (!user || !user.school?.id || !username) return;
 
       try {
-        const student = await schoolService.getPendingStudentDetails(
+        const student = await schoolService.getStudentDetails(
           user?.school?.id!,
           username!
         );
-        const classes = await schoolService.getSchoolClasses(
-          user?.school?.schoolID!
-        );
 
         setStudent(student);
-        setClasses(classes);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -95,79 +86,25 @@ const page = () => {
     fetch();
   }, [user, username]);
 
-  const openRejectModal = (doc: any) => {
-    setSelectedDocument(doc);
-    setRejectModalOpen(true);
-  };
-
-  const handleRejectSubmit = () => {
-    if (!rejectRemark.trim()) {
-      toast.error("Please provide a reason for rejection");
-      return;
-    }
-    if (selectedDocument) {
-      handleDocumentAction(selectedDocument.id, "rejected");
-    }
-  };
-
-  const handleDocumentAction = (id: string, type: "approved" | "rejected") => {
-    if (type === "approved") {
-      startApprovalTransition(async () => {
-        try {
-          const res = await api.put(
-            `/students/${id}/${student?.id}/${user?.school?.id}/update-document/${type}`
-          );
-          toast.success(res.data.message);
-
-          const [updatedStudent] = await Promise.all([
-            schoolService.getPendingStudentDetails(
-              user?.school?.id!,
-              username!
-            ),
-          ]);
-
-          setStudent(updatedStudent);
-        } catch (error: any) {
-          toast.error(error.response?.data?.message || "An error occurred");
-        }
-      });
-    } else {
-      startRejectionTransition(async () => {
-        try {
-          const res = await api.put(
-            `/students/${id}/${student?.id}/${user?.school?.id}/update-document/${type}`,
-            { remarks: rejectRemark }
-          );
-          toast.success(res.data.message);
-
-          const [updatedStudent] = await Promise.all([
-            schoolService.getPendingStudentDetails(
-              user?.school?.id!,
-              username!
-            ),
-          ]);
-
-          setStudent(updatedStudent);
-          setRejectModalOpen(false);
-        } catch (error: any) {
-          toast.error(error.response?.data?.message || "An error occurred");
-        }
-      });
-    }
-  };
-
   if (loading || !student) return <Loader />;
+
+  console.log(student);
 
   return (
     <div className="space-y-6">
       <PageHeader
         title={`Student Details`}
         description={`Complete information about ${student.firstName} ${student.lastName}`}
-        // destructiveCTA={{
-        //   label: "Delete",
-        //   slug: ``,
-        //   icon: IconTrash,
-        // }}
+        destructiveCTA={{
+          label: "Delete",
+          slug: ``,
+          icon: IconTrash,
+        }}
+        secondaryCTA={{
+          label: "Edit",
+          slug: ``,
+          icon: IconPencil,
+        }}
         back
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
@@ -221,9 +158,9 @@ const page = () => {
                       </p>
                     </div>
                   </div>
-                  {student?.Student.desiredClass &&
+                  {student?.Student.Class.level &&
                     ["SS1", "SS2", "SS3"].includes(
-                      student?.Student?.desiredClass
+                      student?.Student?.Class.level
                     ) && (
                       <div className="flex items-start justify-start gap-2">
                         <IconBuilding className="size-5" />
@@ -255,7 +192,9 @@ const page = () => {
                     <div>
                       <p className="text-xs">Date of Birth</p>
                       <p className="text-black font-medium">
-                        {formatDate(student.dob) || (
+                        {`${formatDate(student.dob)} (${calculateAge(
+                          student?.dob!
+                        )} years)` || (
                           <span className="italic">No Date of Birth</span>
                         )}
                       </p>
@@ -264,9 +203,9 @@ const page = () => {
                   <div className="flex items-start justify-start gap-2">
                     <IconAward className="size-5" />
                     <div>
-                      <p className="text-xs">Candidate Number</p>
+                      <p className="text-xs">Admission Number</p>
                       <p className="text-black font-medium">
-                        {student.Student.candidateNumber}
+                        {student.Student.admissionNumber}
                       </p>
                     </div>
                   </div>
@@ -417,15 +356,16 @@ const page = () => {
               </CardHeader>
               <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-2 md:grid-cols-2">
                 <div>
-                  <p className="text-xs">Applied for:</p>
+                  <p className="text-xs">Admission Date:</p>
                   <p className="text-black font-medium">
-                    {student.Student.desiredClass}
+                    {formatDate(student.Student.approvalDate)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs">Applied:</p>
+                  <p className="text-xs">Current Class:</p>
                   <p className="text-black font-medium">
-                    {formatDate(student.createdAt)}
+                    {student.Student.Class.level}
+                    {student.Student.Class.section}
                   </p>
                 </div>
               </CardContent>
@@ -433,259 +373,194 @@ const page = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-start gap-2">
-                  <IconFileDescription className="size-4" />
-                  Documents uploaded
+                  <IconTrendingUp className="size-4" />
+                  Academic Performance Summary
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-3">
-                {student.Student.documents &&
-                student.Student.documents.length > 0 ? (
-                  student.Student.documents.map((doc, index) => (
-                    <div
-                      key={doc.id}
-                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <div className="p-2 bg-primary/10 rounded-md">
-                          <IconFileDescription className="size-5 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-black text-sm">
-                            {doc.type
-                              .split("_")
-                              .map(
-                                (word) =>
-                                  word.charAt(0).toUpperCase() + word.slice(1)
-                              )
-                              .join(" ")}
-                          </p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge
-                              variant={
-                                doc.verified
-                                  ? "success"
-                                  : doc.status === "under-review"
-                                  ? "pending"
-                                  : "secondary"
-                              }
-                              className="text-xs"
-                            >
-                              {doc.verified ? (
-                                "Verified"
-                              ) : doc.status === "under-review" ? (
-                                "Under Review"
-                              ) : (
-                                <span className="capitalize">{doc.status}</span>
-                              )}
-                            </Badge>
-                            {doc.reviewedAt && (
-                              <span className="text-xs text-muted-foreground">
-                                Reviewed: {formatDate(doc.reviewedAt)}
-                              </span>
-                            )}
-                          </div>
-                          {doc.remarks && (
-                            <p className="text-xs text-muted-foreground mt-1">
-                              Remarks: {doc.remarks}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                          >
-                            <IconDotsVertical className="size-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onClick={() => window.open(doc.url, "_blank")}
-                          >
-                            <IconEye className="size-4 mr-2" />
-                            View Document
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => {
-                              const link = document.createElement("a");
-                              link.href = doc.url;
-                              link.download = doc.name;
-                              link.click();
-                            }}
-                          >
-                            <IconDownload className="size-4 mr-2" />
-                            Download
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          {!doc.verified && (
-                            <DropdownMenuItem
-                              onSelect={() =>
-                                handleDocumentAction(doc.id, "approved")
-                              }
-                              disabled={pendingApproval}
-                              className="text-green-600 focus:text-green-600"
-                            >
-                              {pendingApproval ? (
-                                <Loader text="Approving..." />
-                              ) : (
-                                <>
-                                  <IconCheck className="size-4 mr-2" />
-                                  Approve Document
-                                </>
-                              )}
-                            </DropdownMenuItem>
-                          )}
-                          <DropdownMenuItem
-                            onClick={() => openRejectModal(doc)}
-                            className="text-destructive focus:text-destructive"
-                          >
-                            <IconX className="size-4 mr-2" />
-                            Reject Document
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <IconFileDescription className="size-12 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">No documents uploaded yet</p>
+              <CardContent>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div className="p-4 bg-primary/5 rounded-lg">
+                    <p className="text-xs text-muted-foreground">Current GPA</p>
+                    <p className="text-primary">3.85</p>
                   </div>
-                )}
+                  <div className="p-4 bg-muted/10 rounded-lg">
+                    <p className="text-xs text-muted-foreground">
+                      Previous GPA
+                    </p>
+                    <p className="text-primary">3.72</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="font-medium text-base">
+                    Current Term Performance
+                  </p>
+                  <div className="grid gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-black">Mathematics</p>
+                        <p className="text-muted-foreground flex items-center justify-end gap-2">
+                          <span>92%</span> <Badge variant={"outline"}>A</Badge>
+                        </p>
+                      </div>
+                      <Progress value={92} />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-black">Mathematics</p>
+                        <p className="text-muted-foreground flex items-center justify-end gap-2">
+                          <span>92%</span> <Badge variant={"outline"}>A</Badge>
+                        </p>
+                      </div>
+                      <Progress value={92} />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-black">Mathematics</p>
+                        <p className="text-muted-foreground flex items-center justify-end gap-2">
+                          <span>92%</span> <Badge variant={"outline"}>A</Badge>
+                        </p>
+                      </div>
+                      <Progress value={92} />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-black">Mathematics</p>
+                        <p className="text-muted-foreground flex items-center justify-end gap-2">
+                          <span>92%</span> <Badge variant={"outline"}>A</Badge>
+                        </p>
+                      </div>
+                      <Progress value={92} />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-black">Mathematics</p>
+                        <p className="text-muted-foreground flex items-center justify-end gap-2">
+                          <span>92%</span> <Badge variant={"outline"}>A</Badge>
+                        </p>
+                      </div>
+                      <Progress value={92} />
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-start gap-2">
-                  <IconActivity className="size-4" />
-                  Quick Actions
+                  <IconClock className="size-4" />
+                  Attendance Record
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-3">
-                <Button
-                  onClick={() => setStudentApprovalModalOpen(true)}
-                  variant={"success"}
-                  className="w-full"
-                  disabled={student.Student.isApproved}
-                >
-                  {pendingApproveStudent ? (
-                    <Loader text="Approving..." />
-                  ) : (
-                    <>
-                      <IconCheck />
-                      Approve student
-                    </>
-                  )}
-                </Button>
+              <CardContent className="space-y-6">
+                <div className="grid text-center grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="rounded-lg bg-blue-50 p-4">
+                    <p className="text-muted-foreground text-xs mb-1">
+                      Total Days
+                    </p>
+                    <p className="text-2xl font-semibold text-primary">180</p>
+                  </div>
+                  <div className="rounded-lg bg-green-50 p-4">
+                    <p className="text-muted-foreground text-xs mb-1">
+                      Present
+                    </p>
+                    <p className="text-2xl font-semibold text-green-600">172</p>
+                  </div>
+                  <div className="rounded-lg bg-red-50 p-4">
+                    <p className="text-muted-foreground text-xs mb-1">Absent</p>
+                    <p className="text-2xl font-semibold text-red-600">8</p>
+                  </div>
+                  <div className="rounded-lg bg-blue-50 p-4">
+                    <p className="text-muted-foreground text-xs mb-1">
+                      Percentage
+                    </p>
+                    <p className="text-2xl font-semibold text-blue-600">
+                      95.6%
+                    </p>
+                  </div>
+                </div>
 
-                <Button
-                  onClick={() => setStudentRejectModalOpen(true)}
-                  variant="destructive"
-                  className="w-full"
-                  disabled={student.Student.isRejected}
-                >
-                  <IconX />
-                  Reject student
-                </Button>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium">Attendance Rate</p>
+                    <p className="text-sm font-semibold">95.6%</p>
+                  </div>
+                  <Progress value={95.6} className="h-2" />
+                  <div className="flex items-center gap-2 text-green-600">
+                    <IconCheck className="size-4" />
+                    <p className="text-sm">Excellent attendance record</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-start gap-2">
+                  <IconWallet className="size-4" />
+                  Payment Summary
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Payment Status
+                    </p>
+                    <Badge variant="default" className="bg-green-600">
+                      Paid
+                    </Badge>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Balance
+                    </p>
+                    <p className="text-lg font-semibold text-green-600">₦0</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Total Fees
+                    </p>
+                    <p className="font-semibold">₦450,000</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Amount Paid
+                    </p>
+                    <p className="font-semibold text-green-600">₦450,000</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Outstanding
+                    </p>
+                    <p className="font-semibold text-green-600">₦0</p>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-sm font-medium mb-3">Last Payment</p>
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div>
+                      <p className="font-semibold">₦150,000</p>
+                      <p className="text-xs text-muted-foreground">
+                        15/09/2024
+                      </p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      <IconEye />
+                      View Receipt
+                    </Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
-
-      {/* Reject Document Modal */}
-      <Dialog open={rejectModalOpen} onOpenChange={setRejectModalOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Reject Document</DialogTitle>
-            <DialogDescription>
-              Please provide a reason for rejecting this document. The student
-              will be able to see this feedback.
-            </DialogDescription>
-          </DialogHeader>
-          {selectedDocument && (
-            <div className="my-4">
-              <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-                <IconFileDescription className="size-5 text-muted-foreground" />
-                <span className="font-medium text-sm">
-                  {selectedDocument.type
-                    .split("_")
-                    .map(
-                      (word: string) =>
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                    )
-                    .join(" ")}
-                </span>
-              </div>
-            </div>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="reject-reason">Reason for Rejection *</Label>
-            <Textarea
-              id="reject-reason"
-              placeholder="E.g., The document is not clear enough, please upload a higher quality image..."
-              value={rejectRemark}
-              onChange={(e) => setRejectRemark(e.target.value)}
-              rows={4}
-              className="resize-none"
-              maxLength={500}
-            />
-            <p className="text-xs text-muted-foreground">
-              {rejectRemark.length}/500 characters
-            </p>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setRejectModalOpen(false);
-                setRejectRemark("");
-                setSelectedDocument(null);
-              }}
-              disabled={pendingRejection}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleRejectSubmit}
-              disabled={pendingRejection || !rejectRemark.trim()}
-            >
-              {pendingRejection ? (
-                <Loader text="Rejecting..." />
-              ) : (
-                "Reject Document"
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {studentRejectModalOpen && (
-        <StudentRejectionModal
-          open={studentRejectModalOpen}
-          onClose={(student) => {
-            setStudentRejectModalOpen(false);
-            setStudent(student);
-          }}
-          student={student}
-        />
-      )}
-
-      {studentApprovalModalOpen && (
-        <StudentApprovalModal
-          classes={classes}
-          open={studentApprovalModalOpen}
-          onClose={(student) => {
-            setStudentApprovalModalOpen(false);
-            setStudent(student);
-          }}
-          student={student}
-        />
-      )}
     </div>
   );
 };

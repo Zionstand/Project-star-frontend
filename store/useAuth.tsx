@@ -1,3 +1,4 @@
+import { Subject } from "@/app/(app)/(admin)/a/subjects/page";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -31,6 +32,29 @@ export type Class = {
   schoolId: string;
   createdAt: string | null;
   updatedAt: string | null;
+  _count: {
+    students: number;
+  };
+  students: Student[];
+};
+
+export type Assignment = {
+  Class: Class;
+  classId: true;
+  createdAt: string;
+  description: string;
+  instructions: string;
+  totalMarks: number;
+  dueDate: string;
+  id: string;
+  subject: Subject;
+  teacherId: string;
+  Teacher: Teacher;
+  type: string;
+  title: string;
+  slug: string;
+  attachments: Attachment[];
+  assignmentSubmissions: AssignmentSubmissions[];
 };
 
 export type School = {
@@ -80,11 +104,14 @@ export type Student = {
   applicationStatus: string;
   previousSchool: string | null;
   rejectionReason: string | null;
+  approvalDate: string | null;
+  admissionNumber: string | null;
   ParentStudentLink: {
     parent: Parent;
     relation: string;
   }[];
   documents: Document[];
+  user: User;
 };
 
 export type Parent = {
@@ -120,6 +147,40 @@ export type User = {
   classes?: Class[] | null;
   Student: Student;
 } | null;
+
+export type Attachment = {
+  id: string;
+  assignmentId: string;
+  fileName: string;
+  fileSize: number;
+  fileUrl: string;
+  fileType: string;
+  uploadedAt: string;
+};
+
+export type AssignmentSubmissionAttachment = {
+  id: string;
+  submissionId: string;
+  fileName: string;
+  fileSize: number;
+  fileUrl: string;
+  fileType: string;
+  uploadedAt: string;
+};
+
+export type AssignmentSubmissions = {
+  assignmentId: string;
+  grade: string;
+  comment: string;
+  gradedById: string;
+  id: string;
+  schoolId: string;
+  submittedAt: string;
+  status: string;
+  attachments: AssignmentSubmissionAttachment[];
+  Student: Student;
+  studentId: string;
+};
 
 type AuthState = {
   user: User;

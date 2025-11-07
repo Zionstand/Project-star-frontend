@@ -175,3 +175,85 @@ export function formatPhoneNumber(
     return cleaned.replace(/^\+234(\d{3})(\d{3})(\d{4})$/, "0$1 $2 $3");
   }
 }
+
+export function calculateAge(dob: string | Date): number {
+  const birthDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+}
+
+// export const calculateTimeLeft = (dueDate: string | Date): string => {
+//   if (!dueDate) return "No due date";
+
+//   const now = new Date();
+//   const due = new Date(dueDate);
+
+//   const diffInMs = due.getTime() - now.getTime(); // ensure both are numbers
+
+//   if (diffInMs <= 0) return "Past due";
+
+//   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+//   const diffInHours = Math.floor(
+//     (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+//   );
+//   const diffInMinutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+
+//   if (diffInDays > 0) {
+//     return `${diffInDays} day${diffInDays > 1 ? "s" : ""} left`;
+//   } else if (diffInHours > 0) {
+//     return `${diffInHours} hour${
+//       diffInHours > 1 ? "s" : ""
+//     } ${diffInMinutes} min left`;
+//   } else {
+//     return `${diffInMinutes} min left`;
+//   }
+// };
+
+type TimeLeftResult = {
+  label: string;
+  colorClass: string;
+};
+
+export const calculateTimeLeft = (dueDate: string | Date): TimeLeftResult => {
+  if (!dueDate) return { label: "No due date", colorClass: "text-gray-300" };
+
+  const now = new Date();
+  const due = new Date(dueDate);
+  const diffInMs = due.getTime() - now.getTime();
+
+  if (diffInMs <= 0) return { label: "Past due", colorClass: "text-red-400" };
+
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const diffInHours = Math.floor(
+    (diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const diffInMinutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  // Logic for display + color
+  if (diffInDays > 1)
+    return { label: `${diffInDays} days left`, colorClass: "text-green-500" }; // soft green
+  if (diffInDays === 1)
+    return { label: "1 day left", colorClass: "text-green-400" }; // slightly lighter green
+  if (diffInHours > 0)
+    return {
+      label: `${diffInHours}h ${diffInMinutes}m left`,
+      colorClass: "text-yellow-500",
+    }; // yellow on blue
+  return { label: `${diffInMinutes} min left`, colorClass: "text-orange-500" }; // orange for urgency
+};
+
+export const formatFileSize = (bytes: number) => {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+};

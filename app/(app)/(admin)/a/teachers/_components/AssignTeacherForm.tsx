@@ -29,8 +29,7 @@ import {
   AssignTeacherFormSchemaType,
 } from "@/lib/zodSchema";
 import api from "@/lib/api";
-import { useAuth, User } from "@/store/useAuth";
-import { Class } from "../../classes/page";
+import { Class, useAuth, User } from "@/store/useAuth";
 import { Subject } from "../../subjects/page";
 import z from "zod";
 

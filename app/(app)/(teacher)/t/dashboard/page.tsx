@@ -1,14 +1,15 @@
 "use client";
 import { DashboardCards } from "@/components/DashboardCards";
 import { PageHeader } from "@/components/PageHeader";
-import { useAuth } from "@/store/useAuth";
-import React from "react";
+import { Class, useAuth } from "@/store/useAuth";
+import React, { useEffect, useState } from "react";
 import {
   IconAlertCircle,
   IconBook,
   IconCalendar,
   IconClock,
   IconMessage,
+  IconSchool,
   IconTrendingUp,
   IconUsers,
   IconUsersGroup,
@@ -20,22 +21,55 @@ import { TodaySchedule } from "./_components/TodaySchedule";
 import { Button } from "@/components/ui/button";
 import { PendingTask } from "./_components/PendingTask";
 import { QuickActions } from "./_components/QuickActions";
+import { schoolService } from "@/lib/school";
+import { teacherService } from "@/lib/teacher";
+import { toast } from "sonner";
+import { Loader } from "@/components/Loader";
 
 const page = () => {
   const { user } = useAuth();
 
+  const [classes, setClasses] = useState<Class[]>();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!user?.schoolId) return;
+
+      try {
+        const [classes] = await Promise.all([
+          teacherService.getTeacherClasses(user?.school?.id!, user?.id!),
+        ]);
+
+        setClasses(classes);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, [user]);
+
+  if (loading) return <Loader />;
+
   const stats = [
     {
       title: "My classes",
-      value: "6",
-      icon: IconUsers,
+      value: `${classes?.length}`,
+      icon: IconSchool,
       bgColor: "bg-primary",
       textColor: "text-white",
       description: "Active classes",
     },
     {
       title: "Total Students",
-      value: "267",
+      value: `${classes?.reduce(
+        (sum, current) => sum + current?._count?.students,
+        0
+      )}`,
       icon: IconUsersGroup,
       bgColor: "bg-green-500/20",
       textColor: "text-green-500",

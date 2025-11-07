@@ -12,7 +12,7 @@ import {
   IconUpload,
 } from "@tabler/icons-react";
 import { CircleCheckBig } from "lucide-react";
-import { UploadFileModal } from "@/components/UploadFileModal";
+import { UploadFilesModal } from "@/components/UploadFilesModal";
 import api from "@/lib/api";
 import { useAuth } from "@/store/useAuth";
 import { toast } from "sonner";
@@ -151,7 +151,7 @@ const DocumentItem = ({
         </div>
       </CardContent>
       {openModal && (
-        <UploadFileModal
+        <UploadFilesModal
           isOpen={openModal}
           onClose={() => setOpenModal(false)}
           onImport={handleImport}

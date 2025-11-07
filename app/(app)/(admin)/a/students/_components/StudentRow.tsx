@@ -1,3 +1,4 @@
+import { StudentActions } from "@/components/StudentActions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -37,9 +38,7 @@ export const StudentRow = ({ student }: Props) => {
         <Badge variant={"outlineSuccess"}>Active</Badge>
       </TableCell>
       <TableCell className="text-right">
-        <Button size="icon" variant={"secondary"}>
-          <IconDotsVertical />
-        </Button>
+        <StudentActions username={student?.username!} />
       </TableCell>
     </TableRow>
   );

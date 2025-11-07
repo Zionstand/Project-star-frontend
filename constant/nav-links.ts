@@ -27,6 +27,7 @@ import {
   IconWallet,
   IconChalkboardTeacher,
   IconFileCertificate,
+  IconFileText,
 } from "@tabler/icons-react";
 
 export const adminNavLinks = [
@@ -525,6 +526,11 @@ export const studentNavLinks = [
         title: "My Assignments",
         url: "/s/assignments",
         icon: IconFileDescription,
+      },
+      {
+        title: "My Notes",
+        url: "/s/notes",
+        icon: IconFileText,
       },
       {
         title: "My Grades",
