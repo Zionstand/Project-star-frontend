@@ -88,8 +88,6 @@ const page = () => {
 
   if (loading || !student) return <Loader />;
 
-  console.log(student);
-
   return (
     <div className="space-y-6">
       <PageHeader

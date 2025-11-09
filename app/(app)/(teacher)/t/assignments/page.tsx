@@ -34,8 +34,6 @@ import Link from "next/link";
 const ItemCard = ({ item }: { item: Assignment }) => {
   const isAssignment = item.type === "ASSIGNMENT";
 
-  console.log(item.assignmentSubmissions.length, item.Class.students.length);
-
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-6">
@@ -192,8 +190,6 @@ const Page = () => {
   }, [user]);
 
   if (loading) return <Loader />;
-
-  console.log(documents);
 
   return (
     <div className="space-y-6">

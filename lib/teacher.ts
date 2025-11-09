@@ -29,8 +29,6 @@ export const teacherService = {
     const res = await api.get(
       `/assignments/${teacherId}/${schoolId}/all-assignment-documents`
     );
-
-    console.log(res);
     return res.data;
   },
 
@@ -55,6 +53,16 @@ export const teacherService = {
   ) => {
     const res = await api.get(
       `/assignments/teachers/${teacherId}/${schoolId}/assignments/${assignmentId}`
+    );
+    return res.data;
+  },
+
+  getStudentAssignmentsDetails: async (
+    schoolId: string,
+    assignmentId: string | string[]
+  ) => {
+    const res = await api.get(
+      `/assignment-submissions/${schoolId}/${assignmentId}`
     );
     return res.data;
   },

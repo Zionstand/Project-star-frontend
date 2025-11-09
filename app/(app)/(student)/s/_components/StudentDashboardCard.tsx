@@ -46,7 +46,7 @@ export const StudentDashboardCard = ({
         <p className="text-muted-foreground text-sm">
           Candidate No.: {candidateNumber}
         </p>
-        <div className="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-1 text-muted-foreground text-sm">
+        <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-1 text-muted-foreground text-sm">
           <p className="flex items-center justify-start gap-1">
             <IconBuilding className="size-4" /> Applied for:{" "}
             {desiredClass || "No class"}

@@ -28,8 +28,6 @@ const AttendancePage = () => {
     new Date().toISOString().split("T")[0]
   ); // default to today
 
-  console.log(selectedDate);
-
   const [loading, setLoading] = useState(true);
   const [loadingStudents, setLoadingStudents] = useState(true);
   const [submitting, setSubmitting] = useState(false);

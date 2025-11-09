@@ -46,6 +46,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import DateSelector from "@/components/DateSelector";
 import { useRoleRedirect } from "@/hooks/use-role-redirect";
+import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 
 interface Props {
   classLevels: {
@@ -78,6 +79,8 @@ export function OnboardingStudentForm({
   departments,
 }: Props) {
   const router = useRouter();
+  const { user } = useAuth();
+  useSchoolFetcher();
 
   const setUser = useAuth((s) => s.setUser);
 
@@ -168,6 +171,7 @@ export function OnboardingStudentForm({
       "phoneNumber",
       "candidateNumber",
       "examScore",
+      "dob",
     ];
 
     const isStep1Valid = await form.trigger(step1Fields, { shouldFocus: true });
@@ -187,7 +191,7 @@ export function OnboardingStudentForm({
         const res = await api.post(`/students/${schoolID}/onboarding`, data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        useRoleRedirect(res.data.user);
+        router.replace("/s/dashboard");
       } catch (error: any) {
         toast.error(error.response.data.message);
       }

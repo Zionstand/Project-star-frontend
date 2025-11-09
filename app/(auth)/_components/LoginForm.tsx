@@ -26,11 +26,13 @@ import api from "@/lib/api";
 import { Loader } from "@/components/Loader";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
-import { useRoleRedirect } from "@/hooks/use-role-redirect";
+import { getDashboardPath, useRoleRedirect } from "@/hooks/use-role-redirect";
+import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 
 export function LoginForm() {
   const router = useRouter();
   const setUser = useAuth((s) => s.setUser);
+  useSchoolFetcher();
 
   const [pending, startTransition] = useTransition();
 
@@ -50,7 +52,9 @@ export function LoginForm() {
         const res = await api.post("/auth/login", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        useRoleRedirect(res.data.user);
+        const dashboardPath = getDashboardPath(res.data.user.role);
+
+        router.push(dashboardPath);
       } catch (error: any) {
         toast.error(error.response.data.message);
       }

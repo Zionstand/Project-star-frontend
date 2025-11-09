@@ -3,6 +3,7 @@ import React, { useRef, useState, useTransition } from "react";
 import { Label } from "./ui/label";
 import { FileWithMeta } from "./UploadFilesModal";
 import {
+  IconAward,
   IconCheck,
   IconDownload,
   IconFile,
@@ -28,6 +29,7 @@ import { StudentAssignmentSuccessModal } from "./StudentAssignmentSuccessModal";
 
 interface Props {
   assignmentId: string;
+  hasGraded: boolean | undefined;
   hasSubmitted: boolean | undefined;
   submission: AssignmentSubmissions | null | undefined;
   totalMarks: number | undefined;
@@ -38,6 +40,7 @@ export const StudentAssignmentSubmission = ({
   submission,
   hasSubmitted,
   totalMarks,
+  hasGraded,
 }: Props) => {
   const { user } = useAuth();
   const [files, setFiles] = useState<FileWithMeta[]>([]);
@@ -50,8 +53,6 @@ export const StudentAssignmentSubmission = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [successModal, setSuccessModal] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-
-  console.log(submission);
 
   // 🧠 Helpers
   const getFileType = (file: File): string => {
@@ -171,7 +172,6 @@ export const StudentAssignmentSubmission = ({
         formData.append("studentId", user?.id!);
         formData.append("schoolId", user?.school?.id!);
         formData.append("assignmentId", assignmentId!);
-        console.log(submittedFiles, comment);
 
         // Append all selected files
         if (submittedFiles && submittedFiles.length > 0) {
@@ -422,7 +422,7 @@ export const StudentAssignmentSubmission = ({
           placeholder="Add any notes or comments for your teacher"
         />
       </div>
-      {hasSubmitted ? (
+      {/* {hasSubmitted ? (
         <div className="space-y-3">
           <div className="bg-green-50 border border-green-100 p-3 rounded-lg text-sm text-green-700">
             <p className="font-medium flex items-center gap-2">
@@ -440,6 +440,60 @@ export const StudentAssignmentSubmission = ({
           </div>
           <Button disabled className="w-full">
             Already Submitted
+          </Button>
+        </div>
+      ) : (
+        <Button
+          className="w-full"
+          type="button"
+          onClick={handleUpload}
+          disabled={
+            !files.some((f) => f.status === "completed") ||
+            pending ||
+            isDisabled
+          }
+        >
+          {pending ? <Loader text="Submitting..." /> : "Submit Assignment"}
+        </Button>
+      )} */}
+
+      {hasGraded ? (
+        <div className="space-y-3">
+          <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-lg text-sm text-emerald-700">
+            <p className="font-medium flex items-center gap-2">
+              <IconAward className="w-4 h-4" /> Graded on{" "}
+              {formatDate(submission?.gradedAt ?? submission?.submittedAt)}
+            </p>
+            <p className="mt-1">
+              Score:{" "}
+              <span className="font-semibold">
+                {submission?.grade ?? "-"} /{" "}
+                {totalMarks === 0 ? 100 : totalMarks}
+              </span>
+            </p>
+            {submission?.comment && (
+              <p className="mt-1 italic text-muted-foreground">
+                “{submission.gradingComment}”
+              </p>
+            )}
+          </div>
+          <Button
+            disabled
+            className="w-full bg-emerald-600 text-white hover:bg-emerald-700 cursor-not-allowed"
+          >
+            Graded
+          </Button>
+        </div>
+      ) : hasSubmitted ? (
+        <div className="space-y-3">
+          <div className="bg-blue-50 border border-blue-100 p-3 rounded-lg text-sm text-blue-700">
+            <p className="font-medium flex items-center gap-2">
+              <IconCheck className="w-4 h-4" /> Submitted on{" "}
+              {formatDate(submission?.submittedAt)}
+            </p>
+          </div>
+          <Button disabled className="w-full cursor-not-allowed">
+            Submitted
           </Button>
         </div>
       ) : (

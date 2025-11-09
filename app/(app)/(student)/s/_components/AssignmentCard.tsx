@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import { Assignment, useAuth } from "@/store/useAuth";
 import {
+  IconAward,
   IconCalendar,
   IconCheck,
   IconClock,
@@ -22,12 +23,14 @@ interface Props {
 export const AssignmentCard = ({ assignment }: Props) => {
   const { user } = useAuth();
   const studentId = user?.Student?.id;
-  const hasSubmitted = assignment.assignmentSubmissions?.some(
-    (submission) => submission.studentId === studentId
-  );
+
   const submission = assignment.assignmentSubmissions?.find(
     (s) => s.studentId === studentId
   );
+
+  const hasSubmitted = !!submission;
+  const hasGraded = !!(submission && submission.status === "GRADED");
+
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="">
@@ -54,19 +57,17 @@ export const AssignmentCard = ({ assignment }: Props) => {
                         ? "outlineSuccess"
                         : "outlinePurple"
                     }
-                    className="text-xs"
                   >
                     {assignment.type}
                   </Badge>
-                  {/* Submission status badge */}
-                  {hasSubmitted ? (
-                    <Badge variant="default" className="text-xs">
-                      Submitted
-                    </Badge>
+
+                  {/* Submission Status Badge */}
+                  {hasGraded ? (
+                    <Badge variant="success">Graded</Badge>
+                  ) : hasSubmitted ? (
+                    <Badge variant="default">Submitted</Badge>
                   ) : (
-                    <Badge variant="pending" className="text-xs">
-                      Pending
-                    </Badge>
+                    <Badge variant="pending">Pending</Badge>
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground line-clamp-2">
@@ -103,6 +104,17 @@ export const AssignmentCard = ({ assignment }: Props) => {
                     </span>
                   </div>
                 )}
+                {hasGraded && submission && (
+                  <div className="flex items-center gap-2 text-green-500">
+                    <IconAward className="w-4 h-4" />
+                    <span>
+                      Score: {submission.grade ?? 0} /{" "}
+                      {assignment.totalMarks === 0
+                        ? 100
+                        : assignment.totalMarks}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -117,7 +129,15 @@ export const AssignmentCard = ({ assignment }: Props) => {
                 <IconEye className="w-4 h-4" /> <span>View</span>
               </Link>
             </Button>
-            {hasSubmitted ? (
+            {hasGraded ? (
+              <Button
+                disabled
+                variant="success"
+                className="w-full lg:w-auto cursor-not-allowed"
+              >
+                <IconAward className="w-4 h-4" /> <span>Graded</span>
+              </Button>
+            ) : hasSubmitted ? (
               <Button disabled className="w-full lg:w-auto cursor-not-allowed">
                 <IconCheck className="w-4 h-4" /> <span>Submitted</span>
               </Button>
@@ -135,12 +155,23 @@ export const AssignmentCard = ({ assignment }: Props) => {
           </div>
         </div>
         {/* Optional small note for submitted ones */}
-        {hasSubmitted && (
+        {(hasSubmitted || hasGraded) && (
           <div className="mt-3 text-xs text-muted-foreground text-center md:hidden">
-            Submitted on {formatDate(submission?.submittedAt)} —{" "}
-            <span className="capitalize">
-              {submission?.status.toLowerCase()}
-            </span>
+            {hasGraded ? (
+              <>
+                Graded on {formatDate(submission?.gradedAt)} —{" "}
+                <span className="capitalize">
+                  {submission?.status.toLowerCase()}
+                </span>
+              </>
+            ) : (
+              <>
+                Submitted on {formatDate(submission?.submittedAt)} —{" "}
+                <span className="capitalize">
+                  {submission?.status.toLowerCase()}
+                </span>
+              </>
+            )}
           </div>
         )}
       </CardContent>

@@ -639,6 +639,11 @@ export const NewAssignmentFormSchema = z.object({
   attachments: z.any().optional(),
 });
 
+export const GradeFormSchema = z.object({
+  grade: z.string().min(0, { message: "Please enter a grade" }),
+  feedback: z.string().optional(),
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -677,3 +682,4 @@ export type EducationInformationFormSchemaType = z.infer<
 export type NewAssignmentFormSchemaType = z.infer<
   typeof NewAssignmentFormSchema
 >;
+export type GradeFormSchemaType = z.infer<typeof GradeFormSchema>;

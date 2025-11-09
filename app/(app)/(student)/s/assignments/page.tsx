@@ -42,8 +42,6 @@ const page = () => {
 
   if (loading) return <Loader />;
 
-  console.log(assignments);
-
   return (
     <div className="space-y-6">
       {user?.Student.applicationStatus === "pending" && <AccountPendingModal />}
@@ -54,7 +52,7 @@ const page = () => {
         title="My Assignments"
         description="View and submit your assignments"
       />
-      <AssignmentsCards total={assignments.length} />
+      <AssignmentsCards assignments={assignments} />
       <SearchBar placeholder="Search assignments..." />
       <Tabs defaultValue="all">
         <ScrollArea>
@@ -67,14 +65,49 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="all" className="space-y-4 mt-6">
-          {assignments.map((document) => (
-            <AssignmentCard key={document.id} assignment={document} />
+          {assignments.map((assignment) => (
+            <AssignmentCard key={assignment.id} assignment={assignment} />
           ))}
         </TabsContent>
 
-        <TabsContent value="pending" className="space-y-4 mt-6"></TabsContent>
+        <TabsContent value="pending" className="space-y-4 mt-6">
+          {assignments
+            .filter((assignment) => {
+              const submission = assignment.assignmentSubmissions?.find(
+                (s) => s.studentId === user?.Student.id
+              );
+              return !submission; // No submission yet → pending
+            })
+            .map((assignment) => (
+              <AssignmentCard key={assignment.id} assignment={assignment} />
+            ))}
+        </TabsContent>
 
-        <TabsContent value="submitted" className="space-y-4 mt-6"></TabsContent>
+        <TabsContent value="submitted" className="space-y-4 mt-6">
+          {assignments
+            .filter((assignment) => {
+              const submission = assignment.assignmentSubmissions?.find(
+                (s) => s.studentId === user?.Student.id
+              );
+              return submission && submission.status !== "GRADED"; // Submitted but not graded
+            })
+            .map((assignment) => (
+              <AssignmentCard key={assignment.id} assignment={assignment} />
+            ))}
+        </TabsContent>
+
+        <TabsContent value="graded" className="space-y-4 mt-6">
+          {assignments
+            .filter((assignment) => {
+              const submission = assignment.assignmentSubmissions?.find(
+                (s) => s.studentId === user?.Student.id
+              );
+              return submission?.status === "GRADED"; // Only graded
+            })
+            .map((assignment) => (
+              <AssignmentCard key={assignment.id} assignment={assignment} />
+            ))}
+        </TabsContent>
       </Tabs>
     </div>
   );

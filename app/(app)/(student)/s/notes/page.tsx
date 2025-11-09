@@ -111,8 +111,6 @@ const page = () => {
 
   if (loading) return <Loader />;
 
-  console.log(notes);
-
   return (
     <div className="space-y-6">
       {user?.Student.applicationStatus === "pending" && <AccountPendingModal />}

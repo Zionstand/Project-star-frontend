@@ -56,8 +56,6 @@ const page = () => {
           ),
         ]);
 
-        console.log("yess");
-
         setAssignment(assignment);
       } catch (error: any) {
         toast.error(error.response.data.message);
@@ -79,6 +77,7 @@ const page = () => {
   const submission = assignment?.assignmentSubmissions?.find(
     (s) => s.studentId === user?.Student.id
   );
+  const hasGraded = submission?.status === "GRADED";
   return (
     <div className="space-y-6">
       <PageHeader
@@ -87,35 +86,14 @@ const page = () => {
             <span>{assignment?.title}</span>
             {(() => {
               if (!hasSubmitted) {
-                return (
-                  <Badge
-                    variant="outline"
-                    className="text-amber-700 border-amber-300"
-                  >
-                    Pending
-                  </Badge>
-                );
+                return <Badge variant="pending">Pending</Badge>;
               }
 
               if (submission?.status === "GRADED") {
-                return (
-                  <Badge
-                    variant="success"
-                    className="bg-blue-50 text-blue-700 border border-blue-300"
-                  >
-                    Graded
-                  </Badge>
-                );
+                return <Badge variant="success">Graded</Badge>;
               }
 
-              return (
-                <Badge
-                  variant="success"
-                  className="bg-green-50 text-green-700 border border-green-300"
-                >
-                  Submitted
-                </Badge>
-              );
+              return <Badge>Submitted</Badge>;
             })()}
           </div>
         }
@@ -248,6 +226,7 @@ const page = () => {
                 hasSubmitted={hasSubmitted}
                 submission={submission}
                 totalMarks={assignment?.totalMarks}
+                hasGraded={hasGraded}
               />
             </CardContent>
           </Card>

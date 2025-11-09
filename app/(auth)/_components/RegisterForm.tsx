@@ -42,6 +42,7 @@ import { years } from "@/constant";
 import { cn, formatWord } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { useRoleRedirect } from "@/hooks/use-role-redirect";
+import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 
 interface Props {
   schoolTypes: {
@@ -76,6 +77,7 @@ export function RegisterForm({
   const router = useRouter();
 
   const setUser = useAuth((s) => s.setUser);
+  useSchoolFetcher();
 
   const [step, setStep] = useState(1);
 
@@ -178,7 +180,7 @@ export function RegisterForm({
         const res = await api.post("/auth/register/school", data);
         setUser(res.data.user);
         toast.success(res.data.message);
-        useRoleRedirect(res.data.user);
+        router.push("/a/dashboard");
       } catch (error: any) {
         toast.error(error.response.data.message);
       }

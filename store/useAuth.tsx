@@ -98,6 +98,7 @@ export type Student = {
   candidateNumber: string;
   desiredClass: string | null;
   examScore: string;
+  completedOnboarding: boolean;
   id: string;
   isApproved: boolean;
   isRejected: boolean;
@@ -172,7 +173,10 @@ export type AssignmentSubmissions = {
   assignmentId: string;
   grade: string;
   comment: string;
+  gradingComment: string;
   gradedById: string;
+  gradedAt: string;
+  gradedBy: { user: User };
   id: string;
   schoolId: string;
   submittedAt: string;
@@ -180,6 +184,8 @@ export type AssignmentSubmissions = {
   attachments: AssignmentSubmissionAttachment[];
   Student: Student;
   studentId: string;
+  Assignment: Assignment;
+  Class: Class;
 };
 
 type AuthState = {
@@ -187,6 +193,7 @@ type AuthState = {
   setUser: (user: User) => void;
   clearUser: () => void;
   updateSchool: (school: School) => void;
+  updateStudent: (student: any) => void;
   _hasHydrated: boolean; // ✅ added
   setHasHydrated: (hasHydrated: boolean) => void; // ✅ added
 };
@@ -197,6 +204,19 @@ export const useAuth = create<AuthState>()(
       user: null,
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null }),
+      updateStudent: (updates: Partial<Student>) =>
+        set((state) => {
+          if (!state.user) return state;
+          return {
+            user: {
+              ...state.user,
+              Student: {
+                ...state.user.Student,
+                ...updates,
+              },
+            },
+          };
+        }),
       updateSchool: (school) =>
         set((state) => ({
           user: state.user ? { ...state.user, school } : null,

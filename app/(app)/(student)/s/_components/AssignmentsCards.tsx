@@ -5,6 +5,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Assignment, useAuth } from "@/store/useAuth";
 import {
   IconAlertCircle,
   IconCheckbox,
@@ -16,10 +17,29 @@ import {
 import React from "react";
 
 interface Props {
-  total: number;
+  assignments: Assignment[];
 }
 
-export const AssignmentsCards = ({ total }: Props) => {
+export const AssignmentsCards = ({ assignments }: Props) => {
+  const { user } = useAuth();
+  const total = assignments.length;
+  const pending = assignments.filter(
+    (a) =>
+      !a.assignmentSubmissions?.some((s) => s.studentId === user?.Student.id)
+  ).length;
+  const submitted = assignments.filter((a) => {
+    const submission = a.assignmentSubmissions?.find(
+      (s) => s.studentId === user?.Student.id
+    );
+    return submission && submission.status !== "GRADED";
+  }).length;
+  const graded = assignments.filter((a) => {
+    const submission = a.assignmentSubmissions?.find(
+      (s) => s.studentId === user?.Student.id
+    );
+    return submission?.status === "GRADED";
+  }).length;
+
   const stats = [
     {
       title: "Total Assignments",
@@ -30,26 +50,27 @@ export const AssignmentsCards = ({ total }: Props) => {
     },
     {
       title: "Pending",
-      value: 2,
+      value: pending,
       icon: IconAlertCircle,
       bgColor: "bg-orange-500/20",
       textColor: "text-orange-500",
     },
     {
       title: "Submitted",
-      value: 3,
+      value: submitted,
       icon: IconFileDescription,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",
     },
     {
       title: "Graded",
-      value: 47,
+      value: graded,
       icon: IconFileDescription,
       bgColor: "bg-green-600/20",
       textColor: "text-green-600",
     },
   ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map(({ value, title, icon, bgColor, textColor }, index) => {
@@ -62,7 +83,7 @@ export const AssignmentsCards = ({ total }: Props) => {
                   {title}
                 </CardDescription>
                 <CardTitle className={cn("text-3xl", textColor)}>
-                  {value}{" "}
+                  {value}
                 </CardTitle>
               </div>
               <div className={cn(`rounded-lg p-3`, bgColor)}>

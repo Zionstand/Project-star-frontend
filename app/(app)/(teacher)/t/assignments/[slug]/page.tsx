@@ -48,8 +48,6 @@ const page = () => {
           ),
         ]);
 
-        console.log("yess");
-
         setAssignment(assignment);
       } catch (error: any) {
         toast.error(error.response.data.message);
@@ -61,9 +59,28 @@ const page = () => {
     fetch();
   }, [user, slug]);
 
+  const refreshAssignment = async () => {
+    if (!user?.schoolId || !slug) return;
+
+    try {
+      const [assignment] = await Promise.all([
+        teacherService.getTeacherAssignmentsDetails(
+          user?.school?.id!,
+          user.id,
+          slug
+        ),
+      ]);
+
+      setAssignment(assignment);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) return <Loader />;
 
-  console.log(assignment);
   return (
     <div className="space-y-6">
       <PageHeader
@@ -190,6 +207,9 @@ const page = () => {
                 <StudentSubmissionCard
                   key={submission.id}
                   submission={submission}
+                  slug={assignment.slug}
+                  onRefresh={refreshAssignment}
+                  totalMarks={assignment.totalMarks}
                 />
               ))}
             </CardContent>

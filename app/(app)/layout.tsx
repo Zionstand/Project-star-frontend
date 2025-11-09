@@ -10,8 +10,8 @@ import { useRoleRedirect } from "@/hooks/use-role-redirect";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  useRoleRedirect(user);
-  useSchoolFetcher();
+  // useRoleRedirect(user);
+  // useSchoolFetcher();
   // useAutoRefresh();
 
   return (
