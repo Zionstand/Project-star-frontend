@@ -6,13 +6,9 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  IconCheckbox,
-  IconClock,
-  IconExclamationCircle,
   IconLock,
   IconRestore,
   IconShield,
-  IconTrendingUp,
   IconUsers,
 } from "@tabler/icons-react";
 import React from "react";

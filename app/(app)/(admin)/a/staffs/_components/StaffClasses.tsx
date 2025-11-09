@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { IconSchool, IconUsers } from "@tabler/icons-react";
+import { IconUsers } from "@tabler/icons-react";
 import React from "react";
-import { Class } from "../../classes/page";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/EmptyState";
+import { Class } from "@/store/useAuth";
 
 interface Props {
   classes: Class[] | undefined;

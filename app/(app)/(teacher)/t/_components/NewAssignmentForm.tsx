@@ -47,6 +47,7 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
+import { RichTextEditor } from "@/components/text-editor/Editor";
 // import { RichTextEditor } from "@/components/text-editor/Editor";
 
 interface Props {
@@ -204,7 +205,7 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
             <FormItem>
               <FormLabel>Instructions</FormLabel>
               <FormControl>
-                {/* <RichTextEditor field={field} /> */}
+                <RichTextEditor field={field} />
               </FormControl>
               <FormMessage />
             </FormItem>

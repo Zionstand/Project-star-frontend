@@ -1,19 +1,9 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber, formatWord } from "@/lib/utils";
-import { User } from "@/store/useAuth";
-import {
-  IconDotsVertical,
-  IconEdit,
-  IconEye,
-  IconMessage,
-  IconPhone,
-  IconTrash,
-  IconUser,
-} from "@tabler/icons-react";
+import { Class, User } from "@/store/useAuth";
+import { IconPhone, IconUser } from "@tabler/icons-react";
 import React from "react";
-import { Class } from "../../classes/page";
 import { StaffActions } from "./StaffActions";
 
 export interface ExtendedUser extends NonNullable<User> {
