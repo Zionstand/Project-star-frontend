@@ -21,7 +21,7 @@ export const StaffClasses = ({ classes }: Props) => {
       <CardContent className="space-y-4">
         {classes === undefined && <EmptyState />}
         {classes?.map((c) => (
-          <div className="space-y-1.5 border rounded-lg px-3 py-4">
+          <div className="space-y-1.5 border rounded-md px-3 py-4">
             <p className="flex items-center justify-between gap-2 text-base font-medium">
               <span>
                 {c.level}-{c.section}

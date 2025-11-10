@@ -28,7 +28,7 @@ export const ApplicationProgress = ({ documents }: Props) => {
   const percentage =
     totalRequired > 0 ? Math.round((totalCompleted / totalRequired) * 100) : 0;
   return (
-    <div className="rounded-lg px-4 py-6 shadow space-y-1.5">
+    <div className="rounded-md px-4 py-6 shadow space-y-1.5">
       <div className="flex items-center justify-between">
         <div>
           <p className="font-medium text-base">Application Progress</p>

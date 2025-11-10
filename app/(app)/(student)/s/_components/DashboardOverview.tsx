@@ -96,7 +96,7 @@ const TimelineItem = ({
         )}
       </div>
       <div className="flex-1 pb-8">
-        <h3 className="font-semibold text-gray-900">{title}</h3>
+        <h3 className="font-medium text-gray-900">{title}</h3>
         <p className="text-sm text-gray-600 mt-1">{description}</p>
         <p className="text-xs text-muted-foreground mt-2">{formatDate(date)}</p>
       </div>
@@ -155,7 +155,7 @@ export const DashboardOverview = ({
             <CardContent className="space-y-3">
               {/* Show rejected documents */}
               {documents.some((doc) => doc.status === "rejected") && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                <div className="p-3 bg-red-50 border border-red-200 rounded-md">
                   <div className="flex items-start gap-2">
                     <div className="bg-red-100 rounded-full p-1 mt-0.5">
                       <IconAlertCircle className="size-4 text-red-600" />
@@ -185,7 +185,7 @@ export const DashboardOverview = ({
                 (d) =>
                   d.required && !documents.some((doc) => doc.type === d.type)
               ) && (
-                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                   <div className="flex items-start gap-2">
                     <div className="bg-yellow-100 rounded-full p-1 mt-0.5">
                       <IconAlertCircle className="size-4 text-yellow-700" />
@@ -236,7 +236,7 @@ export const DashboardOverview = ({
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-sm font-semibold mb-2">Admissions Office</p>
+                <p className="text-sm font-medium mb-2">Admissions Office</p>
                 <a
                   href={`tel:${env.NEXT_PUBLIC_SUPPORT_PHONE_NUMBER}`}
                   className="flex items-center gap-2 text-sm text-primary hover:underline"
@@ -247,7 +247,7 @@ export const DashboardOverview = ({
               </div>
 
               <div>
-                <p className="text-sm font-semibold mb-2">Email Support</p>
+                <p className="text-sm font-medium mb-2">Email Support</p>
                 <a
                   href={`mailto:${env.NEXT_PUBLIC_SUPPORT_EMAIL_ADDRESS}`}
                   className="flex items-center gap-2 text-sm text-primary hover:underline break-all"

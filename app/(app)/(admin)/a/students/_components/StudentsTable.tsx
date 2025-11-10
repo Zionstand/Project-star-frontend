@@ -6,7 +6,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StudentRow } from "./StudentRow";
-import { User } from "@/store/useAuth";
+import { Student, User } from "@/store/useAuth";
 
 interface Props {
   students: User[];

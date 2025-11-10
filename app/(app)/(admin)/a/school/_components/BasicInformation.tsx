@@ -174,7 +174,7 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
                 <div className="flex flex-col md:flex-row items-start justify-start gap-4">
                   <div className="relative flex-1">
                     {user?.school?.logo ? (
-                      <div className="rounded-lg overflow-hidden bg-red-300">
+                      <div className="rounded-md overflow-hidden bg-red-300">
                         <Image
                           src={user.school.logo}
                           alt={`${user.school.name}'s logo`}
@@ -184,7 +184,7 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
                         />
                       </div>
                     ) : (
-                      <div className="border-2 border-dashed border-muted-foreground rounded-lg w-full py-10 flex items-center justify-center bg-accent">
+                      <div className="border-2 border-dashed border-muted-foreground rounded-md w-full py-10 flex items-center justify-center bg-accent">
                         <IconBuildings className="text-muted-foreground size-14" />
                       </div>
                     )}
@@ -426,7 +426,7 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
 
             {/* ==== SAVE / CANCEL ==== */}
             {edit && (
-              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+              <div className="border bg-primary/10 rounded-md border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
                 <div className="flex items-center justify-start gap-1">
                   <IconBell />
                   <p>You have unsaved changes</p>

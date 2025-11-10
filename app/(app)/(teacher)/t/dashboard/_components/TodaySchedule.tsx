@@ -5,7 +5,7 @@ import React from "react";
 
 export const TodaySchedule = () => {
   return (
-    <div className="border rounded-lg px-3 py-4 space-y-2.5">
+    <div className="border rounded-md px-3 py-4 space-y-2.5">
       <p className="font-medium text-sm sm:text-base flex items-center justify-start gap-1.5">
         <span>Mathematics</span> <Badge variant={"outline"}>SS2A</Badge>
       </p>

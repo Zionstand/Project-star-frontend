@@ -52,6 +52,8 @@ const page = () => {
 
   if (loading || !classDetails) return <Loader />;
 
+  console.log(classDetails);
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -69,7 +71,7 @@ const page = () => {
         }}
         back
       />
-      <ClassDetailsCards />
+      <ClassDetailsCards classDetails={classDetails} />
       <ClassTeacherBox
         teacher={
           classDetails.Teacher !== null ? classDetails.Teacher.user : null
@@ -103,7 +105,7 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="students">
-          <ClassStudents />
+          <ClassStudents students={classDetails.students} />
         </TabsContent>
         <TabsContent value="subjects">
           <ClassSubjects />

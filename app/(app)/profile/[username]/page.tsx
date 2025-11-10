@@ -50,7 +50,7 @@ const page = () => {
             alt={`${user?.firstName}'s picture`}
           />
           <div className="space-y-1.5">
-            <h2 className="font-semibold text-2xl md:text-3xl">
+            <h2 className="font-medium text-2xl md:text-3xl">
               {user?.title} {user?.firstName} {user?.lastName}
             </h2>
             <Badge>{formatWord[user?.role!]}</Badge>
@@ -71,7 +71,7 @@ const page = () => {
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <p className="text-sm font-medium">Title</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconUser size={16} className="text-muted-foreground" />
               <span>
                 {user?.title !== undefined ? (
@@ -84,28 +84,28 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">First Name</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconUser size={16} className="text-muted-foreground" />
               <span>{user?.firstName}</span>
             </div>
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Last Name</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconUser size={16} className="text-muted-foreground" />
               <span>{user?.lastName}</span>
             </div>
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Email Address</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconMail size={16} className="text-muted-foreground" />
               <span>{user?.email}</span>
             </div>
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Phone Number</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconPhone size={16} className="text-muted-foreground" />
               <span>
                 {formatPhoneNumber(user?.phoneNumber) || (
@@ -116,7 +116,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Date of Birth</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconCalendar size={16} className="text-muted-foreground" />
               <span>
                 {formatDate(user?.dob) || (
@@ -129,7 +129,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Gender</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconUser size={16} className="text-muted-foreground" />
               <span>
                 {user?.gender || (
@@ -150,14 +150,14 @@ const page = () => {
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <p className="text-sm font-medium">Role</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <Shield size={16} className="text-muted-foreground" />
               <span>{formatWord[user?.role!]}</span>
             </div>
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Department</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconBuilding size={16} className="text-muted-foreground" />
               <span>
                 {user?.department || (
@@ -170,7 +170,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Employee ID</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconHash size={16} className="text-muted-foreground" />
               <span>
                 {user?.employeeID || (
@@ -183,7 +183,7 @@ const page = () => {
           </div>
           <div className="space-y-1 col-span-2">
             <p className="text-sm font-medium">Join Date</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconPhone size={16} className="text-muted-foreground" />
               <span>{formatDate(user?.createdAt)}</span>
             </div>
@@ -198,7 +198,7 @@ const page = () => {
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <p className="text-sm font-medium">Street Address</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconMapPin size={16} className="text-muted-foreground" />
               <span>
                 {user?.address ? (
@@ -213,7 +213,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">City</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconMapPin size={16} className="text-muted-foreground" />
               <span>
                 {user?.city ? (
@@ -226,7 +226,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">State</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconMapPin size={16} className="text-muted-foreground" />
               <span>
                 {user?.state ? (
@@ -239,7 +239,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Country</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconMapPin size={16} className="text-muted-foreground" />
               <span>
                 {user?.country ? (
@@ -262,7 +262,7 @@ const page = () => {
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <p className="text-sm font-medium">Emergency Name</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconUser size={16} className="text-muted-foreground" />
               <span>
                 {user?.emergencyContactName ? (
@@ -277,7 +277,7 @@ const page = () => {
           </div>
           <div className="space-y-1">
             <p className="text-sm font-medium">Emergency Phone</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconPhone size={16} className="text-muted-foreground" />
               <span>
                 {user?.emergencyPhoneNumber ? (
@@ -300,7 +300,7 @@ const page = () => {
         <CardContent className="grid grid-cols-1">
           <div className="space-y-1">
             <p className="text-sm font-medium">Medical Conditions</p>
-            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-lg">
+            <div className="bg-muted p-3 flex items-center justify-start gap-2 text-sm rounded-md">
               <IconClipboardHeart size={16} className="text-muted-foreground" />
               <span>
                 {user?.medicalConditions ? (

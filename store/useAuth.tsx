@@ -114,6 +114,11 @@ export type Student = {
   documents: Document[];
   user: User;
 };
+export type ParentChildrenLink = {
+  relation: string;
+  student: Student;
+  id: string;
+};
 
 export type Parent = {
   user: User;

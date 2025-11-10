@@ -16,15 +16,15 @@ export const StaffBankDetails = () => {
         <CardTitle>Bank Account Details</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1">
-        <div className="rounded-lg text-sm px-3 py-3 space-y-1">
+        <div className="rounded-md text-sm px-3 py-3 space-y-1">
           <p className="text-muted-foreground text-xs">Bank Name</p>
           <p>First Bank of Nigeria</p>
         </div>
-        <div className="rounded-lg text-sm px-3 py-3 space-y-1">
+        <div className="rounded-md text-sm px-3 py-3 space-y-1">
           <p className="text-muted-foreground text-xs">Account Number</p>
           <p>2143463056</p>
         </div>
-        <div className="rounded-lg text-sm px-3 py-3 space-y-1">
+        <div className="rounded-md text-sm px-3 py-3 space-y-1">
           <p className="text-muted-foreground text-xs">Account Name</p>
           <p>Oluwaseun Tunde Adeyemi</p>
         </div>

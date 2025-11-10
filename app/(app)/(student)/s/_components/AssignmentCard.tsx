@@ -36,7 +36,7 @@ export const AssignmentCard = ({ assignment }: Props) => {
       <CardContent className="">
         <div className="flex flex-col lg:flex-row items-start gap-4 justify-between">
           <div className="flex items-start gap-4 flex-1">
-            <div className={`p-3 rounded-lg bg-primary/10`}>
+            <div className={`p-3 rounded-md bg-primary/10`}>
               <IconFileText className="w-6 h-6 text-primary" />
             </div>
 
@@ -45,7 +45,7 @@ export const AssignmentCard = ({ assignment }: Props) => {
                 <div className="flex items-center gap-2 mb-1">
                   <Link
                     href={`/s/assignments/${assignment.slug || assignment.id}`}
-                    className="font-semibold text-lg line-clamp-1 hover:underline hover:text-primary"
+                    className="font-medium text-lg line-clamp-1 hover:underline hover:text-primary"
                   >
                     {assignment.title}
                   </Link>

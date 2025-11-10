@@ -45,7 +45,7 @@ export default function InviteStudent() {
               Invite student to onboard themselves and complete their profile
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center gap-2.5 border-dashed border-2 px-6 py-10 rounded-lg">
+          <div className="flex flex-col items-center justify-center gap-2.5 border-dashed border-2 px-6 py-10 rounded-md">
             <div className="relative w-full">
               <Input
                 ref={inputRef}

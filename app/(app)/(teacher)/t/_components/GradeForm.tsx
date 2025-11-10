@@ -88,7 +88,7 @@ export const GradeForm = ({
             <IconX />
           </Button>
         </AlertDialogHeader>
-        <div className="flex items-start justify-start gap-1 border border-primary p-3 rounded-lg text-xs">
+        <div className="flex items-start justify-start gap-1 border border-primary p-3 rounded-md text-xs">
           <IconAlertCircle className="text-primary size-6" />
           Enter the score and provide constructive feedback to help the student
           improve.

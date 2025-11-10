@@ -218,7 +218,7 @@ export function EditProfileForm({
             </Button>
           </div>
           <div className="space-y-1.5">
-            <h2 className="font-semibold text-2xl md:text-3xl">
+            <h2 className="font-medium text-2xl md:text-3xl">
               {user?.title} {user?.firstName} {user?.lastName}
             </h2>
             <Badge>{formatWord[user?.role!]}</Badge>

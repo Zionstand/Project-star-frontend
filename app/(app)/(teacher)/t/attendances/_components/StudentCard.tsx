@@ -17,7 +17,7 @@ interface Props {
 
 export function StudentCard({ student, onChange }: Props) {
   return (
-    <div className="p-4 rounded-lg border border-gray-200 hover:border-primary transition-all">
+    <div className="p-4 rounded-md border border-gray-200 hover:border-primary transition-all">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">

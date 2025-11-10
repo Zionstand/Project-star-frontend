@@ -19,7 +19,7 @@ export const FullLogo = ({ name = "EduManage", acronym = "EMS" }: Props) => {
         <span className="font-bold text-lg">{acronym}</span>
       </Link>
       <div className="space-y-0">
-        <h2 className="font-semibold text-lg group-hover:text-primary transition-all">
+        <h2 className="font-medium text-lg group-hover:text-primary transition-all">
           {name}
         </h2>
         <p className="text-muted-foreground text-sm -mt-1 group-hover:text-black transition-all">

@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber } from "@/lib/utils";
-import { User } from "@/store/useAuth";
+import { Student, User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone, IconUser } from "@tabler/icons-react";
 import React from "react";
 
@@ -40,7 +40,7 @@ export const StudentCard = ({ student }: Props) => {
         <p className="flex items-center justify-between gap-1">
           <span>
             <IconUser className="inline-block size-4.5" />
-            STU2024099
+            {student?.Student.admissionNumber}
           </span>
           <a
             className="hover:text-primary hover:underline transition-all flex items-center justify-start"

@@ -53,7 +53,7 @@ export const StudentCards = ({ assignments }: Props) => {
     },
   ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-2">
       {stats.map(
         ({ value, title, icon, bgColor, textColor, description }, index) => {
           const Icon = icon;
@@ -71,7 +71,7 @@ export const StudentCards = ({ assignments }: Props) => {
                     {description}
                   </p>
                 </div>
-                <div className={cn(`rounded-lg p-3`, bgColor)}>
+                <div className={cn(`rounded-md p-3`, bgColor)}>
                   <Icon className={cn(`h-6 w-6`, textColor)} />
                 </div>
               </CardContent>

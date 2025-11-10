@@ -13,7 +13,7 @@ export const StaffQualifications = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="rounded-lg border px-3 py-4 space-y-1">
+        <div className="rounded-md border px-3 py-4 space-y-1">
           <div>
             <p className="text-base flex items-center justify-between gap-2 font-medium">
               <span>B.Sc. Mathematics</span>
@@ -29,7 +29,7 @@ export const StaffQualifications = () => {
             Second Class Upper
           </p>
         </div>
-        <div className="rounded-lg border px-3 py-4 space-y-1">
+        <div className="rounded-md border px-3 py-4 space-y-1">
           <div>
             <p className="text-base flex items-center justify-between gap-2 font-medium">
               <span>B.Sc. Mathematics</span>
@@ -45,7 +45,7 @@ export const StaffQualifications = () => {
             Second Class Upper
           </p>
         </div>
-        <div className="rounded-lg border px-3 py-4 space-y-1">
+        <div className="rounded-md border px-3 py-4 space-y-1">
           <div>
             <p className="text-base flex items-center justify-between gap-2 font-medium">
               <span>B.Sc. Mathematics</span>

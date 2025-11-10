@@ -75,7 +75,7 @@ export const StudentApprovalModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="my-4">
-          <div className="flex items-center gap-3 p-4 bg-muted rounded-lg">
+          <div className="flex items-center gap-3 p-4 bg-muted rounded-md">
             <UserProfilePicture
               size="sm"
               src={student?.image}

@@ -195,14 +195,14 @@ export const UploadPhotosModal = ({
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
+            className={`border-2 border-dashed rounded-md p-12 text-center transition-colors ${
               isDragging
                 ? "border-blue-500 bg-blue-50"
                 : "border-gray-300 bg-gray-50"
             }`}
           >
             <div className="flex flex-col items-center gap-3">
-              <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-md flex items-center justify-center">
                 <IconPhoto size={32} className="text-blue-500" />
               </div>
               <div>
@@ -235,7 +235,7 @@ export const UploadPhotosModal = ({
               {files.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-md"
                 >
                   {/* Image Preview */}
                   <div className="w-10 h-10 rounded overflow-hidden flex-shrink-0 bg-gray-200">

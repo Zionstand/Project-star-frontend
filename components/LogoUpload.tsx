@@ -100,7 +100,7 @@ export const LogoUpload = ({
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors cursor-pointer ${
+              className={`border-2 border-dashed rounded-md p-12 text-center transition-colors cursor-pointer ${
                 isDragging
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-300 bg-gray-50"
@@ -124,7 +124,7 @@ export const LogoUpload = ({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="relative w-full aspect-square bg-gray-50 border rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="relative w-full aspect-square bg-gray-50 border rounded-md flex items-center justify-center overflow-hidden">
                 <img
                   src={logo}
                   alt="School Logo"

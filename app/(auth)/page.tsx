@@ -55,7 +55,7 @@ const page = () => {
                     key={index}
                     className="bg-white rounded-md  border border-accent p-2 flex items-center justify-start gap-2"
                   >
-                    <div className={cn("rounded-lg p-3", color, bgColor)}>
+                    <div className={cn("rounded-md p-3", color, bgColor)}>
                       <Icon />
                     </div>
                     <div>

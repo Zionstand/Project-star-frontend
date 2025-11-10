@@ -6,50 +6,50 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  IconBook,
+  IconCheckbox,
+  IconClock,
+  IconCurrencyDollar,
+  IconExclamationCircle,
+  IconMessage,
   IconSchool,
+  IconTrendingUp,
   IconUsers,
-  IconUsersGroup,
 } from "@tabler/icons-react";
 import React from "react";
 
-interface Props {
-  classes: number | undefined;
-}
-
-export const ClassesCards = ({ classes }: Props) => {
+export const ChildCards = () => {
   const stats = [
     {
-      title: "Total Classes",
-      value: classes,
-      icon: IconSchool,
-      bgColor: "bg-primary/10",
-      textColor: "text-primary",
-      description: "Across all levels",
-    },
-    {
-      title: "Total Students",
-      value: 3,
-      icon: IconUsersGroup,
-      bgColor: "bg-green-500/20",
-      textColor: "text-green-500",
-      description: "Enrolled students",
-    },
-    {
-      title: "Average Class Size",
-      value: 7,
+      title: "Attendance",
+      value: "94%",
       icon: IconUsers,
+      bgColor: "bg-green-500/10",
+      textColor: "text-green-500",
+      description: "This term",
+    },
+    {
+      title: "Average Grade",
+      value: "85%",
+      icon: IconSchool,
+      bgColor: "bg-primary/20",
+      textColor: "text-primary",
+      description: "Current term",
+    },
+    {
+      title: "Pending Fees",
+      value: "₦20,000",
+      icon: IconCurrencyDollar,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",
-      description: "Students per class",
+      description: "All cleared",
     },
     {
-      title: "Active Classes",
-      value: classes,
-      icon: IconBook,
+      title: "Messages",
+      value: "3",
+      icon: IconMessage,
       bgColor: "bg-orange-500/20",
       textColor: "text-orange-500",
-      description: "Currently active",
+      description: "Unread",
     },
   ];
   return (

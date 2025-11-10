@@ -28,7 +28,7 @@ export const StaffHandled = ({ assignments }: Props) => {
         {assignments === undefined && <EmptyState />}
         <div className="grid grid-cols-2 gap-2">
           {assignments?.map((a, index) => (
-            <div key={index} className="rounded-lg border p-3 text-sm">
+            <div key={index} className="rounded-md border p-3 text-sm">
               {a.Subject.name}
             </div>
           ))}

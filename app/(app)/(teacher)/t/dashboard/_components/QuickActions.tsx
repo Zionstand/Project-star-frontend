@@ -56,7 +56,7 @@ export const QuickActions = () => {
             <Link
               href={slug}
               key={index}
-              className="font-medium text-sm border cursor-pointer hover:bg-muted transition-all rounded-lg p-3 flex sm:flex-col text-center items-center justify-start sm:justify-center gap-2"
+              className="font-medium text-sm border cursor-pointer hover:bg-muted transition-all rounded-md p-3 flex sm:flex-col text-center items-center justify-start sm:justify-center gap-2"
             >
               <Icon className={cn("size-4", color)} />
               {action}

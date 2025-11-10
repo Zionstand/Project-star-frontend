@@ -36,7 +36,7 @@ export const StudentApprovalCards = ({ students, rejectedStudents }: Props) => {
     },
   ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-2">
       {stats.map(({ value, title, textColor }, index) => {
         return (
           <Card key={index}>

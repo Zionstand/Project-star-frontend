@@ -33,7 +33,7 @@ export const StudentDashboardCard = ({
   applicationStatus,
 }: Props) => {
   return (
-    <div className="rounded-lg shadow flex items-start md:items-center justify-start gap-4 bg-muted p-6 relative">
+    <div className="rounded-md shadow flex items-start md:items-center justify-start gap-2 bg-muted p-6 relative">
       <UserProfilePicture
         src={image}
         alt={`${firstName}'s picture`}

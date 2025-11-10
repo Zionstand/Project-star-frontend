@@ -293,7 +293,7 @@ export function ImportSubjects() {
           </p>
         </div>
 
-        <div className="border p-3 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
+        <div className="border p-3 rounded-md flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
           <p className="flex text-sm text-muted-foreground items-center justify-start gap-1">
             <IconDownload className="size-4" />
             Download our template to ensure correct data format
@@ -309,7 +309,7 @@ export function ImportSubjects() {
         </div>
 
         {!showPreview && (
-          <div className="flex flex-col items-center justify-center gap-2.5 border-dashed border-2 px-6 py-10 rounded-lg">
+          <div className="flex flex-col items-center justify-center gap-2.5 border-dashed border-2 px-6 py-10 rounded-md">
             <IconUpload />
             <p className="font-medium text-md md:text-lg">
               Upload Subject Data

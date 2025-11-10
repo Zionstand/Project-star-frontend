@@ -16,7 +16,7 @@ export const FeeStructure = () => {
             <Badge variant={"outlineSuccess"}>Active</Badge>
           </span>
         </CardTitle>
-        <h3 className="font-semibold text-2xl">
+        <h3 className="font-medium text-2xl">
           <NairaIcon />
           17,000
         </h3>

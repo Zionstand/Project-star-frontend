@@ -18,7 +18,7 @@ export const FullLogo = () => {
       {/* Show text only when expanded */}
       {!isCollapsed && (
         <div className="space-y-0">
-          <h1 className="font-semibold text-lg line-clamp-1">
+          <h1 className="font-medium text-lg line-clamp-1">
             {user?.school?.name}
           </h1>
           <p className="text-primary-foreground/70 text-sm -mt-1">
@@ -41,7 +41,7 @@ export const Logo = () => {
     >
       {/* FullLogo icon */}
       {user?.school?.logo ? (
-        <div className="rounded-lg overflow-hidden">
+        <div className="rounded-md overflow-hidden">
           <Image
             src={user.school.logo}
             alt={`${user.school.name}'s logo`}
@@ -51,7 +51,7 @@ export const Logo = () => {
           />
         </div>
       ) : (
-        <div className="p-3 bg-white rounded-lg flex items-center justify-center">
+        <div className="p-3 bg-white rounded-md flex items-center justify-center">
           <span className="text-primary font-bold text-lg">
             {user?.school?.acronym}
           </span>

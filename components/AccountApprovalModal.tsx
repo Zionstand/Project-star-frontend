@@ -323,7 +323,7 @@ export const AccountApprovedModal = ({ onClose }: Props) => {
               </div>
 
               {/* Important Notice */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-6">
                 <div className="flex gap-3">
                   <span className="text-yellow-600 size-4">
                     <IconFileDescription />
@@ -401,9 +401,9 @@ const QuickAccessCard = ({
   return (
     <button
       onClick={onClick}
-      className="bg-white flex md:flex-col items-center md:items-start justify-start gap-2 border border-gray-200 rounded-lg p-4 hover:border-primary hover:shadow-md transition-all text-left group"
+      className="bg-white flex md:flex-col items-center md:items-start justify-start gap-2 border border-gray-200 rounded-md p-4 hover:border-primary hover:shadow-md transition-all text-left group"
     >
-      <div className={cn(bgColor, color, "p-3 rounded-lg")}>
+      <div className={cn(bgColor, color, "p-3 rounded-md")}>
         <Icon />
       </div>
       <div>

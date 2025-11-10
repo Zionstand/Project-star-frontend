@@ -4,8 +4,8 @@ import React from "react";
 
 export const PendingTask = () => {
   return (
-    <div className="border rounded-lg px-3 py-4 space-y-2.5 flex items-start justify-start gap-1.5">
-      <div className="rounded-lg p-3 bg-muted">
+    <div className="border rounded-md px-3 py-4 space-y-2.5 flex items-start justify-start gap-1.5">
+      <div className="rounded-md p-3 bg-muted">
         <IconFileDescription className="" />
       </div>
       <div>

@@ -61,10 +61,12 @@ export const StudentSubmissionCard = ({
                 <IconClock className="size-4" />
                 {formatDate(submission.submittedAt)}
               </p>
-              <p className="text-muted-foreground flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
-                <IconMail className="size-4" />
-                {submission.comment}
-              </p>
+              {submission.comment && (
+                <p className="text-muted-foreground flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
+                  <IconMail className="size-4" />
+                  {submission.comment}
+                </p>
+              )}
               {submission.status === "GRADED" && (
                 <p className="text-sm w-full bg-green-100/80 rounded-md p-2 break-words whitespace-normal">
                   <p className="flex items-center w-full justify-between gap-2 text-green-800">

@@ -60,7 +60,7 @@ export function NavMain() {
                           ? "justify-center w-12 h-12 p-0"
                           : "justify-start px-3"
                       }`,
-                      isSectionActive && "bg-white text-primary font-semibold"
+                      isSectionActive && "bg-white text-primary font-medium"
                     )}
                     onClick={() => {
                       // Close sidebar on mobile if top-level link is clicked

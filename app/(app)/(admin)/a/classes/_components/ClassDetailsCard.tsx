@@ -5,6 +5,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Class } from "@/store/useAuth";
 import {
   IconAward,
   IconBook,
@@ -17,15 +18,23 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 
-export const ClassDetailsCards = () => {
+interface Props {
+  classDetails: Class;
+}
+
+export const ClassDetailsCards = ({ classDetails }: Props) => {
   const stats = [
     {
       title: "Total Students",
-      value: "3/28",
+      value: `${classDetails?.students?.length}/${classDetails?.capacity}`,
       icon: IconUsers,
       bgColor: "bg-primary/10",
       textColor: "text-primary",
-      description: "93% capacity",
+      description: `${
+        (Number(classDetails.students?.length) /
+          Number(classDetails.capacity)) *
+        100
+      }% capacity`,
     },
     {
       title: "Average Score",
@@ -53,7 +62,7 @@ export const ClassDetailsCards = () => {
     },
   ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-2">
       {stats.map(
         ({ value, title, icon, bgColor, textColor, description }, index) => {
           const Icon = icon;
@@ -71,7 +80,7 @@ export const ClassDetailsCards = () => {
                     {description}
                   </p>
                 </div>
-                <div className={cn(`rounded-lg p-3`, bgColor)}>
+                <div className={cn(`rounded-md p-3`, bgColor)}>
                   <Icon className={cn(`h-6 w-6`, textColor)} />
                 </div>
               </CardContent>

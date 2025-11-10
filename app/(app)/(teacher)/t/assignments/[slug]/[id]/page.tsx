@@ -119,107 +119,111 @@ const page = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-3 grid gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconPaperclip className="size-4 text-primary" />
-                Submitted Files{" "}
-                <Badge variant={"secondary"}>
-                  {assignment?.attachments.length} files
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {assignment?.attachments.map((attachment) => (
-                <SubmissionAttachment
-                  key={attachment.id}
-                  attachment={attachment}
-                />
-              ))}
-            </CardContent>
-          </Card>
-          {assignment?.comment && (
+        <div className="lg:col-span-3">
+          <div className="grid gap-4">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <IconMail className="size-4 text-primary" />
-                  Student's Comment
+                  <IconPaperclip className="size-4 text-primary" />
+                  Submitted Files{" "}
+                  <Badge variant={"secondary"}>
+                    {assignment?.attachments.length} files
+                  </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="rounded-lg bg-primary/5 p-4 text-sm lg:text-base border border-primary">
-                  {assignment?.comment}
-                </div>
+                {assignment?.attachments.map((attachment) => (
+                  <SubmissionAttachment
+                    key={attachment.id}
+                    attachment={attachment}
+                  />
+                ))}
               </CardContent>
             </Card>
-          )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconAward className="size-4 text-primary" />
-                Grading
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {assignment?.status === "GRADED" ? (
-                <div>
-                  <div className="space-y-1.5 border bg-green-100/80 border-green-500 rounded-lg px-3 py-5">
-                    <p className="text-xs text-green-700">Score</p>
-                    <p className="text-base text-green-900 lg:text-lg">
-                      {assignment.grade}/
-                      {assignment.Assignment.totalMarks === 0
-                        ? 100
-                        : assignment.Assignment.totalMarks}
-                    </p>
-
-                    {/* ✅ Move logic outside JSX expression */}
-                    {(() => {
-                      const total =
-                        assignment.Assignment.totalMarks === 0
-                          ? 100
-                          : Number(assignment.Assignment.totalMarks);
-                      const grade = Number(assignment.grade) || 0;
-                      const percentage = (grade / total) * 100;
-
-                      return (
-                        <>
-                          <p className="text-xs text-green-700">
-                            {percentage.toFixed(1)}%
-                          </p>
-
-                          {/* ✅ Works now */}
-                          <Progress
-                            value={percentage}
-                            className="h-2 bg-green-100"
-                          />
-                        </>
-                      );
-                    })()}
+            {assignment?.comment && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <IconMail className="size-4 text-primary" />
+                    Student's Comment
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="rounded-md bg-primary/5 p-4 text-sm lg:text-base border border-primary">
+                    {assignment?.comment}
                   </div>
-                  <p className="flex items-center justify-start gap-1 text-xs text-muted-foreground mt-1.5">
-                    <CircleCheckBig className="size-3" />
-                    Graded on {formatDate(assignment.gradedAt)} by{" "}
-                    {assignment?.gradedBy?.user?.firstName}{" "}
-                    {assignment?.gradedBy?.user?.lastName}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <Award className="h-10 text-muted-foreground" />
-                  <p className="text sm text-muted-foreground">
-                    This submission hasn't been graded yet
-                  </p>
-                  <Button onClick={() => showGradeForm(true)}>
-                    <IconAward />
-                    Grade now
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            )}
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconAward className="size-4 text-primary" />
+                  Grading
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {assignment?.status === "GRADED" ? (
+                  <div>
+                    <div className="space-y-1.5 border bg-green-100/80 border-green-500 rounded-md px-3 py-5">
+                      <p className="text-xs text-green-700">Score</p>
+                      <p className="text-base text-green-900 lg:text-lg">
+                        {assignment.grade}/
+                        {assignment.Assignment.totalMarks === 0
+                          ? 100
+                          : assignment.Assignment.totalMarks}
+                      </p>
+
+                      {/* ✅ Move logic outside JSX expression */}
+                      {(() => {
+                        const total =
+                          assignment.Assignment.totalMarks === 0
+                            ? 100
+                            : Number(assignment.Assignment.totalMarks);
+                        const grade = Number(assignment.grade) || 0;
+                        const percentage = (grade / total) * 100;
+
+                        return (
+                          <>
+                            <p className="text-xs text-green-700">
+                              {percentage.toFixed(1)}%
+                            </p>
+
+                            {/* ✅ Works now */}
+                            <Progress
+                              value={percentage}
+                              className="h-2 bg-green-100"
+                            />
+                          </>
+                        );
+                      })()}
+                    </div>
+                    <p className="flex items-center justify-start gap-1 text-xs text-muted-foreground mt-1.5">
+                      <CircleCheckBig className="size-3" />
+                      Graded on {formatDate(assignment.gradedAt)} by{" "}
+                      {assignment?.gradedBy?.user?.firstName}{" "}
+                      {assignment?.gradedBy?.user?.lastName}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <Award className="h-10 text-muted-foreground" />
+                    <p className="text sm text-muted-foreground">
+                      This submission hasn't been graded yet
+                    </p>
+                    <Button onClick={() => showGradeForm(true)}>
+                      <IconAward />
+                      Grade now
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </div>
+
         <div className="lg:col-span-2 grid gap-4">
           <Card>
             <CardContent className="space-y-6">

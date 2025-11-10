@@ -26,6 +26,7 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { StudentSubmissionCard } from "../../_components/StudentSubmissionCard";
+import { RenderDescription } from "@/components/text-editor/RenderDescription";
 
 const page = () => {
   const { user } = useAuth();
@@ -103,27 +104,29 @@ const page = () => {
       <Separator />
       <div
         className={cn(
-          "grid grid-cols-2 lg:grid-cols-3 text-xs gap-2",
-          assignment?.totalMarks !== 0 && "lg:col-span-4"
+          "grid grid-cols-2 text-xs gap-2 2xl:grid-cols-4 2xl:gap-4",
+          assignment?.totalMarks !== 0 ? "lg:grid-cols-4" : "lg:grid-cols-3"
         )}
       >
-        <div className="space-y-2 rounded-lg p-4 border">
+        <div className="space-y-2 rounded-md p-4 border">
           <p className="flex items-center justify-start gap-1">
             <IconCalendar className="size-4 text-primary" />
             <span className="text-muted-foreground">Assigned</span>
           </p>
           <p className="text-primary">{formatDate(assignment?.createdAt)}</p>
         </div>
-        <div className="space-y-2 rounded-lg p-4 border">
+
+        <div className="space-y-2 rounded-md p-4 border">
           <p className="flex items-center justify-start gap-1">
             <IconClock className="size-4 text-primary" />
             <span className="text-muted-foreground">Due Date</span>
           </p>
           <p className="text-primary">{formatDate(assignment?.dueDate)}</p>
         </div>
+
         <div
           className={cn(
-            "space-y-2 rounded-lg p-4 border",
+            "space-y-2 rounded-md p-4 border",
             assignment?.totalMarks === 0 && "col-span-2 lg:col-span-1"
           )}
         >
@@ -131,69 +134,71 @@ const page = () => {
             <IconUsers className="size-4 text-primary" />
             <span className="text-muted-foreground">Students</span>
           </p>
-          <p className={"text-primary"}>
-            {assignment?.Class?.students?.length}
-          </p>
+          <p className="text-primary">{assignment?.Class?.students?.length}</p>
         </div>
+
         {assignment?.totalMarks !== 0 && (
-          <div className="space-y-2 rounded-lg p-4 border">
+          <div className="space-y-2 rounded-md p-4 border">
             <p className="flex items-center justify-start gap-1">
               <IconAward className="size-4 text-primary" />
               <span className="text-muted-foreground">Total marks</span>
             </p>
-            <p className={"text-primary"}>{assignment?.totalMarks}</p>
+            <p className="text-primary">{assignment?.totalMarks}</p>
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-2 grid gap-4">
-          <Card className="gap-1.5">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconFileDescription className="size-4 text-primary" />
-                Description
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-base text-muted-foreground">
-              {assignment?.description}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconAlertCircle className="size-4 text-primary" />
-                Instructions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-base text-muted-foreground">
-              {assignment?.instructions ? (
-                ""
-              ) : (
-                <span className="italic">No instructions given</span>
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconPaperclip className="size-4 text-primary" />
-                Your Attachments{" "}
-                <Badge variant={"secondary"}>
-                  {assignment?.attachments.length} files
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-base text-muted-foreground">
-              {assignment?.attachments.map((attachment) => (
-                <AssignmentAttachment
-                  key={attachment.id}
-                  attachment={attachment}
-                />
-              ))}
-            </CardContent>
-          </Card>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 2xl:gap-4">
+        <div className="lg:col-span-2">
+          <div className="grid gap-2 2xl:gap-4">
+            <Card className="gap-1.5">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconFileDescription className="size-4 text-primary" />
+                  Description
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-base text-muted-foreground">
+                {assignment?.description}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconAlertCircle className="size-4 text-primary" />
+                  Instructions
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-base text-muted-foreground">
+                {assignment?.instructions ? (
+                  <RenderDescription json={assignment.instructions} />
+                ) : (
+                  <span className="italic">No instructions given</span>
+                )}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconPaperclip className="size-4 text-primary" />
+                  Your Attachments{" "}
+                  <Badge variant={"secondary"}>
+                    {assignment?.attachments.length} files
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-base text-muted-foreground">
+                {assignment?.attachments.map((attachment) => (
+                  <AssignmentAttachment
+                    key={attachment.id}
+                    attachment={attachment}
+                  />
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
-        <div className="lg:col-span-3 grid gap-4">
+        <div className="lg:col-span-3 grid gap-2">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">

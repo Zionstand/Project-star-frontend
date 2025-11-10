@@ -369,7 +369,7 @@ export const ContactDetails = ({ states, countries }: Props) => {
               </div>
             </div>
             {edit && (
-              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+              <div className="border bg-primary/10 rounded-md border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
                 <div className="flex items-center justify-start gap-1">
                   <IconBell />
                   <p>You have unsaved changes</p>

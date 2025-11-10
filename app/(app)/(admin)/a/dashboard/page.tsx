@@ -201,7 +201,7 @@ const page = () => {
                         hoverBorder
                       )}
                     >
-                      <div className="rounded-lg p-3 bg-white">
+                      <div className="rounded-md p-3 bg-white">
                         <Icon className={cn("h-6 w-6", color)} />
                       </div>
                       <div className="space-y-0">

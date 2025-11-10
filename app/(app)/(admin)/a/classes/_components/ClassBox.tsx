@@ -26,6 +26,8 @@ interface Props {
 export const ClassBox = ({ schoolClass }: Props) => {
   const { user } = useAuth();
 
+  console.log(schoolClass);
+
   return (
     <Card>
       <CardContent className="space-y-4">
@@ -85,17 +87,30 @@ export const ClassBox = ({ schoolClass }: Props) => {
             </span>
           </p>
           <p className="flex items-center justify-between">
-            <span>Subjects</span>
+            <span>Students</span>
             <span className="font-medium text-black">
-              43/{schoolClass.capacity}
+              {schoolClass.students.length}/{schoolClass.capacity}
             </span>
           </p>
           <p>
-            <small className="text-xs flex items-center justify-between">
+            <small className="mb-1 text-xs flex items-center justify-between">
               <span>Capacity</span>
-              <span>93%</span>
+              <span>
+                {(
+                  (Number(schoolClass.students.length) /
+                    Number(schoolClass.capacity)) *
+                  100
+                ).toFixed()}
+                %
+              </span>
             </small>
-            <Progress value={94} />
+            <Progress
+              value={
+                (Number(schoolClass.students.length) /
+                  Number(schoolClass.capacity)) *
+                100
+              }
+            />
           </p>
           <Button asChild className="w-full" variant={"outline"}>
             <Link href={`/a/classes/${schoolClass.id}`}>

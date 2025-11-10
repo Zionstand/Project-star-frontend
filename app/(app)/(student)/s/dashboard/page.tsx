@@ -59,6 +59,7 @@ const page = () => {
   }, [user]);
 
   const refreshDocuments = async () => {
+    console.log("yess");
     if (!user) return;
     try {
       const [documents, timelines, assignments] = await Promise.all([
@@ -139,6 +140,9 @@ const page = () => {
   if (user?.Student.isApproved)
     return (
       <div className="space-y-6">
+        {showApprovalModal && (
+          <AccountApprovedModal onClose={() => setShowApprovalModal(false)} />
+        )}
         <PageHeader
           title={`Welcome back, ${user?.firstName}!`}
           description="Here's what's happening with your studies today."
@@ -265,9 +269,6 @@ const page = () => {
       <div className="space-y-6">
         {user?.Student.applicationStatus === "pending" && (
           <PendingApprovalBanner />
-        )}
-        {showApprovalModal && (
-          <AccountApprovedModal onClose={() => setShowApprovalModal(false)} />
         )}
         {user?.Student.applicationStatus === "rejected" && (
           <RejectedApprovalBanner reasons={user.Student.rejectionReason} />

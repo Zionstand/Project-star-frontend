@@ -36,11 +36,11 @@ const ItemCard = ({ item }: { item: Assignment }) => {
 
   return (
     <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
+      <CardContent>
         <div className="flex flex-col lg:flex-row items-start gap-4 justify-between">
           <div className="flex items-start gap-4 flex-1 w-full">
             <div
-              className={`p-3 rounded-lg ${
+              className={`p-3 rounded-md ${
                 item.type === "ASSIGNMENT"
                   ? "bg-primary/10"
                   : item.type === "lesson note"
@@ -62,7 +62,7 @@ const ItemCard = ({ item }: { item: Assignment }) => {
                 <div className="flex items-center gap-2 mb-1">
                   <Link
                     href={`/t/assignments/${item.slug || item.id}`}
-                    className="font-semibold text-lg line-clamp-1 hover:underline hover:text-primary"
+                    className="font-medium text-lg line-clamp-1 hover:underline hover:text-primary"
                   >
                     {item.title}
                   </Link>
@@ -79,7 +79,7 @@ const ItemCard = ({ item }: { item: Assignment }) => {
                     {item.type}
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground line-clamp-2">
+                <p className="text-sm text-muted-foreground line-clamp-1">
                   {item.description}
                 </p>
               </div>
@@ -106,15 +106,15 @@ const ItemCard = ({ item }: { item: Assignment }) => {
                 <div className="flex items-center gap-3">
                   <Progress
                     value={
-                      (item.assignmentSubmissions.length /
-                        item.Class.students.length) *
+                      (item?.assignmentSubmissions?.length /
+                        item?.Class?.students?.length) *
                       100
                     }
                     className="flex-1 h-2"
                   />
                   <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-                    {item.assignmentSubmissions.length}/
-                    {item.Class.students.length}
+                    {item?.assignmentSubmissions?.length}/
+                    {item?.Class?.students?.length}
                   </span>
                 </div>
               )}
@@ -188,6 +188,8 @@ const Page = () => {
 
     fetch();
   }, [user]);
+
+  console.log(assignments);
 
   if (loading) return <Loader />;
 

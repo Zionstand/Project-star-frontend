@@ -222,7 +222,7 @@ export const AdministrativeDetails = () => {
                   <span>Additional Information</span>
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-muted rounded-lg py-6 px-4 space-y-1.5">
+                  <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">
                     <p className="text-sm text-muted-foreground">
                       Total Capacity
                     </p>
@@ -230,7 +230,7 @@ export const AdministrativeDetails = () => {
                       2,500 Students
                     </p>
                   </div>
-                  <div className="bg-muted rounded-lg py-6 px-4 space-y-1.5">
+                  <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">
                     <p className="text-sm text-muted-foreground">
                       Teaching Staff
                     </p>
@@ -238,7 +238,7 @@ export const AdministrativeDetails = () => {
                       85 Teachers
                     </p>
                   </div>
-                  <div className="bg-muted rounded-lg py-6 px-4 space-y-1.5">
+                  <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">
                     <p className="text-sm text-muted-foreground">
                       Student-Teacher Ratio
                     </p>
@@ -246,7 +246,7 @@ export const AdministrativeDetails = () => {
                       1:29
                     </p>
                   </div>
-                  <div className="bg-muted rounded-lg py-6 px-4 space-y-1.5">
+                  <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">
                     <p className="text-sm text-muted-foreground">Campus Size</p>
                     <p className="text-lg md:text-xl lg:text-2xl font-medium">
                       15 Acres
@@ -256,7 +256,7 @@ export const AdministrativeDetails = () => {
               </div>
             </div>
             {edit && (
-              <div className="border bg-primary/10 rounded-lg border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
+              <div className="border bg-primary/10 rounded-md border-primary text-base text-primary p-6 flex items-center justify-between gap-1">
                 <div className="flex items-center justify-start gap-1">
                   <IconBell />
                   <p>You have unsaved changes</p>

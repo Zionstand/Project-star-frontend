@@ -78,10 +78,33 @@ const DocumentItem = ({
   const config = getStatusConfig();
   const Icon = config.icon;
 
-  const handleImport = async (fileWithMeta: any) => {
+  const handleImport = async (incoming: any) => {
     try {
+      const docs = Array.isArray(incoming) ? incoming : [incoming];
+
+      // Extract the actual file objects
+      const files = docs.map((d) =>
+        d instanceof File
+          ? d
+          : d.file instanceof File
+          ? d.file
+          : d.originFileObj instanceof File
+          ? d.originFileObj
+          : null
+      );
+
+      const validFiles = files.filter(Boolean);
+      if (validFiles.length === 0) {
+        toast.error("No valid files found to upload");
+        return;
+      }
+
+      // For now, let's only upload the first file (since your endpoint accepts 1 file)
+      const file = validFiles[0];
       const formData = new FormData();
-      formData.append("file", fileWithMeta.file);
+      formData.append("file", file);
+
+      console.log("Uploading file:", file.name, file.type, file.size);
 
       const res = await api.post(
         `/upload/document/${user?.id}/${type}`,
@@ -93,7 +116,8 @@ const DocumentItem = ({
       // ✅ success
       toast.success(res.data.message);
       setOpenModal(false);
-      if (onUploadSuccess) onUploadSuccess(); // re-fetch doc list
+      onUploadSuccess(); // re-fetch doc list
+      // if (onUploadSuccess)
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Upload failed");
     }
@@ -109,7 +133,7 @@ const DocumentItem = ({
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold">{title}</h3>
+                <h3 className="font-medium">{title}</h3>
                 {required && <Badge variant={"secondary"}>Required</Badge>}
               </div>
               <p className="text-sm text-muted-foreground mb-3">
@@ -222,7 +246,7 @@ export const DashboardDocuments = ({ documents, onRefresh }: Props) => {
       <Alert className="bg-primary/10 border-primary/50">
         <IconAlertCircle className="h-4 w-4 text-primary" />
         <AlertDescription>
-          <h4 className="font-semibold text-primary mb-1">
+          <h4 className="font-medium text-primary mb-1">
             Document Upload Guidelines
           </h4>
           <ul className="text-sm text-primary space-y-1 list-disc list-inside">

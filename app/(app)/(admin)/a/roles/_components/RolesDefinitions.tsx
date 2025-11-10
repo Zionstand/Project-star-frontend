@@ -299,13 +299,13 @@ export const RolesDefinitions = () => {
             <div
               key={index}
               className={cn(
-                "border rounded-lg max-w-full overflow-hidden p-3 flex flex-col md:flex-row items-start justify-between gap-4",
+                "border rounded-md max-w-full overflow-hidden p-3 flex flex-col md:flex-row items-start justify-between gap-4",
                 role.borderColor
               )}
             >
               <div className="flex items-start justify-between gap-4 max-w-full overflow-hidden">
                 <div
-                  className={cn(`rounded-lg p-3 inline-block`, role.bgColor)}
+                  className={cn(`rounded-md p-3 inline-block`, role.bgColor)}
                 >
                   <Icon className={cn(`h-6 w-6`, role.textColor)} />
                 </div>
@@ -357,7 +357,7 @@ export const RolesDefinitions = () => {
               <div className="px-6 py-4 space-y-1">
                 <DialogTitle className="text-base flex items-center justify-start gap-2">
                   <div
-                    className={cn(`rounded-lg p-3 inline-block`, role.bgColor)}
+                    className={cn(`rounded-md p-3 inline-block`, role.bgColor)}
                   >
                     <role.icon className={cn(`h-6 w-6`, role.textColor)} />
                   </div>
@@ -367,19 +367,19 @@ export const RolesDefinitions = () => {
               </div>
               <div className="overflow-y-auto px-4 space-y-4 pb-10">
                 <div className="grid grid-cols-3 gap-2">
-                  <div className="flex items-center justify-center flex-col border rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-center flex-col border rounded-md p-4 space-y-2">
                     <p className="text-sm text-muted-foreground">
                       Active Users
                     </p>
                     <p className="font-medium text-xl">{role.users}</p>
                   </div>
-                  <div className="flex items-center justify-center flex-col border rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-center flex-col border rounded-md p-4 space-y-2">
                     <p className="text-sm text-muted-foreground">Permissions</p>
                     <p className="font-medium text-xl">
                       {role.permissions.length}
                     </p>
                   </div>
-                  <div className="flex items-center justify-center flex-col border rounded-lg p-4 space-y-2">
+                  <div className="flex items-center justify-center flex-col border rounded-md p-4 space-y-2">
                     <p className="text-sm text-muted-foreground">Capacities</p>
                     <p className="font-medium text-xl">
                       {role.capabilities.length}
@@ -394,7 +394,7 @@ export const RolesDefinitions = () => {
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     {role.permissions.map((permission: string) => (
-                      <div className="px-2 py-3 rounded-lg text-sm flex items-center justify-start gap-1 bg-muted">
+                      <div className="px-2 py-3 rounded-md text-sm flex items-center justify-start gap-1 bg-muted">
                         <IconCircleCheck className="size-4 text-green-500" />{" "}
                         <p>{permission}</p>
                       </div>
@@ -413,7 +413,7 @@ export const RolesDefinitions = () => {
                     {role.capabilities.map((c: string, index: string) => (
                       <div
                         key={index}
-                        className="px-2 py-3 rounded-lg text-sm flex items-center justify-start gap-1 bg-muted"
+                        className="px-2 py-3 rounded-md text-sm flex items-center justify-start gap-1 bg-muted"
                       >
                         <IconCircleCheck className="size-4 text-primary" />{" "}
                         <p>{c}</p>
@@ -422,7 +422,7 @@ export const RolesDefinitions = () => {
                   </div>
                 </div>
                 <Separator />
-                <div className="border space-y-1 border-primary/20 rounded-lg bg-primary/10 p-4">
+                <div className="border space-y-1 border-primary/20 rounded-md bg-primary/10 p-4">
                   <p className="text-xs font-medium">Role Assignment</p>
                   <p className="text-xs text-muted-foreground">
                     This role can be assigned to users from the "Users & Roles"

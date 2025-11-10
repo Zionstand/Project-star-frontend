@@ -377,11 +377,11 @@ const page = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  <div className="p-4 bg-primary/5 rounded-lg">
+                  <div className="p-4 bg-primary/5 rounded-md">
                     <p className="text-xs text-muted-foreground">Current GPA</p>
                     <p className="text-primary">3.85</p>
                   </div>
-                  <div className="p-4 bg-muted/10 rounded-lg">
+                  <div className="p-4 bg-muted/10 rounded-md">
                     <p className="text-xs text-muted-foreground">
                       Previous GPA
                     </p>
@@ -451,36 +451,34 @@ const page = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid text-center grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="rounded-lg bg-blue-50 p-4">
+                  <div className="rounded-md bg-blue-50 p-4">
                     <p className="text-muted-foreground text-xs mb-1">
                       Total Days
                     </p>
-                    <p className="text-2xl font-semibold text-primary">180</p>
+                    <p className="text-2xl font-medium text-primary">180</p>
                   </div>
-                  <div className="rounded-lg bg-green-50 p-4">
+                  <div className="rounded-md bg-green-50 p-4">
                     <p className="text-muted-foreground text-xs mb-1">
                       Present
                     </p>
-                    <p className="text-2xl font-semibold text-green-600">172</p>
+                    <p className="text-2xl font-medium text-green-600">172</p>
                   </div>
-                  <div className="rounded-lg bg-red-50 p-4">
+                  <div className="rounded-md bg-red-50 p-4">
                     <p className="text-muted-foreground text-xs mb-1">Absent</p>
-                    <p className="text-2xl font-semibold text-red-600">8</p>
+                    <p className="text-2xl font-medium text-red-600">8</p>
                   </div>
-                  <div className="rounded-lg bg-blue-50 p-4">
+                  <div className="rounded-md bg-blue-50 p-4">
                     <p className="text-muted-foreground text-xs mb-1">
                       Percentage
                     </p>
-                    <p className="text-2xl font-semibold text-blue-600">
-                      95.6%
-                    </p>
+                    <p className="text-2xl font-medium text-blue-600">95.6%</p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">Attendance Rate</p>
-                    <p className="text-sm font-semibold">95.6%</p>
+                    <p className="text-sm font-medium">95.6%</p>
                   </div>
                   <Progress value={95.6} className="h-2" />
                   <div className="flex items-center gap-2 text-green-600">
@@ -499,7 +497,7 @@ const page = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg">
+                <div className="flex items-center justify-between p-4 bg-muted/30 rounded-md">
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">
                       Payment Status
@@ -512,7 +510,7 @@ const page = () => {
                     <p className="text-xs text-muted-foreground mb-1">
                       Balance
                     </p>
-                    <p className="text-lg font-semibold text-green-600">₦0</p>
+                    <p className="text-lg font-medium text-green-600">₦0</p>
                   </div>
                 </div>
 
@@ -521,19 +519,19 @@ const page = () => {
                     <p className="text-xs text-muted-foreground mb-1">
                       Total Fees
                     </p>
-                    <p className="font-semibold">₦450,000</p>
+                    <p className="font-medium">₦450,000</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">
                       Amount Paid
                     </p>
-                    <p className="font-semibold text-green-600">₦450,000</p>
+                    <p className="font-medium text-green-600">₦450,000</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">
                       Outstanding
                     </p>
-                    <p className="font-semibold text-green-600">₦0</p>
+                    <p className="font-medium text-green-600">₦0</p>
                   </div>
                 </div>
 
@@ -541,9 +539,9 @@ const page = () => {
 
                 <div>
                   <p className="text-sm font-medium mb-3">Last Payment</p>
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center justify-between p-4 border rounded-md">
                     <div>
-                      <p className="font-semibold">₦150,000</p>
+                      <p className="font-medium">₦150,000</p>
                       <p className="text-xs text-muted-foreground">
                         15/09/2024
                       </p>

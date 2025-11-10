@@ -72,7 +72,7 @@ export const TeachersCards = ({ teachers, assignments }: Props) => {
                     {description}
                   </p>
                 </div>
-                <div className={cn(`rounded-lg p-3`, bgColor)}>
+                <div className={cn(`rounded-md p-3`, bgColor)}>
                   <Icon className={cn(`h-6 w-6`, textColor)} />
                 </div>
               </CardContent>

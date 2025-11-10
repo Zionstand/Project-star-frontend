@@ -227,7 +227,7 @@ export const ProfilePictureUpload = ({
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
+              className={`border-2 border-dashed rounded-md p-12 text-center transition-colors ${
                 isDragging
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-300 bg-gray-50"
@@ -258,7 +258,7 @@ export const ProfilePictureUpload = ({
               {/* Image Preview Container */}
               <div
                 ref={containerRef}
-                className="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden"
+                className="relative w-full aspect-square bg-gray-100 rounded-md overflow-hidden"
               >
                 {/* Circular Crop Overlay */}
                 <div className="absolute inset-0 pointer-events-none z-10">

@@ -443,7 +443,7 @@ const page = () => {
                   student.Student.documents.map((doc, index) => (
                     <div
                       key={doc.id}
-                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                      className="flex items-center justify-between p-3 border rounded-md hover:bg-muted/50 transition-colors"
                     >
                       <div className="flex items-center gap-3 flex-1">
                         <div className="p-2 bg-primary/10 rounded-md">
@@ -608,7 +608,7 @@ const page = () => {
           </DialogHeader>
           {selectedDocument && (
             <div className="my-4">
-              <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
+              <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
                 <IconFileDescription className="size-5 text-muted-foreground" />
                 <span className="font-medium text-sm">
                   {selectedDocument.type

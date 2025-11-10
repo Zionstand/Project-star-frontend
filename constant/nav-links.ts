@@ -570,6 +570,70 @@ export const studentNavLinks = [
   },
 ];
 
+export const parentNavLinks = [
+  {
+    title: "Main",
+    url: "#",
+    icon: IconLayout,
+    items: [
+      {
+        title: "Dashboard",
+        url: "/p/dashboard",
+        icon: IconLayout,
+      },
+    ],
+  },
+  {
+    title: "Academic",
+    url: "#",
+    icon: IconFileDescription,
+    isActive: true,
+    items: [
+      {
+        title: "Children's Progress",
+        url: "/p/children",
+        icon: IconFileDescription,
+      },
+    ],
+  },
+  {
+    title: "Finance",
+    url: "#",
+    icon: IconCreditCard,
+    items: [
+      {
+        title: "Fees & Payments",
+        url: "/p/fees",
+        icon: IconCreditCard,
+      },
+    ],
+  },
+  {
+    title: "Communication",
+    url: "#",
+    icon: IconMessage,
+    items: [
+      {
+        title: "Messages",
+        url: "/messages",
+        icon: IconMessage,
+      },
+    ],
+  },
+  {
+    title: "System",
+    url: "#",
+    icon: IconSettings,
+    items: [
+      {
+        title: "Settings",
+        url: "/p/settings",
+        icon: IconSettings,
+      },
+    ],
+  },
+];
+
 export const roleNavMap: Record<string, any[]> = {
   ADMINISTRATOR: adminNavLinks,
   TEACHER: teacherNavLinks,
@@ -578,5 +642,5 @@ export const roleNavMap: Record<string, any[]> = {
   LIBRARIAN: librarianNavLinks,
   BURSAR: bursarNavLinks,
   STUDENT: studentNavLinks,
-  //   PARENT: parentNavLinks,
+  PARENT: parentNavLinks,
 };

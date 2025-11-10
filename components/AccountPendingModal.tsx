@@ -39,7 +39,7 @@ export const AccountPendingModal = () => {
           </p>
 
           {/* Info box */}
-          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+          <div className="bg-blue-50 border border-blue-100 rounded-md p-4 mb-6">
             <div className="flex items-start gap-3">
               <IconMail className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
               <p className="text-sm text-primary">

@@ -23,13 +23,13 @@ const PermissionTable = ({ title, roles, permissions }: any) => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="border-b">
-                <th className="text-left py-3 px-4 font-semibold text-sm">
+                <th className="text-left py-3 px-4 font-medium text-sm">
                   Permission
                 </th>
                 {roles.map((role: any) => (
                   <th
                     key={role}
-                    className="text-center py-3 px-4 font-semibold text-sm whitespace-nowrap"
+                    className="text-center py-3 px-4 font-medium text-sm whitespace-nowrap"
                   >
                     <Badge variant="outline">{role}</Badge>
                   </th>
@@ -1026,21 +1026,21 @@ const SummaryStats = ({ categories, permissions, roles, showing }: any) => {
         <div className="text-sm text-muted-foreground mb-1">
           Total Categories
         </div>
-        <div className="text-3xl lg:text-4xl font-semibold">{categories}</div>
+        <div className="text-3xl lg:text-4xl font-medium">{categories}</div>
       </div>
       <div className="text-center">
         <div className="text-sm text-muted-foreground mb-1">
           Total Permissions
         </div>
-        <div className="text-3xl lg:text-4xl font-semibold">{permissions}</div>
+        <div className="text-3xl lg:text-4xl font-medium">{permissions}</div>
       </div>
       <div className="text-center">
         <div className="text-sm text-muted-foreground mb-1">Total Roles</div>
-        <div className="text-3xl lg:text-4xl font-semibold">{roles}</div>
+        <div className="text-3xl lg:text-4xl font-medium">{roles}</div>
       </div>
       <div className="text-center">
         <div className="text-sm text-muted-foreground mb-1">Showing</div>
-        <div className="text-3xl lg:text-4xl font-semibold">{showing}</div>
+        <div className="text-3xl lg:text-4xl font-medium">{showing}</div>
       </div>
     </div>
   );
@@ -1062,7 +1062,7 @@ export function Permissions() {
       </CardHeader>
       <CardContent className="space-y-4">
         <SearchBar />
-        <div className="flex items-center justify-start bg-muted p-3 rounded-lg gap-4">
+        <div className="flex items-center justify-start bg-muted p-3 rounded-md gap-4">
           <div className="flex items-center justify-start gap-1 text-sm">
             <IconCircleCheck className="size-4 text-green-500" />
             <p>Has Permission</p>

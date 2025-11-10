@@ -27,14 +27,14 @@ const ItemCard = ({ item }: { item: Assignment }) => {
       <CardContent className="p-6">
         <div className="flex flex-col lg:flex-row items-start gap-4 justify-between">
           <div className="flex items-start gap-4 flex-1">
-            <div className={`p-3 rounded-lg bg-green-500/10`}>
+            <div className={`p-3 rounded-md bg-green-500/10`}>
               <IconFileText className="w-6 h-6 text-green-500" />
             </div>
 
             <div className="flex-1 space-y-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-lg">{item.title}</h3>
+                  <h3 className="font-medium text-lg">{item.title}</h3>
                   <Badge variant={"outlineSuccess"} className="text-xs">
                     {item.type}
                   </Badge>

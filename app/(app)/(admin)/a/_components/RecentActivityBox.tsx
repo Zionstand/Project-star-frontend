@@ -19,7 +19,7 @@ export const RecentActivityBox = ({
 
   return (
     <div className="flex items-start justify-start gap-2.5 hover:bg-muted p-2 rounded-md">
-      <div className="rounded-lg p-3 bg-secondary">
+      <div className="rounded-md p-3 bg-secondary">
         <Icon className={cn("h-6 w-6", color)} />
       </div>
       <div className="space-y-1">

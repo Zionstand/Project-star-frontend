@@ -223,14 +223,14 @@ export const StudentAssignmentSubmission = ({
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg py-12 text-center transition-colors ${
+            className={`border-2 border-dashed rounded-md py-12 text-center transition-colors ${
               isDragging
                 ? "border-primary bg-primary/10"
                 : "border-gray-300 bg-gray-50"
             }`}
           >
             <div className="flex flex-col items-center gap-3">
-              <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-md flex items-center justify-center">
                 <IconFile size={32} className="text-primary" />
               </div>
               <div>
@@ -291,10 +291,10 @@ export const StudentAssignmentSubmission = ({
                     return (
                       <div
                         key={index}
-                        className="flex items-center gap-3 p-3 bg-muted rounded-lg"
+                        className="flex items-center gap-3 p-3 bg-muted rounded-md"
                       >
                         {/* Thumbnail */}
-                        <div className="size-10 rounded-lg overflow-hidden flex-shrink-0 bg-primary/10 flex items-center justify-center">
+                        <div className="size-10 rounded-md overflow-hidden flex-shrink-0 bg-primary/10 flex items-center justify-center">
                           {isImage ? (
                             <Image
                               src={fileUrl}
@@ -315,12 +315,12 @@ export const StudentAssignmentSubmission = ({
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex-1 min-w-0">
-                              <p className="line-clamp-1 text-sm font-medium break-words whitespace-normal max-w-[200px]">
+                              <p className="line-clamp-1 text-sm font-medium break-words whitespace-normal flex-1">
                                 {fileName}
                               </p>
                             </div>
                             <span className="text-xs text-muted-foreground ml-2 flex items-center gap-1">
-                              <span className="text-primary font-semibold">
+                              <span className="text-primary font-medium whitespace-normal max-w-[50px] line-clamp-1">
                                 {fileType}
                               </span>
                               · {fileSize}
@@ -422,51 +422,16 @@ export const StudentAssignmentSubmission = ({
           placeholder="Add any notes or comments for your teacher"
         />
       </div>
-      {/* {hasSubmitted ? (
-        <div className="space-y-3">
-          <div className="bg-green-50 border border-green-100 p-3 rounded-lg text-sm text-green-700">
-            <p className="font-medium flex items-center gap-2">
-              <IconCheck className="w-4 h-4" /> Submitted on{" "}
-              {formatDate(submission?.submittedAt)}
-            </p>
-            {submission?.status === "GRADED" && (
-              <p className="mt-1">
-                Score:{" "}
-                <span className="font-semibold">
-                  {submission?.grade ?? "-"} / {totalMarks ?? "-"}
-                </span>
-              </p>
-            )}
-          </div>
-          <Button disabled className="w-full">
-            Already Submitted
-          </Button>
-        </div>
-      ) : (
-        <Button
-          className="w-full"
-          type="button"
-          onClick={handleUpload}
-          disabled={
-            !files.some((f) => f.status === "completed") ||
-            pending ||
-            isDisabled
-          }
-        >
-          {pending ? <Loader text="Submitting..." /> : "Submit Assignment"}
-        </Button>
-      )} */}
-
       {hasGraded ? (
         <div className="space-y-3">
-          <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-lg text-sm text-emerald-700">
+          <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-md text-sm text-emerald-700">
             <p className="font-medium flex items-center gap-2">
               <IconAward className="w-4 h-4" /> Graded on{" "}
               {formatDate(submission?.gradedAt ?? submission?.submittedAt)}
             </p>
             <p className="mt-1">
               Score:{" "}
-              <span className="font-semibold">
+              <span className="font-medium">
                 {submission?.grade ?? "-"} /{" "}
                 {totalMarks === 0 ? 100 : totalMarks}
               </span>
@@ -477,16 +442,13 @@ export const StudentAssignmentSubmission = ({
               </p>
             )}
           </div>
-          <Button
-            disabled
-            className="w-full bg-emerald-600 text-white hover:bg-emerald-700 cursor-not-allowed"
-          >
+          <Button disabled variant={"success"}>
             Graded
           </Button>
         </div>
       ) : hasSubmitted ? (
         <div className="space-y-3">
-          <div className="bg-blue-50 border border-blue-100 p-3 rounded-lg text-sm text-blue-700">
+          <div className="bg-blue-50 border border-blue-100 p-3 rounded-md text-sm text-blue-700">
             <p className="font-medium flex items-center gap-2">
               <IconCheck className="w-4 h-4" /> Submitted on{" "}
               {formatDate(submission?.submittedAt)}

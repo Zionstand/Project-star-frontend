@@ -99,21 +99,21 @@ export const ApprovalStudentBox = ({
                     <p>
                       {" "}
                       {
-                        student?.Student.ParentStudentLink[0].parent.user
+                        student?.Student?.ParentStudentLink[0]?.parent?.user
                           ?.firstName
                       }{" "}
                       {
-                        student?.Student.ParentStudentLink[0].parent.user
+                        student?.Student?.ParentStudentLink[0]?.parent?.user
                           ?.lastName
                       }{" "}
-                      ({student?.Student.ParentStudentLink[0].relation})
+                      ({student?.Student?.ParentStudentLink[0]?.relation})
                     </p>
                     <a
                       className="hover:text-primary hover:underline transition-all"
-                      href={`tel:${student?.Student.ParentStudentLink[0].parent.user?.phoneNumber}`}
+                      href={`tel:${student?.Student?.ParentStudentLink[0]?.parent?.user?.phoneNumber}`}
                     >
                       {formatPhoneNumber(
-                        student?.Student.ParentStudentLink[0].parent.user
+                        student?.Student?.ParentStudentLink[0]?.parent?.user
                           ?.phoneNumber
                       )}
                     </a>

@@ -17,21 +17,21 @@ export const StaffCertifications = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-        <div className="rounded-lg border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
+        <div className="rounded-md border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
           <IconAward className="size-5 text-primary" />
           <span>Nigeria Certificate in Education (NCE)</span>
         </div>
-        <div className="rounded-lg border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
+        <div className="rounded-md border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
           <IconAward className="size-5 text-primary" />
           <span>Teachers Registration Council (TRCN) Certified</span>
         </div>
-        <div className="rounded-lg border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
+        <div className="rounded-md border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
           <IconAward className="size-5 text-primary" />
           <span>
             Cambridge International Certificate in Teaching and Learning
           </span>
         </div>
-        <div className="rounded-lg border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
+        <div className="rounded-md border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
           <IconAward className="size-5 text-primary" />
           <span>First Aid and Safety Training</span>
         </div>

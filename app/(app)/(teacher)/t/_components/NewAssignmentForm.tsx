@@ -317,9 +317,9 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
               {uploadedFiles.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center gap-3 p-3 bg-muted rounded-lg"
+                  className="flex items-center gap-3 p-3 bg-muted rounded-md"
                 >
-                  <div className="size-10 rounded-lg overflow-hidden flex-shrink-0 bg-primary/10 flex items-center justify-center">
+                  <div className="size-10 rounded-md overflow-hidden flex-shrink-0 bg-primary/10 flex items-center justify-center">
                     {file.isImage && file.preview ? (
                       <Image
                         src={file.preview}
@@ -339,7 +339,7 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
                         {file.name}
                       </p>
                       <span className="text-xs text-muted-foreground ml-2 flex items-center gap-1">
-                        <span className="text-primary font-semibold">
+                        <span className="text-primary font-medium">
                           {file.type}
                         </span>{" "}
                         · {file.size}

@@ -7,7 +7,7 @@ interface Props {
 }
 export const RejectedApprovalBanner = ({ reasons }: Props) => {
   return (
-    <div className="flex items-start justify-start gap-2 rounded-lg border border-red-500 bg-red-400/10 px-3 py-4">
+    <div className="flex items-start justify-start gap-2 rounded-md border border-red-500 bg-red-400/10 px-3 py-4">
       <IconAlertCircle className="size-5 text-red-600 mt-1" />
       <div>
         <p className="font-medium text-base text-red-600">

@@ -86,7 +86,7 @@ export const SearchBar = ({
   return (
     <div className="w-full">
       {label && <Label>{label}</Label>}
-      <div className="flex items-center relative justify-between bg-muted rounded-lg">
+      <div className="flex items-center relative justify-between bg-muted rounded-md">
         <Input
           className="peer ps-9 pe-9"
           placeholder={placeholder}

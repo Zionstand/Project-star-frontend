@@ -128,14 +128,14 @@ const page = () => {
           assignment?.totalMarks !== 0 && "lg:col-span-4"
         )}
       >
-        <div className="space-y-2 rounded-lg p-4 border">
+        <div className="space-y-2 rounded-md p-4 border">
           <p className="flex items-center justify-start gap-1">
             <IconCalendar className="size-4 text-primary" />
             <span className="text-muted-foreground">Assigned</span>
           </p>
           <p className="text-primary">{formatDate(assignment?.createdAt)}</p>
         </div>
-        <div className="space-y-2 rounded-lg p-4 border">
+        <div className="space-y-2 rounded-md p-4 border">
           <p className="flex items-center justify-start gap-1">
             <IconClock className="size-4 text-primary" />
             <span className="text-muted-foreground">Due Date</span>
@@ -144,7 +144,7 @@ const page = () => {
         </div>
         <div
           className={cn(
-            "space-y-2 rounded-lg p-4 border",
+            "space-y-2 rounded-md p-4 border",
             assignment?.totalMarks === 0 && "col-span-2 lg:col-span-1"
           )}
         >
@@ -155,7 +155,7 @@ const page = () => {
           <p className={colorClass}>{label}</p>
         </div>
         {assignment?.totalMarks !== 0 && (
-          <div className="space-y-2 rounded-lg p-4 border">
+          <div className="space-y-2 rounded-md p-4 border">
             <p className="flex items-center justify-start gap-1">
               <IconAward className="size-4 text-primary" />
               <span className="text-muted-foreground">Total marks</span>
@@ -165,52 +165,54 @@ const page = () => {
         )}
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        <div className="lg:col-span-3 grid gap-4">
-          <Card className="gap-1.5">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconFileDescription className="size-4 text-primary" />
-                Assignment description
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-base text-muted-foreground">
-              {assignment?.description}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconAlertCircle className="size-4 text-primary" />
-                Instructions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-base text-muted-foreground">
-              {assignment?.instructions ? (
-                ""
-              ) : (
-                <span className="italic">No instructions given</span>
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <IconPaperclip className="size-4 text-primary" />
-                Teacher's Attachments{" "}
-                <Badge variant={"secondary"}>
-                  {assignment?.attachments.length} files
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-base text-muted-foreground">
-              {assignment?.attachments.map((attachment) => (
-                <AssignmentAttachment
-                  key={attachment.id}
-                  attachment={attachment}
-                />
-              ))}
-            </CardContent>
-          </Card>
+        <div className="lg:col-span-3">
+          <div className="grid gap-4">
+            <Card className="gap-1.5">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconFileDescription className="size-4 text-primary" />
+                  Assignment description
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-base text-muted-foreground">
+                {assignment?.description}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconAlertCircle className="size-4 text-primary" />
+                  Instructions
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-base text-muted-foreground">
+                {assignment?.instructions ? (
+                  ""
+                ) : (
+                  <span className="italic">No instructions given</span>
+                )}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <IconPaperclip className="size-4 text-primary" />
+                  Teacher's Attachments{" "}
+                  <Badge variant={"secondary"}>
+                    {assignment?.attachments.length} files
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-base text-muted-foreground">
+                {assignment?.attachments.map((attachment) => (
+                  <AssignmentAttachment
+                    key={attachment.id}
+                    attachment={attachment}
+                  />
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
         <div className="lg:col-span-2 grid gap-4">
           <Card>
