@@ -16,8 +16,6 @@ interface Props {
 }
 
 export const ClassTeacherBox = ({ teacher }: Props) => {
-  console.log(teacher);
-
   return (
     <Card>
       <CardHeader>

@@ -17,4 +17,11 @@ export const parentService = {
     );
     return res.data;
   },
+
+  getChildAttendances: async (parentId: string, childId: string) => {
+    const res = await api.get(
+      `/parents/children/${parentId}/${childId}/attendances`
+    );
+    return res.data;
+  },
 };

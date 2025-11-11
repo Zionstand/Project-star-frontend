@@ -16,17 +16,20 @@ const page = () => {
 
   const [jobRoles, setJobRoles] = useState<any>();
   const [states, setStates] = useState<any>();
+  const [countries, setCountries] = useState<any>();
 
   useEffect(() => {
     const fetchConfigs = async () => {
       try {
-        const [jobRoles, states] = await Promise.all([
+        const [jobRoles, states, countries] = await Promise.all([
           configService.getCategory("JOB_ROLE"),
           configService.getCategory("STATE"),
+          configService.getCategory("COUNTRY"),
         ]);
 
         setJobRoles(jobRoles);
         setStates(states);
+        setCountries(countries);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -77,7 +80,11 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="manual">
-          <AddStaffForm states={states.items} jobRoles={jobRoles.items} />
+          <AddStaffForm
+            countries={countries.items}
+            states={states.items}
+            jobRoles={jobRoles.items}
+          />
         </TabsContent>
         <TabsContent value="import">
           <ImportStaff />

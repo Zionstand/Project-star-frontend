@@ -15,9 +15,27 @@ import React from "react";
 
 interface Props {
   assignments: number;
+  attendance: number;
 }
 
-export const StudentCards = ({ assignments }: Props) => {
+export const StudentCards = ({ assignments, attendance }: Props) => {
+  // Determine attendance status
+  let attendanceColor = "bg-green-500/20";
+  let attendanceTextColor = "text-green-500";
+  let attendanceDescription = "This term";
+
+  if (attendance < 75) {
+    attendanceColor = "bg-red-500/20";
+    attendanceTextColor = "text-red-500";
+    attendanceDescription = "Attendance needs improvement";
+  } else if (attendance < 90) {
+    attendanceColor = "bg-yellow-500/20";
+    attendanceTextColor = "text-yellow-500";
+    attendanceDescription = "Average attendance";
+  } else {
+    attendanceDescription = "Excellent attendance";
+  }
+
   const stats = [
     {
       title: "Current GPA",
@@ -29,11 +47,11 @@ export const StudentCards = ({ assignments }: Props) => {
     },
     {
       title: "Attendance",
-      value: "95%",
+      value: `${attendance}%`,
       icon: CircleCheckBig,
-      bgColor: "bg-green-500/20",
-      textColor: "text-green-500",
-      description: "This term",
+      bgColor: attendanceColor,
+      textColor: attendanceTextColor,
+      description: attendanceDescription,
     },
     {
       title: "Assignments",

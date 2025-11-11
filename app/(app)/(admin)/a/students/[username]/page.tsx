@@ -4,30 +4,24 @@ import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
-import api from "@/lib/api";
 import { schoolService } from "@/lib/school";
-import { calculateAge, cn, formatDate, formatPhoneNumber } from "@/lib/utils";
-import { Class, useAuth, User } from "@/store/useAuth";
 import {
-  IconActivity,
+  calculateAge,
+  calculateAttendanceStats,
+  cn,
+  formatDate,
+  formatPhoneNumber,
+} from "@/lib/utils";
+import { useAuth, User } from "@/store/useAuth";
+import {
   IconAward,
   IconBuilding,
   IconCalendar,
   IconCheck,
   IconClock,
-  IconDotsVertical,
-  IconDownload,
   IconEye,
-  IconFileDescription,
   IconMail,
   IconMapPin2,
   IconPencil,
@@ -41,20 +35,8 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { StudentRejectionModal } from "@/components/StudentRejectionModal";
-import { StudentApprovalModal } from "@/components/StudentApprovalModal";
 import { Progress } from "@/components/ui/progress";
 
 const page = () => {
@@ -64,6 +46,13 @@ const page = () => {
 
   const [student, setStudent] = useState<User>();
   const [loading, setLoading] = useState(true);
+
+  const [attendanceStats, setAttendanceStats] = useState({
+    totalSchoolDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    attendancePercentage: 0,
+  });
 
   useEffect(() => {
     const fetch = async () => {
@@ -76,6 +65,16 @@ const page = () => {
         );
 
         setStudent(student);
+        const publicHolidays: any = []; // get from DB or config
+
+        const stats = calculateAttendanceStats(
+          student.Student.Attendance || [], // raw attendance array from studentService.getMyAttendances
+          user?.school?.academicStartDate!, // required
+          user?.school?.academicEndDate!, // optional
+          publicHolidays
+        );
+
+        setAttendanceStats(stats);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -87,6 +86,22 @@ const page = () => {
   }, [user, username]);
 
   if (loading || !student) return <Loader />;
+
+  const attendancePercentage = attendanceStats.attendancePercentage;
+
+  let attendanceColor = "bg-green-50";
+  let attendanceTextColor = "text-green-600";
+  let attendanceDescription = "Excellent attendance record";
+
+  if (attendancePercentage < 75) {
+    attendanceColor = "bg-red-50";
+    attendanceTextColor = "text-red-600";
+    attendanceDescription = "Attendance needs improvement";
+  } else if (attendancePercentage < 90) {
+    attendanceColor = "bg-yellow-50";
+    attendanceTextColor = "text-yellow-600";
+    attendanceDescription = "Average attendance record";
+  }
 
   return (
     <div className="space-y-6">
@@ -100,7 +115,7 @@ const page = () => {
         }}
         secondaryCTA={{
           label: "Edit",
-          slug: ``,
+          slug: `/a/students/${student?.username}/edit`,
           icon: IconPencil,
         }}
         back
@@ -121,10 +136,11 @@ const page = () => {
                   />
                   <div className="space-y-1.5">
                     <p className="text-base lg:text-lg font-medium">
-                      {student.title} {student.firstName} {student.lastName}
+                      {student.firstName} {student.lastName}{" "}
+                      {student?.otherName}
                     </p>
                     <p className="text-muted-foreground text-sm">
-                      {student.Student.candidateNumber}
+                      {student.Student.admissionNumber}
                     </p>
                     <div className="flex items-center justify-center gap-1">
                       <Badge
@@ -152,7 +168,8 @@ const page = () => {
                     <div>
                       <p className="text-xs">Class</p>
                       <p className="text-black font-medium">
-                        {student.Student.desiredClass}
+                        {student.Student.Class.level}
+                        {student?.Student.Class.section}
                       </p>
                     </div>
                   </div>
@@ -308,7 +325,10 @@ const page = () => {
                         <p className="text-xs">Phone</p>
                         <p className="font-medium text-black">
                           {parent.parent.user?.phoneNumber ? (
-                            <a href={`tel:${parent.parent.user?.phoneNumber}`}>
+                            <a
+                              className="hover:underline hover:text-primary"
+                              href={`tel:${parent.parent.user?.phoneNumber}`}
+                            >
                               {formatPhoneNumber(
                                 parent.parent.user?.phoneNumber
                               )}
@@ -322,7 +342,10 @@ const page = () => {
                         <p className="text-xs">Phone</p>
                         <p className="font-medium text-black">
                           {parent.parent.user?.email ? (
-                            <a href={`mailto:${parent.parent.user?.email}`}>
+                            <a
+                              className="hover:underline hover:text-primary"
+                              href={`mailto:${parent.parent.user?.email}`}
+                            >
                               {parent.parent.user?.email}
                             </a>
                           ) : (
@@ -352,7 +375,7 @@ const page = () => {
                   Enrollment Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-2 md:grid-cols-2">
+              <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <div>
                   <p className="text-xs">Admission Date:</p>
                   <p className="text-black font-medium">
@@ -455,35 +478,52 @@ const page = () => {
                     <p className="text-muted-foreground text-xs mb-1">
                       Total Days
                     </p>
-                    <p className="text-2xl font-medium text-primary">180</p>
+                    <p className="text-2xl font-medium text-primary">
+                      {attendanceStats.totalSchoolDays}
+                    </p>
                   </div>
                   <div className="rounded-md bg-green-50 p-4">
                     <p className="text-muted-foreground text-xs mb-1">
                       Present
                     </p>
-                    <p className="text-2xl font-medium text-green-600">172</p>
+                    <p className="text-2xl font-medium text-green-600">
+                      {attendanceStats.presentDays}
+                    </p>
                   </div>
                   <div className="rounded-md bg-red-50 p-4">
                     <p className="text-muted-foreground text-xs mb-1">Absent</p>
-                    <p className="text-2xl font-medium text-red-600">8</p>
+                    <p className="text-2xl font-medium text-red-600">
+                      {attendanceStats.absentDays}
+                    </p>
                   </div>
-                  <div className="rounded-md bg-blue-50 p-4">
+                  <div className={`rounded-md ${attendanceColor} p-4`}>
                     <p className="text-muted-foreground text-xs mb-1">
                       Percentage
                     </p>
-                    <p className="text-2xl font-medium text-blue-600">95.6%</p>
+                    <p
+                      className={`text-2xl font-medium ${attendanceTextColor}`}
+                    >
+                      {attendancePercentage}%
+                    </p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">Attendance Rate</p>
-                    <p className="text-sm font-medium">95.6%</p>
+                    <p className={`text-sm font-medium ${attendanceTextColor}`}>
+                      {attendancePercentage}%
+                    </p>
                   </div>
-                  <Progress value={95.6} className="h-2" />
-                  <div className="flex items-center gap-2 text-green-600">
+                  <Progress
+                    value={attendancePercentage}
+                    className={`h-2 ${attendanceColor}`}
+                  />
+                  <div
+                    className={`flex items-center gap-2 ${attendanceTextColor}`}
+                  >
                     <IconCheck className="size-4" />
-                    <p className="text-sm">Excellent attendance record</p>
+                    <p className="text-sm">{attendanceDescription}</p>
                   </div>
                 </div>
               </CardContent>

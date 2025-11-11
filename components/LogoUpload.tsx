@@ -10,6 +10,7 @@ import {
 } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import Image from "next/image";
 
 interface Props {
   isOpen?: boolean;
@@ -102,18 +103,18 @@ export const LogoUpload = ({
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-md p-12 text-center transition-colors cursor-pointer ${
                 isDragging
-                  ? "border-blue-500 bg-blue-50"
+                  ? "border-primary bg-primary/5"
                   : "border-gray-300 bg-gray-50"
               }`}
               onClick={handleBrowse}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                  <IconPhoto size={32} className="text-blue-500" />
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                  <IconPhoto size={32} className="text-primary" />
                 </div>
                 <p className="text-sm text-muted-foreground">
                   Drop your logo here, or{" "}
-                  <span className="text-blue-600 font-medium hover:underline">
+                  <span className="text-primary font-medium hover:underline">
                     browse
                   </span>
                 </p>
@@ -124,11 +125,13 @@ export const LogoUpload = ({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="relative w-full aspect-square bg-gray-50 border rounded-md flex items-center justify-center overflow-hidden">
-                <img
+              <div className="relative w-full aspect-square bg-gray-50 border rounded-md flex items-center justify-center overflow-hidden ">
+                <Image
+                  width={1000}
+                  height={1000}
                   src={logo}
                   alt="School Logo"
-                  className="max-w-full max-h-full object-contain"
+                  className="aspect-video size-full"
                 />
               </div>
 

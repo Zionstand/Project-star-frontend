@@ -25,4 +25,9 @@ export const studentService = {
     );
     return res.data;
   },
+
+  getMyAttendances: async (studentId: string, schoolId: string) => {
+    const res = await api.get(`/students/${studentId}/${schoolId}/attendances`);
+    return res.data;
+  },
 };

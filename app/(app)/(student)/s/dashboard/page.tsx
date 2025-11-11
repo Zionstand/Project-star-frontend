@@ -31,7 +31,7 @@ import { studentService } from "@/lib/student";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AssignmentCard } from "../_components/AssignmentCard";
 import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/utils";
+import { calculateAttendanceStats, formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -45,12 +45,16 @@ const page = () => {
   const [timelines, setTimelines] = useState<any[]>([]);
   const [classLevels, setClassLevels] = useState<any>([]);
   const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const [attendanceStats, setAttendanceStats] = useState({
+    totalSchoolDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    attendancePercentage: 0,
+  });
   const [documents, setDocuments] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [showApprovalModal, setShowApprovalModal] = useState(false);
-
-  console.log(user);
 
   useEffect(() => {
     if (user?.Student?.isApproved && !user.Student.completedOnboarding) {
@@ -59,7 +63,6 @@ const page = () => {
   }, [user]);
 
   const refreshDocuments = async () => {
-    console.log("yess");
     if (!user) return;
     try {
       const [documents, timelines, assignments] = await Promise.all([
@@ -78,10 +81,8 @@ const page = () => {
     }
   };
 
-  console.log(assignments);
-
   useEffect(() => {
-    const fetchConfigs = async () => {
+    const fetch = async () => {
       if (!user) return;
       try {
         const [
@@ -93,6 +94,7 @@ const page = () => {
           documents,
           timelines,
           assignments,
+          attendances,
         ] = await Promise.all([
           configService.getCategory("STATE"),
           schoolService.getSchoolClasses(user?.school?.schoolID!),
@@ -104,6 +106,7 @@ const page = () => {
           user.Student.isApproved
             ? studentService.getStudentAssignments(user?.schoolId!, user?.id)
             : Promise.resolve([]),
+          studentService.getMyAttendances(user?.id, user?.school?.id!),
         ]);
 
         setStates(states);
@@ -114,6 +117,17 @@ const page = () => {
         setDocuments(documents);
         setTimelines(timelines); // 👈 store timeline
         setAssignments(assignments); // 👈 store timeline
+
+        const publicHolidays: any = []; // get from DB or config
+
+        const stats = calculateAttendanceStats(
+          attendances || [], // raw attendance array from studentService.getMyAttendances
+          user?.school?.academicStartDate!, // required
+          user?.school?.academicEndDate!, // optional
+          publicHolidays
+        );
+
+        setAttendanceStats(stats);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -121,7 +135,7 @@ const page = () => {
       }
     };
 
-    fetchConfigs();
+    fetch();
   }, [user]);
 
   if (loading) return <Loader />;
@@ -130,10 +144,6 @@ const page = () => {
     const submission = assignment.assignmentSubmissions?.find(
       (sub) => sub.studentId === user?.Student?.id
     );
-
-    // Return true if:
-    // - No submission exists (student hasn't done it)
-    // - Or submission exists but no grade (teacher hasn’t graded yet)
     return !submission || (!submission.grade && submission.status !== "GRADED");
   });
 
@@ -147,7 +157,10 @@ const page = () => {
           title={`Welcome back, ${user?.firstName}!`}
           description="Here's what's happening with your studies today."
         />
-        <StudentCards assignments={pendingAssignments.length} />
+        <StudentCards
+          assignments={pendingAssignments.length}
+          attendance={attendanceStats.attendancePercentage}
+        />
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-3 grid gap-4">
             <Card>
@@ -169,7 +182,7 @@ const page = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {assignments.slice(0, 3).map((assignment) => {
+                {assignments.slice(0, 3).map((assignment, index) => {
                   const submission = assignment.assignmentSubmissions?.find(
                     (s) => s.studentId === user?.Student.id
                   );
@@ -180,7 +193,7 @@ const page = () => {
                   );
 
                   return (
-                    <Card>
+                    <Card key={index}>
                       <CardContent>
                         <p className="text-base font-medium flex items-center justify-between gap-1">
                           <Link

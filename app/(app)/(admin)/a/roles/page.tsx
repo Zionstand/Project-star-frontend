@@ -17,22 +17,39 @@ import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
 import { RolesDefinitions } from "./_components/RolesDefinitions";
 import { Permissions } from "./_components/Permissions";
+import { configService } from "@/lib/configs";
 
 const page = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
+  const [teachers, setTeachers] = useState<User[]>([]);
+  const [parents, setParents] = useState<User[]>([]);
+  const [students, setStudents] = useState<User[]>([]);
+  const [admins, setAdmins] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [jobRoles, setJobRoles] = useState<any>();
 
   useEffect(() => {
     const fetchStaffs = async () => {
       if (!user?.schoolId) return;
 
       try {
-        const [users] = await Promise.all([
-          schoolService.getSchoolUsers(user?.schoolId!),
-        ]);
+        const [users, teachers, parents, students, admins, jobRoles] =
+          await Promise.all([
+            schoolService.getSchoolUsers(user?.schoolId!),
+            schoolService.getSchoolTeachers(user?.schoolId!),
+            schoolService.getSchoolParents(user?.schoolId!),
+            schoolService.getStudents(user?.schoolId!),
+            schoolService.getSchoolAdmins(user?.schoolId!),
+            configService.getCategory("JOB_ROLE"),
+          ]);
 
         setUsers(users);
+        setTeachers(teachers);
+        setParents(parents);
+        setStudents(students);
+        setAdmins(admins);
+        setJobRoles(jobRoles);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -43,6 +60,33 @@ const page = () => {
     fetchStaffs();
   }, [user]);
 
+  const handleRefresh = async () => {
+    if (!user?.schoolId) return;
+
+    try {
+      const [users, teachers, parents, students, admins, jobRoles] =
+        await Promise.all([
+          schoolService.getSchoolUsers(user?.schoolId!),
+          schoolService.getSchoolTeachers(user?.schoolId!),
+          schoolService.getSchoolParents(user?.schoolId!),
+          schoolService.getStudents(user?.schoolId!),
+          schoolService.getSchoolAdmins(user?.schoolId!),
+          configService.getCategory("JOB_ROLE"),
+        ]);
+
+      setUsers(users);
+      setTeachers(teachers);
+      setParents(parents);
+      setStudents(students);
+      setAdmins(admins);
+      setJobRoles(jobRoles);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) return <Loader />;
   return (
     <div className="space-y-6">
@@ -50,7 +94,7 @@ const page = () => {
         title="Roles & Permissions"
         description="Manage user roles, permissions, and access control for the school system"
       />
-      <RolesCards />
+      <RolesCards total={users.length} />
       <Tabs defaultValue="users">
         <ScrollArea>
           <TabsList className="mb-3 w-full">
@@ -82,10 +126,19 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="users">
-          <UserRoles users={users} />
+          <UserRoles
+            users={users}
+            onRefresh={() => handleRefresh()}
+            jobRoles={jobRoles.items}
+          />
         </TabsContent>
         <TabsContent value="roles">
-          <RolesDefinitions />
+          <RolesDefinitions
+            teachers={teachers.length}
+            students={students.length}
+            admins={admins.length}
+            parents={parents.length}
+          />
         </TabsContent>
         <TabsContent value="permissions">
           <Permissions />

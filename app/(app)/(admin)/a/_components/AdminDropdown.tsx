@@ -54,7 +54,11 @@ export function AdminDropdown() {
             <p className="text-xs font-normal text-muted-foreground">
               {formatWord[user.role]}{" "}
               {user.role === "STUDENT" &&
-                `- ${user.Student.desiredClass || "No class"}`}
+                `- ${
+                  user.Student.Class
+                    ? `${user.Student.Class.level}${user.Student.Class.section}`
+                    : user?.Student.desiredClass || "No class"
+                }`}
             </p>
           </div>
           <ChevronDownIcon

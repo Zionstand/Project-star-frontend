@@ -14,19 +14,23 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const { id } = await searchParams;
 
   try {
-    const [countries, states, classLevels, departments] = await Promise.all([
-      configService.getCategory("COUNTRY"),
-      configService.getCategory("STATE"),
-      configService.getCategory("CLASS_LEVEL"),
-      configService.getCategory("SCHOOL_DEPARTMENT"),
-    ]);
-
-    const school = await schoolService.getSchool(id);
+    const [countries, states, classLevels, departments, school] =
+      await Promise.all([
+        configService.getCategory("COUNTRY"),
+        configService.getCategory("STATE"),
+        configService.getCategory("CLASS_LEVEL"),
+        configService.getCategory("SCHOOL_DEPARTMENT"),
+        schoolService.getSchool(id),
+      ]);
 
     return (
       <div className="space-y-4 w-full">
         <div className="flex items-center justify-center">
-          <FullLogo name={school.name} acronym={school.acronym} />
+          <FullLogo
+            name={school.name}
+            acronym={school.acronym}
+            logo={school.logo}
+          />
         </div>
         <OnboardingStudentForm
           countries={countries.items}

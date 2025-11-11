@@ -12,8 +12,8 @@ import { toast } from "sonner";
 
 const page = () => {
   const { user } = useAuth();
-  const [staffs, setStaffs] = useState<User[]>();
-  const [teachers, setTeachers] = useState<User[]>();
+  const [staffs, setStaffs] = useState<User[]>([]);
+  const [teachers, setTeachers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -29,10 +29,11 @@ import {
   IconMessage,
 } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/utils";
+import { calculateAttendanceStats, formatDate } from "@/lib/utils";
 import Link from "next/link";
 import { ComingSoon } from "@/components/ComingSoon";
 import { Button } from "@/components/ui/button";
+import { NothingFound } from "@/components/NothingFound";
 
 const Page = () => {
   const { user } = useAuth();
@@ -41,8 +42,12 @@ const Page = () => {
   const [child, setChild] = useState<Student | undefined>();
   const [assignments, setAssignments] = useState<Assignment[] | undefined>([]);
   const [selectedChildId, setSelectedChildId] = useState<string | undefined>();
-
-  console.log(child, children, assignments);
+  const [attendanceStats, setAttendanceStats] = useState({
+    totalSchoolDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    attendancePercentage: 0,
+  });
 
   const [loading, setLoading] = useState(true);
   const [loadingChild, setLoadingChild] = useState(false);
@@ -74,21 +79,40 @@ const Page = () => {
 
   // ✅ Fetch details for the selected child
   useEffect(() => {
+    if (!selectedChildId) return;
+
+    // Clear previous child data immediately
+    setChild(undefined);
+    setAssignments([]);
+    setAttendanceStats({
+      totalSchoolDays: 0,
+      presentDays: 0,
+      absentDays: 0,
+      attendancePercentage: 0,
+    });
     const fetchChildDetails = async () => {
       if (!user?.id || !selectedChildId) return;
 
       setLoadingChild(true);
       try {
-        const fetchedChild = await parentService.getChildDetails(
-          user.id,
-          selectedChildId
+        const [child, assignments, attendances] = await Promise.all([
+          parentService.getChildDetails(user.id, selectedChildId),
+          parentService.getChildAssignments(user.id, selectedChildId),
+          parentService.getChildAttendances(user?.id, selectedChildId),
+        ]);
+
+        setChild(child);
+        setAssignments(assignments);
+        const publicHolidays: any = []; // get from DB or config
+
+        const stats = calculateAttendanceStats(
+          attendances || [], // raw attendance array from studentService.getMyAttendances
+          user?.school?.academicStartDate!, // required
+          user?.school?.academicEndDate!, // optional
+          publicHolidays
         );
-        const fetchedChildAssignments = await parentService.getChildAssignments(
-          user.id,
-          selectedChildId
-        );
-        setChild(fetchedChild);
-        setAssignments(fetchedChildAssignments);
+
+        setAttendanceStats(stats);
       } catch (error: any) {
         toast.error(
           error?.response?.data?.message || "Failed to load child details"
@@ -122,7 +146,7 @@ const Page = () => {
         <Loader text="Loading details..." />
       ) : (
         <>
-          <ChildCards />
+          <ChildCards attendance={attendanceStats.attendancePercentage} />
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 2xl:gap-4">
             <div className="lg:col-span-3">
               <div className="grid gap-2">
@@ -309,7 +333,6 @@ const Page = () => {
           <Card>
             <CardHeader>
               <CardTitle>Pending Assignments</CardTitle>
-              <CardDescription>3 assignments due soon</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {assignments?.slice(0, 3).map((assignment) => {
@@ -353,6 +376,9 @@ const Page = () => {
                 );
               })}
             </CardContent>
+            {assignments?.length === 0 && (
+              <NothingFound message="No assignments yet" />
+            )}
           </Card>
           <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4">
             <Button

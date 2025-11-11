@@ -637,8 +637,8 @@ export const parentNavLinks = [
 export const roleNavMap: Record<string, any[]> = {
   ADMINISTRATOR: adminNavLinks,
   TEACHER: teacherNavLinks,
-  "IT SUPPORT": ITSupportNavLinks,
-  "DATA ANALYST": dataAnalystNavLinks,
+  IT_SUPPORT: ITSupportNavLinks,
+  DATA_ANALYST: dataAnalystNavLinks,
   LIBRARIAN: librarianNavLinks,
   BURSAR: bursarNavLinks,
   STUDENT: studentNavLinks,

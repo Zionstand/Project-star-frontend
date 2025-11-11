@@ -52,8 +52,6 @@ const page = () => {
 
   if (loading || !classDetails) return <Loader />;
 
-  console.log(classDetails);
-
   return (
     <div className="space-y-6">
       <PageHeader

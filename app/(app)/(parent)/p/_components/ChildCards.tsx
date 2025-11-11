@@ -6,26 +6,43 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  IconCheckbox,
-  IconClock,
   IconCurrencyDollar,
-  IconExclamationCircle,
   IconMessage,
   IconSchool,
-  IconTrendingUp,
   IconUsers,
 } from "@tabler/icons-react";
 import React from "react";
 
-export const ChildCards = () => {
+interface Props {
+  attendance: number;
+}
+
+export const ChildCards = ({ attendance }: Props) => {
+  // Determine attendance status
+  let attendanceColor = "bg-green-500/20";
+  let attendanceTextColor = "text-green-500";
+  let attendanceDescription = "This term";
+
+  if (attendance < 75) {
+    attendanceColor = "bg-red-500/20";
+    attendanceTextColor = "text-red-500";
+    attendanceDescription = "Attendance needs improvement";
+  } else if (attendance < 90) {
+    attendanceColor = "bg-yellow-500/20";
+    attendanceTextColor = "text-yellow-500";
+    attendanceDescription = "Average attendance";
+  } else {
+    attendanceDescription = "Excellent attendance";
+  }
+
   const stats = [
     {
       title: "Attendance",
-      value: "94%",
+      value: `${attendance}%`,
       icon: IconUsers,
-      bgColor: "bg-green-500/10",
-      textColor: "text-green-500",
-      description: "This term",
+      bgColor: attendanceColor,
+      textColor: attendanceTextColor,
+      description: attendanceDescription,
     },
     {
       title: "Average Grade",

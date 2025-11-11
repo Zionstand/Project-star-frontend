@@ -5,21 +5,8 @@ import { Class, User } from "@/store/useAuth";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
 
-export interface ExtendedUser extends NonNullable<User> {
-  Teacher?: {
-    classes: Class[];
-    assignments: {
-      id: true;
-      Subject: {
-        name: string;
-        department: string;
-      };
-    }[];
-  };
-}
-
 interface Props {
-  teachers: ExtendedUser[] | undefined;
+  teachers: User[] | undefined;
 }
 
 export const TeacherLists = ({ teachers }: Props) => {

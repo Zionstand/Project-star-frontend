@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,14 +19,30 @@ import { User } from "@/store/useAuth";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber, formatWord } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { IconEdit, IconPhone, IconRestore } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconPencil,
+  IconPhone,
+  IconRestore,
+  IconUser,
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { NothingFound } from "@/components/NothingFound";
+import { RoleModal } from "@/components/RoleModal";
 
 interface Props {
   users: User[];
+  onRefresh: () => void;
+  jobRoles: {
+    id: string;
+    name: string;
+  }[];
 }
 
-export const UserRoles = ({ users }: Props) => {
+export const UserRoles = ({ users, onRefresh, jobRoles }: Props) => {
+  const [openRoleModal, setOpenRoleModal] = useState(false);
+
+  const [selectedUser, setSelectedUser] = useState<User>();
   return (
     <Card>
       <CardHeader>
@@ -37,6 +53,8 @@ export const UserRoles = ({ users }: Props) => {
       </CardHeader>
       <CardContent className="space-y-4">
         <SearchBar />
+        {users.length === 0 && <NothingFound message="No user found..." />}
+
         <div className="hidden md:block">
           <Table>
             <TableHeader>
@@ -46,14 +64,12 @@ export const UserRoles = ({ users }: Props) => {
                 <TableHead>Role</TableHead>
                 <TableHead>Department/Class</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Assigned Date</TableHead>
-                <TableHead>Last Login</TableHead>
                 <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
-                <TableRow>
+              {users.map((user, index) => (
+                <TableRow key={index}>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <UserProfilePicture src="" alt="" size="default" />
@@ -84,51 +100,262 @@ export const UserRoles = ({ users }: Props) => {
                     </a>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={"outlinePurple"}>
-                      {formatWord[user?.role!]}
-                    </Badge>
+                    <div className="flex justify-start gap-1 items-center">
+                      {user?.schoolRoles && user.schoolRoles.length > 0 ? (
+                        <>
+                          {user.schoolRoles.slice(0, 1).map((r, idx) => (
+                            <Badge
+                              key={idx}
+                              variant={
+                                r?.role === "ADMINISTRATOR"
+                                  ? "admin"
+                                  : r?.role === "STUDENT"
+                                  ? "student"
+                                  : r?.role === "PARENT"
+                                  ? "parent"
+                                  : r?.role === "TEACHER"
+                                  ? "teacher"
+                                  : "outlinePurple"
+                              }
+                            >
+                              {formatWord[r.role]}
+                            </Badge>
+                          ))}
+                          {user.schoolRoles.length > 1 && (
+                            <Badge variant="outline">{`+${
+                              user.schoolRoles.length - 1
+                            }`}</Badge>
+                          )}
+                        </>
+                      ) : (
+                        <Badge
+                          variant={
+                            user?.role === "ADMINISTRATOR"
+                              ? "admin"
+                              : user?.role === "STUDENT"
+                              ? "student"
+                              : user?.role === "PARENT"
+                              ? "parent"
+                              : user?.role === "TEACHER"
+                              ? "teacher"
+                              : "outlinePurple"
+                          }
+                        >
+                          {formatWord[user?.role!]}
+                        </Badge>
+                      )}
+                    </div>
                   </TableCell>
-                  <TableCell>Mathematics</TableCell>
+                  <TableCell>
+                    {user?.role === "TEACHER" && user?.Teacher?.classes && (
+                      <>
+                        {user.Teacher.classes.slice(0, 1).map((c, index) => (
+                          <Badge key={index} variant="secondary">
+                            {c.level}
+                            {c.section}
+                          </Badge>
+                        ))}
+
+                        {user.Teacher.classes.length > 1 && (
+                          <Badge variant="secondary">
+                            +{user.Teacher.classes.length - 1}
+                          </Badge>
+                        )}
+                        {user.Teacher.classes.length === 0 && (
+                          <Badge variant={"secondary"}>No class</Badge>
+                        )}
+                      </>
+                    )}
+                    {user?.role === "STUDENT" && (
+                      <Badge variant="secondary">
+                        {user?.Student.Class.level}
+                        {user?.Student?.Class.section}
+                      </Badge>
+                    )}
+                    {user?.role === "ADMINISTRATOR" && "Administration"}
+                    {user?.role === "PRINCIPAL" && "Administration"}
+                    {user?.role === "BURSAR" && "Finances"}
+                    {user?.role === "LIBRARIAN" && "Library Services"}
+                    {user?.role === "COUNSELOR" && "Library Student Services"}
+                    {user?.role === "PARENT" && "Parent"}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={"outlineSuccess"}>Active</Badge>
                   </TableCell>
-                  <TableCell>
-                    {/* {user?.role === "TEACHER" &&
-                          user?.Teacher?.assignments && (
-                            <>
-                              {user.Teacher.assignments
-                                .slice(0, 2)
-                                .map((a, index) => (
-                                  <Badge key={index} variant="secondary">
-                                    {a.Subject.name}
-                                  </Badge>
-                                ))}
-
-                              {user.Teacher.assignments.length > 2 && (
-                                <Badge variant="secondary">
-                                  +{user.Teacher.assignments.length - 2}
-                                </Badge>
-                              )}
-                            </>
-                          )} */}
-                  </TableCell>
-                  <TableCell></TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button variant={"ghost"} size="icon">
-                        <IconEdit />
-                      </Button>
-                      <Button variant={"ghost"} size="icon">
-                        <IconRestore />
-                      </Button>
-                    </div>
+                    <Button
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setOpenRoleModal(true);
+                      }}
+                      variant={"secondary"}
+                      size="icon"
+                    >
+                      <IconPencil />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
+        <div className="md:hidden space-y-4">
+          {users?.map((user, index) => (
+            <div key={index} className="space-y-4 border-b last:border-0 pb-4">
+              {/* Top row: profile + actions */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-3 flex-1">
+                  <UserProfilePicture src="" alt="" size="default" />
+                  <div className="flex-1">
+                    <div className="font-medium text-base line-clamp-1">
+                      {user?.firstName} {user?.lastName}{" "}
+                      <Badge variant="outlineSuccess">Active</Badge>
+                    </div>
+                    <a
+                      href={`mailto:${user?.email}`}
+                      className="text-sm text-muted-foreground inline-block hover:text-primary hover:underline line-clamp-1"
+                    >
+                      {user?.email}
+                    </a>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => {
+                    setSelectedUser(user);
+                    setOpenRoleModal(true);
+                  }}
+                  variant="secondary"
+                  size="icon"
+                >
+                  <IconPencil />
+                </Button>
+              </div>
+
+              {/* Bottom row: details */}
+              <div className="text-sm text-muted-foreground space-y-2">
+                {/* Contact */}
+                <div className="flex items-center justify-between gap-1">
+                  <p className="flex items-center gap-1">
+                    <IconPhone className="inline-block size-4.5" />
+                    {user?.phoneNumber ? (
+                      <a
+                        href={`tel:${user?.phoneNumber}`}
+                        className="hover:underline hover:text-primary"
+                      >
+                        {formatPhoneNumber(user?.phoneNumber)}
+                      </a>
+                    ) : (
+                      <span className="italic">No phone</span>
+                    )}
+                  </p>
+                  <span>
+                    <IconUser className="inline-block size-4.5" />
+                    {user?.employeeID || (
+                      <span className="italic">No employee ID</span>
+                    )}
+                  </span>
+                </div>
+                {/* Role & Department/Class */}
+                <p className="flex justify-between items-center gap-1">
+                  <div className="flex justify-start gap-1 items-center">
+                    {user?.schoolRoles && user.schoolRoles.length > 0 ? (
+                      <>
+                        {user.schoolRoles.slice(0, 1).map((r, idx) => (
+                          <Badge
+                            key={idx}
+                            variant={
+                              r?.role === "ADMINISTRATOR"
+                                ? "admin"
+                                : r?.role === "STUDENT"
+                                ? "student"
+                                : r?.role === "PARENT"
+                                ? "parent"
+                                : r?.role === "TEACHER"
+                                ? "teacher"
+                                : "outlinePurple"
+                            }
+                          >
+                            {formatWord[r.role]}
+                          </Badge>
+                        ))}
+                        {user.schoolRoles.length > 1 && (
+                          <Badge variant="outline">{`+${
+                            user.schoolRoles.length - 1
+                          }`}</Badge>
+                        )}
+                      </>
+                    ) : (
+                      <Badge
+                        variant={
+                          user?.role === "ADMINISTRATOR"
+                            ? "admin"
+                            : user?.role === "STUDENT"
+                            ? "student"
+                            : user?.role === "PARENT"
+                            ? "parent"
+                            : user?.role === "TEACHER"
+                            ? "teacher"
+                            : "outlinePurple"
+                        }
+                      >
+                        {formatWord[user?.role!]}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex justify-start gap-1 items-center">
+                    {user?.role === "TEACHER" && user?.Teacher?.classes && (
+                      <>
+                        {user?.Teacher.classes.slice(0, 1).map((c, idx) => (
+                          <Badge key={idx} variant="secondary">
+                            {c.level}
+                            {c.section}
+                          </Badge>
+                        ))}
+                        {user?.Teacher.classes.length > 1 && (
+                          <Badge variant="secondary">
+                            +{user?.Teacher.classes.length - 1}
+                          </Badge>
+                        )}
+                        {user?.Teacher.classes.length === 0 && (
+                          <Badge variant="secondary">No class</Badge>
+                        )}
+                      </>
+                    )}
+                    {user?.role === "STUDENT" && user?.Student?.Class && (
+                      <Badge variant="secondary">
+                        {user?.Student.Class.level}
+                        {user?.Student.Class.section}
+                      </Badge>
+                    )}
+                    {user?.role === "ADMINISTRATOR" && "Administration"}
+                    {user?.role === "PRINCIPAL" && "Administration"}
+                    {user?.role === "BURSAR" && "Finances"}
+                    {user?.role === "LIBRARIAN" && "Library Services"}
+                    {user?.role === "COUNSELOR" && "Library Student Services"}
+                    {user?.role === "PARENT" && "Parent"}
+                  </div>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </CardContent>
+
+      {selectedUser && openRoleModal && (
+        <RoleModal
+          firstName={selectedUser?.firstName}
+          lastName={selectedUser?.lastName}
+          staffId={selectedUser?.id}
+          open={openRoleModal}
+          jobRoles={jobRoles}
+          role={selectedUser?.role}
+          schoolRoles={selectedUser?.schoolRoles}
+          onClose={() => {
+            setOpenRoleModal(false);
+            onRefresh();
+          }}
+        />
+      )}
     </Card>
   );
 };

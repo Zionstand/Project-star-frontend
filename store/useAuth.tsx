@@ -5,6 +5,8 @@ import { persist } from "zustand/middleware";
 export type Teacher = {
   id?: string;
   user: User;
+  classes: Class[];
+  assignments: Assignment[];
 };
 
 export type Document = {
@@ -48,6 +50,7 @@ export type Assignment = {
   dueDate: string;
   id: string;
   subject: Subject;
+  Subject: Subject;
   teacherId: string;
   Teacher: Teacher;
   type: string;
@@ -152,7 +155,18 @@ export type User = {
   school?: School | null;
   classes?: Class[] | null;
   Student: Student;
+  Teacher: Teacher;
+  schoolRoles: SchoolRoles[];
 } | null;
+
+export type SchoolRoles = {
+  createdAt: Date;
+  id: string;
+  role: string;
+  schoolId: string;
+  updatedAt: string;
+  userId: string;
+};
 
 export type Attachment = {
   id: string;

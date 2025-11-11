@@ -26,6 +26,16 @@ export const schoolService = {
     return res.data;
   },
 
+  getSchoolParents: async (id: string) => {
+    const res = await api.get(`/schools/${id}/parents`);
+    return res.data;
+  },
+
+  getSchoolAdmins: async (id: string) => {
+    const res = await api.get(`/schools/${id}/admins`);
+    return res.data;
+  },
+
   getSchoolClasses: async (schoolID: string) => {
     const res = await api.get(`/classes/${schoolID}`);
     return res.data;

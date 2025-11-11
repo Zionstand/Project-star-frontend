@@ -644,6 +644,13 @@ export const GradeFormSchema = z.object({
   feedback: z.string().optional(),
 });
 
+export const AssignRoleFormSchema = z.object({
+  roles: z
+    .array(z.string())
+    .min(1, { message: "At least one role must be selected" })
+    .optional(),
+});
+
 export type LoginSchemaType = z.infer<typeof LoginSchema>;
 export type RegisterSchemaType = z.infer<typeof RegisterSchema>;
 export type ForgotPasswordSchemaType = z.infer<typeof ForgotPasswordSchema>;
@@ -683,3 +690,5 @@ export type NewAssignmentFormSchemaType = z.infer<
   typeof NewAssignmentFormSchema
 >;
 export type GradeFormSchemaType = z.infer<typeof GradeFormSchema>;
+
+export type AssignRoleFormSchemaType = z.infer<typeof AssignRoleFormSchema>;

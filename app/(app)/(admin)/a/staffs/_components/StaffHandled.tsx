@@ -1,21 +1,16 @@
 import { EmptyState } from "@/components/EmptyState";
+import { NothingFound } from "@/components/NothingFound";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Assignment } from "@/store/useAuth";
 import { IconBook } from "@tabler/icons-react";
 import React from "react";
 
 interface Props {
-  assignments:
-    | {
-        id: true;
-        Subject: {
-          name: string;
-          department: string;
-        };
-      }[]
-    | undefined;
+  assignments: any[] | undefined;
 }
 
 export const StaffHandled = ({ assignments }: Props) => {
+  console.log(assignments);
   return (
     <Card>
       <CardHeader>
@@ -25,7 +20,9 @@ export const StaffHandled = ({ assignments }: Props) => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {assignments === undefined && <EmptyState />}
+        {assignments?.length === 0 && (
+          <NothingFound message="No subjects assigned" />
+        )}
         <div className="grid grid-cols-2 gap-2">
           {assignments?.map((a, index) => (
             <div key={index} className="rounded-md border p-3 text-sm">

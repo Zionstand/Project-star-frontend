@@ -20,7 +20,7 @@ export const StudentCards = ({ students }: Props) => {
     },
     {
       title: "Active Students",
-      value: "1,290",
+      value: `${students}`,
       textColor: "text-green-500",
     },
     {

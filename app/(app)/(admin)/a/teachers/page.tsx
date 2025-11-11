@@ -7,13 +7,13 @@ import { Loader } from "@/components/Loader";
 import { TeachersCards } from "../_components/TeachersCard";
 import { PageHeader } from "@/components/PageHeader";
 import { SearchBar } from "@/components/Searchbar";
-import { ExtendedUser, TeacherLists } from "./_components/TeacherLists";
+import { TeacherLists } from "./_components/TeacherLists";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const page = () => {
   const { user } = useAuth();
-  const [teachers, setTeachers] = useState<ExtendedUser[]>([]);
+  const [teachers, setTeachers] = useState<User[]>([]);
   const [assignments, setAssignments] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatDate, formatWord } from "@/lib/utils";
+import { SchoolRoles } from "@/store/useAuth";
 import {
   IconBriefcase,
   IconBuilding,
@@ -21,6 +22,7 @@ interface Props {
   title: string | null | undefined;
   dob: string | null;
   joinedDate: string | null;
+  schoolRoles: SchoolRoles[];
 }
 
 export const StaffProfile = ({
@@ -33,6 +35,7 @@ export const StaffProfile = ({
   email,
   dob,
   joinedDate,
+  schoolRoles,
 }: Props) => {
   return (
     <Card>
@@ -60,9 +63,66 @@ export const StaffProfile = ({
                 </a>
               )}
             </p>
-            <div className="flex items-center justify-center gap-1">
-              <Badge>{formatWord[role]}</Badge>
-              <Badge variant={"outlineSuccess"}>Active</Badge>
+            <div className="flex items-center flex-wrap justify-center gap-1">
+              {schoolRoles.length > 1 ? (
+                schoolRoles.map((r) => (
+                  <Badge
+                    variant={
+                      r?.role === "ADMINISTRATOR"
+                        ? "admin"
+                        : r?.role === "STUDENT"
+                        ? "student"
+                        : r?.role === "PARENT"
+                        ? "parent"
+                        : r?.role === "TEACHER"
+                        ? "teacher"
+                        : r?.role === "EXAM_OFFICER"
+                        ? "exam_officer"
+                        : r?.role === "LIBRARIAN"
+                        ? "librarian"
+                        : r?.role === "BURSAR"
+                        ? "bursar"
+                        : r?.role === "DATA_ANALYST"
+                        ? "data_analyst"
+                        : r?.role === "IT_SUPPORT"
+                        ? "it_support"
+                        : r?.role === "PRINCIPAL"
+                        ? "principal"
+                        : "outlinePurple"
+                    }
+                  >
+                    {formatWord[r.role]}
+                  </Badge>
+                ))
+              ) : (
+                <Badge
+                  variant={
+                    role === "ADMINISTRATOR"
+                      ? "admin"
+                      : role === "STUDENT"
+                      ? "student"
+                      : role === "PARENT"
+                      ? "parent"
+                      : role === "TEACHER"
+                      ? "teacher"
+                      : role === "EXAM_OFFICER"
+                      ? "exam_officer"
+                      : role === "LIBRARIAN"
+                      ? "librarian"
+                      : role === "BURSAR"
+                      ? "bursar"
+                      : role === "DATA_ANALYST"
+                      ? "data_analyst"
+                      : role === "IT_SUPPORT"
+                      ? "it_support"
+                      : role === "PRINCIPAL"
+                      ? "principal"
+                      : "outlinePurple"
+                  }
+                >
+                  {formatWord[role]}
+                </Badge>
+              )}
             </div>
           </div>
         </div>
@@ -80,9 +140,7 @@ export const StaffProfile = ({
             <div>
               <p className="text-xs">Employee Number</p>
               <p className="text-black font-medium">
-                {employeeID || (
-                  <span className="italic">No employee number</span>
-                )}
+                {employeeID || <span className="italic">No employee ID</span>}
               </p>
             </div>
           </div>
@@ -91,8 +149,10 @@ export const StaffProfile = ({
             <div>
               <p className="text-xs">Date of Birth</p>
               <p className="text-black font-medium">
-                {formatDate(dob) || (
-                  <span className="italic">No Date of Birth</span>
+                {dob ? (
+                  formatDate(dob)
+                ) : (
+                  <span className="italic">No date of birth</span>
                 )}
               </p>
             </div>

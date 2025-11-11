@@ -172,15 +172,15 @@ export const BasicInformation = ({ schoolTypes, ownershipTypes }: Props) => {
                   </p>
                 </div>
                 <div className="flex flex-col md:flex-row items-start justify-start gap-4">
-                  <div className="relative flex-1">
+                  <div className="relative flex-1 w-full">
                     {user?.school?.logo ? (
-                      <div className="rounded-md overflow-hidden bg-red-300">
+                      <div className="rounded-md overflow-hidden">
                         <Image
                           src={user.school.logo}
                           alt={`${user.school.name}'s logo`}
                           width={1000}
                           height={1000}
-                          className="object-cover h-40"
+                          className="object-cover size-full aspect-video"
                         />
                       </div>
                     ) : (

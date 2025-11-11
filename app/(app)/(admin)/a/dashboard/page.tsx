@@ -13,7 +13,7 @@ import { RecentActivityBox } from "../_components/RecentActivityBox";
 import { PageHeader } from "@/components/PageHeader";
 import { DashboardCards } from "@/components/DashboardCards";
 import { useEffect, useState } from "react";
-import { Class, useAuth } from "@/store/useAuth";
+import { Class, useAuth, User } from "@/store/useAuth";
 import { schoolService } from "@/lib/school";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
@@ -23,6 +23,8 @@ const page = () => {
   const { user } = useAuth();
 
   const [classes, setClasses] = useState<Class[]>();
+  const [students, setStudents] = useState<User[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,11 +32,13 @@ const page = () => {
       if (!user?.schoolId) return;
 
       try {
-        const [classes] = await Promise.all([
+        const [classes, students] = await Promise.all([
           schoolService.getSchoolClasses(user?.school?.schoolID!),
+          schoolService.getStudents(user?.schoolId!),
         ]);
 
         setClasses(classes);
+        setStudents(students);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -49,7 +53,7 @@ const page = () => {
   const stats = [
     {
       title: "Total Students",
-      value: "1,234",
+      value: `${students.length}`,
       icon: IconUsers,
       bgColor: "bg-primary",
       textColor: "text-white",

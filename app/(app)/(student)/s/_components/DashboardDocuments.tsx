@@ -104,8 +104,6 @@ const DocumentItem = ({
       const formData = new FormData();
       formData.append("file", file);
 
-      console.log("Uploading file:", file.name, file.type, file.size);
-
       const res = await api.post(
         `/upload/document/${user?.id}/${type}`,
         formData,

@@ -26,8 +26,6 @@ interface Props {
 export const ClassBox = ({ schoolClass }: Props) => {
   const { user } = useAuth();
 
-  console.log(schoolClass);
-
   return (
     <Card>
       <CardContent className="space-y-4">

@@ -25,39 +25,32 @@ import { StaffQualifications } from "../_components/StaffQualifications";
 import { StaffCertifications } from "../_components/StaffCertifications";
 import { StaffSalary } from "../_components/StaffSalary";
 import { StaffBankDetails } from "../_components/StaffBankDetails";
-
-export interface ExtendedUser extends NonNullable<User> {
-  Teacher?: {
-    classes: Class[];
-    assignments: {
-      id: true;
-      Subject: {
-        name: string;
-        department: string;
-      };
-    }[];
-  };
-}
+import { QuickActions } from "../_components/QuickActions";
+import { configService } from "@/lib/configs";
 
 const page = () => {
   const { user } = useAuth();
 
-  const { id } = useParams();
+  const { username } = useParams();
 
-  const [staff, setStaff] = useState<ExtendedUser>();
+  const [staff, setStaff] = useState<User>();
+  const [jobRoles, setJobRoles] = useState<any>();
 
   const [loading, setLoading] = useState(true);
 
+  console.log(staff);
+
   useEffect(() => {
     const fetch = async () => {
-      if (!user || !user.school?.schoolID || !id) return;
+      if (!user || !user.school?.schoolID || !username) return;
 
       try {
-        const staff = await schoolService.getSchoolStaff(
-          user?.school?.schoolID!,
-          id!
-        );
+        const [staff, jobRoles] = await Promise.all([
+          schoolService.getSchoolStaff(user?.school?.schoolID!, username!),
+          configService.getCategory("JOB_ROLE"),
+        ]);
         setStaff(staff);
+        setJobRoles(jobRoles);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -66,7 +59,24 @@ const page = () => {
     };
 
     fetch();
-  }, [user, id]);
+  }, [user, username]);
+
+  const handleRefresh = async () => {
+    if (!user || !user.school?.schoolID || !username) return;
+
+    try {
+      const [staff, jobRoles] = await Promise.all([
+        schoolService.getSchoolStaff(user?.school?.schoolID!, username!),
+        configService.getCategory("JOB_ROLE"),
+      ]);
+      setStaff(staff);
+      setJobRoles(jobRoles);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading || !staff) return <Loader />;
 
@@ -82,7 +92,7 @@ const page = () => {
         }}
         secondaryCTA={{
           label: "Edit",
-          slug: `/a/staffs/${staff?.id}/edit`,
+          slug: `/a/staffs/${staff?.username}/edit`,
           icon: IconEdit,
         }}
         back
@@ -100,6 +110,7 @@ const page = () => {
               title={staff.title}
               dob={staff.dob}
               joinedDate={staff.createdAt}
+              schoolRoles={staff.schoolRoles}
             />
             <StaffContactInformation
               email={staff.email}
@@ -108,7 +119,19 @@ const page = () => {
               emergencyContactName={staff.emergencyContactName}
               emergencyPhoneNumber={staff.emergencyPhoneNumber}
             />
-            <StaffPerformance />
+            <StaffPerformance classes={staff.Teacher?.classes} />
+            <div className="hidden md:block">
+              <QuickActions
+                firstName={staff.firstName}
+                lastName={staff.lastName}
+                role={staff.role}
+                username={staff?.username}
+                staffId={staff?.id}
+                jobRoles={jobRoles.items}
+                schoolRoles={staff?.schoolRoles}
+                onRefresh={() => handleRefresh()}
+              />
+            </div>
           </div>
         </div>
         <div className="lg:col-span-4">
@@ -119,6 +142,18 @@ const page = () => {
             <StaffCertifications />
             <StaffSalary />
             <StaffBankDetails />
+            <div className="md:hidden">
+              <QuickActions
+                firstName={staff.firstName}
+                username={staff?.username}
+                lastName={staff?.lastName}
+                role={staff?.role}
+                jobRoles={jobRoles.items}
+                staffId={staff?.id}
+                schoolRoles={staff?.schoolRoles}
+                onRefresh={() => handleRefresh()}
+              />
+            </div>
           </div>
         </div>
       </div>

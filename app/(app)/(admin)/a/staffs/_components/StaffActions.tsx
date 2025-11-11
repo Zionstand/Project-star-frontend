@@ -18,9 +18,10 @@ import {
 
 interface Props {
   id: string | undefined;
+  username: string | undefined;
 }
 
-export const StaffActions = ({ id }: Props) => {
+export const StaffActions = ({ id, username }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,7 +31,7 @@ export const StaffActions = ({ id }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href={`/a/staffs/${id}`}>
+          <Link href={`/a/staffs/${username || id}`}>
             <IconEye />
             View Details
           </Link>

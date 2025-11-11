@@ -44,14 +44,10 @@ import { allClasses, genders, relationships, sections } from "@/constant";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { formatWord } from "@/lib/utils";
-import { useAuth } from "@/store/useAuth";
+import { useAuth, User } from "@/store/useAuth";
 
 interface Props {
   states: {
-    id: string;
-    name: string;
-  }[];
-  jobRoles: {
     id: string;
     name: string;
   }[];
@@ -59,9 +55,22 @@ interface Props {
     id: string;
     name: string;
   }[];
+  jobRoles: {
+    id: string;
+    name: string;
+  }[];
+
+  staff: User | undefined;
 }
 
-export const AddStaffForm = ({ states, jobRoles, countries }: Props) => {
+export const EditStaffForm = ({
+  states,
+  jobRoles,
+  countries,
+  staff,
+}: Props) => {
+  console.log(staff);
+
   const router = useRouter();
   const { user } = useAuth();
   const [pending, startTransition] = useTransition();
@@ -69,32 +78,32 @@ export const AddStaffForm = ({ states, jobRoles, countries }: Props) => {
   const form = useForm<NewStaffFormType>({
     resolver: zodResolver(NewStaffForm),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      dob: "",
-      gender: "",
-      address: "",
-      city: "",
-      state: "",
-      country: "",
-      emergencyContactName: "",
-      emergencyPhoneNumber: "",
-      medicalConditions: "",
-      role: "",
+      firstName: staff?.firstName || "",
+      lastName: staff?.lastName || "",
+      email: staff?.email || "",
+      phoneNumber: staff?.phoneNumber || "",
+      dob: staff?.dob || "",
+      gender: staff?.gender || "",
+      address: staff?.address || "",
+      city: staff?.city || "",
+      state: staff?.state || "",
+      country: staff?.country || "",
+      emergencyContactName: staff?.emergencyContactName || "",
+      emergencyPhoneNumber: staff?.emergencyPhoneNumber || "",
+      medicalConditions: staff?.medicalConditions || "",
+      role: staff?.role || "",
     },
   });
 
   function onSubmit(values: NewStaffFormType) {
     startTransition(async () => {
       try {
-        const res = await api.post(
-          `/schools/${user?.school?.schoolID}/staff`,
+        const res = await api.put(
+          `/schools/${user?.school?.id}/update-profile/${staff?.id}`,
           values
         );
         toast.success(res.data.message);
-        form.reset();
+        router.push(`/a/staffs/${res.data.user.username}`);
       } catch (error: any) {
         toast.error(error.response?.data?.message || "An error occurred");
       }
@@ -447,7 +456,7 @@ export const AddStaffForm = ({ states, jobRoles, countries }: Props) => {
                 {/* ==== SAVE / CANCEL ==== */}
                 <div className="flex items-center justify-end gap-2">
                   <Button
-                    onClick={() => router.back()}
+                    onClick={() => router.push("/a/school")}
                     type="button"
                     variant="secondary"
                     disabled={pending}
@@ -455,7 +464,7 @@ export const AddStaffForm = ({ states, jobRoles, countries }: Props) => {
                     Cancel
                   </Button>
                   <Button disabled={pending} type="submit">
-                    {pending ? <Loader text="Adding..." /> : "Add staff"}
+                    {pending ? <Loader text="Saving..." /> : "Save changes"}
                   </Button>
                 </div>
               </div>

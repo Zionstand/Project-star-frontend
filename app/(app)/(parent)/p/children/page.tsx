@@ -23,8 +23,9 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { IconBook, IconCalendar, IconTrendingUp } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
-import { formatDate } from "@/lib/utils";
+import { calculateAttendanceStats, formatDate } from "@/lib/utils";
 import { ComingSoon } from "@/components/ComingSoon";
+import { NothingFound } from "@/components/NothingFound";
 
 const Page = () => {
   const { user } = useAuth();
@@ -34,6 +35,12 @@ const Page = () => {
   const [child, setChild] = useState<Student | undefined>();
   const [assignments, setAssignments] = useState<Assignment[] | undefined>([]);
   const [loading, setLoading] = useState(true);
+  const [attendanceStats, setAttendanceStats] = useState({
+    totalSchoolDays: 0,
+    presentDays: 0,
+    absentDays: 0,
+    attendancePercentage: 0,
+  });
   const [loadingChild, setLoadingChild] = useState(false);
 
   // Fetch all children
@@ -65,30 +72,38 @@ const Page = () => {
 
   // Fetch selected child details
   useEffect(() => {
+    setChild(undefined);
+    setAssignments([]);
     const fetchChildDetails = async () => {
       if (!user?.id || !selectedChildId) return;
 
       setLoadingChild(true);
       try {
-        const fetchedChild = await parentService.getChildDetails(
-          user.id,
-          selectedChildId
+        const [child, assignments, attendances] = await Promise.all([
+          parentService.getChildDetails(user.id, selectedChildId),
+          parentService.getChildAssignments(user.id, selectedChildId),
+          parentService.getChildAttendances(user?.id, selectedChildId),
+        ]);
+
+        setChild(child);
+        setAssignments(assignments);
+        const publicHolidays: any = []; // get from DB or config
+
+        const stats = calculateAttendanceStats(
+          attendances || [], // raw attendance array from studentService.getMyAttendances
+          user?.school?.academicStartDate!, // required
+          user?.school?.academicEndDate!, // optional
+          publicHolidays
         );
-        const fetchedChildAssignments = await parentService.getChildAssignments(
-          user.id,
-          selectedChildId
-        );
-        setChild(fetchedChild);
+
+        setAttendanceStats(stats);
         // ✅ Filter only graded ones
-        const gradedAssignments = fetchedChildAssignments.filter(
+        const gradedAssignments = assignments.filter(
           (a: any) =>
             a.assignmentSubmissions &&
             a.assignmentSubmissions.length > 0 &&
             a.assignmentSubmissions[0].status === "GRADED"
         );
-
-        setChild(fetchedChild);
-        setAssignments(gradedAssignments);
       } catch (error: any) {
         toast.error(
           error?.response?.data?.message || "Failed to load child details"
@@ -103,8 +118,6 @@ const Page = () => {
 
   if (loading) return <Loader />;
 
-  console.log(assignments);
-
   if (!children.length)
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-center space-y-3">
@@ -113,6 +126,23 @@ const Page = () => {
         </p>
       </div>
     );
+
+  // Determine attendance status colors and description
+  const attendancePercentage = attendanceStats.attendancePercentage;
+
+  let attendanceColor = "bg-green-500/20";
+  let attendanceTextColor = "text-green-500";
+  let attendanceDescription = "Excellent attendance";
+
+  if (attendancePercentage < 75) {
+    attendanceColor = "bg-red-500/20";
+    attendanceTextColor = "text-red-500";
+    attendanceDescription = "Attendance needs improvement";
+  } else if (attendancePercentage < 90) {
+    attendanceColor = "bg-yellow-500/20";
+    attendanceTextColor = "text-yellow-500";
+    attendanceDescription = "Average attendance";
+  }
 
   return (
     <div className="space-y-6">
@@ -146,193 +176,235 @@ const Page = () => {
           <Loader text="Loading details..." />
         ) : (
           <TabsContent value={selectedChildId ?? ""}>
-            {child ? (
-              <div className="space-y-6">
-                <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
-                  <Card>
-                    <CardContent>
-                      <div className="flex items-center justify-between gap-1">
-                        <div className="space-y-2">
-                          <CardTitle className="text-3xl">10%</CardTitle>
-                          <p className="text-muted-foreground text-xs line-clamp-1">
-                            Overall Average
-                          </p>
-                        </div>
-                        <div className="rounded-md p-3 bg-primary/10">
-                          <Award className="h-6 w-6 text-primary" />
-                        </div>
-                      </div>
-                      <Progress value={90} />
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent>
-                      <div className="flex items-center justify-between gap-1">
-                        <div className="space-y-2">
-                          <CardTitle className="text-3xl">10%</CardTitle>
-                          <p className="text-muted-foreground text-xs line-clamp-1">
-                            Attendance Rate
-                          </p>
-                        </div>
-                        <div className="rounded-md p-3 bg-green-500/10">
-                          <IconCalendar className="h-6 w-6 text-green-500" />
-                        </div>
-                      </div>
-                      <Progress value={90} />
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent>
-                      <div className="flex items-center justify-between gap-1">
-                        <div className="space-y-2">
-                          <CardTitle className="text-3xl">5th</CardTitle>
-                          <p className="text-muted-foreground text-xs line-clamp-1">
-                            Class Position
-                          </p>
-                        </div>
-                        <div className="rounded-md p-3 bg-purple-500/10">
-                          <IconBook className="h-6 w-6 text-purple-500" />
-                        </div>
-                      </div>
-                      <Progress value={90} />
-                    </CardContent>
-                  </Card>
-                </div>
+            <div className="space-y-6">
+              <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Subject Performance</CardTitle>
-                    <CardDescription>
-                      Current term grades and class positions
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2.5 relative">
-                    <ComingSoon />
-                    <Card>
-                      <CardContent className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="rounded-md p-3 bg-primary/10">
-                            <IconBook className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-base">Mathematics</p>
-                            <p className="text-sm text-muted-foreground">
-                              Position: 3 of 45
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-end gap-2">
-                            <Badge variant={"success"}>
-                              <IconTrendingUp />
-                              Improving
-                            </Badge>
-                            <p className="text-base">88%</p>
-                          </div>
-                        </div>
-                        <Progress value={90} />
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardContent className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="rounded-md p-3 bg-primary/10">
-                            <IconBook className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-base">Mathematics</p>
-                            <p className="text-sm text-muted-foreground">
-                              Position: 3 of 45
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-end gap-2">
-                            <Badge variant={"success"}>
-                              <IconTrendingUp />
-                              Improving
-                            </Badge>
-                            <p className="text-base">88%</p>
-                          </div>
-                        </div>
-                        <Progress value={90} />
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardContent className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="rounded-md p-3 bg-primary/10">
-                            <IconBook className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-base">Mathematics</p>
-                            <p className="text-sm text-muted-foreground">
-                              Position: 3 of 45
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-end gap-2">
-                            <Badge variant={"success"}>
-                              <IconTrendingUp />
-                              Improving
-                            </Badge>
-                            <p className="text-base">88%</p>
-                          </div>
-                        </div>
-                        <Progress value={90} />
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardContent className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="rounded-md p-3 bg-primary/10">
-                            <IconBook className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-base">Mathematics</p>
-                            <p className="text-sm text-muted-foreground">
-                              Position: 3 of 45
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-end gap-2">
-                            <Badge variant={"success"}>
-                              <IconTrendingUp />
-                              Improving
-                            </Badge>
-                            <p className="text-base">88%</p>
-                          </div>
-                        </div>
-                        <Progress value={90} />
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardContent className="space-y-2">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="rounded-md p-3 bg-primary/10">
-                            <IconBook className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-base">Mathematics</p>
-                            <p className="text-sm text-muted-foreground">
-                              Position: 3 of 45
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-end gap-2">
-                            <Badge variant={"success"}>
-                              <IconTrendingUp />
-                              Improving
-                            </Badge>
-                            <p className="text-base">88%</p>
-                          </div>
-                        </div>
-                        <Progress value={90} />
-                      </CardContent>
-                    </Card>
+                  <CardContent>
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="space-y-2">
+                        <CardTitle className="text-3xl">10%</CardTitle>
+                        <p className="text-muted-foreground text-xs line-clamp-1">
+                          Overall Average
+                        </p>
+                      </div>
+                      <div className="rounded-md p-3 bg-primary/10">
+                        <Award className="h-6 w-6 text-primary" />
+                      </div>
+                    </div>
+                    <Progress value={90} />
                   </CardContent>
                 </Card>
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Test Scores</CardTitle>
-                  </CardHeader>
-                  <CardContent className="grid gap-2 grid-cols-1 md:grid-cols-3">
-                    {assignments && assignments.length > 0 ? (
+                  <CardContent>
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="space-y-2">
+                        <CardTitle className="text-3xl">
+                          {attendanceStats.attendancePercentage}%
+                        </CardTitle>
+                        <p
+                          className={`text-xs line-clamp-1 ${attendanceTextColor}`}
+                        >
+                          {attendanceDescription}
+                        </p>
+                      </div>
+                      <div className={`rounded-md p-3 ${attendanceColor}`}>
+                        <IconCalendar
+                          className={`h-6 w-6 ${attendanceTextColor}`}
+                        />
+                      </div>
+                    </div>
+                    <Progress
+                      value={attendanceStats.attendancePercentage}
+                      className={`${attendanceColor}`}
+                    />
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent>
+                    <div className="flex items-center justify-between gap-1">
+                      <div className="space-y-2">
+                        <CardTitle className="text-3xl">5th</CardTitle>
+                        <p className="text-muted-foreground text-xs line-clamp-1">
+                          Class Position
+                        </p>
+                      </div>
+                      <div className="rounded-md p-3 bg-purple-500/10">
+                        <IconBook className="h-6 w-6 text-purple-500" />
+                      </div>
+                    </div>
+                    <Progress value={90} />
+                  </CardContent>
+                </Card>
+              </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Subject Performance</CardTitle>
+                  <CardDescription>
+                    Current term grades and class positions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2.5 relative">
+                  <ComingSoon />
+                  <Card>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="rounded-md p-3 bg-primary/10">
+                          <IconBook className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-base">Mathematics</p>
+                          <p className="text-sm text-muted-foreground">
+                            Position: 3 of 45
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant={"success"}>
+                            <IconTrendingUp />
+                            Improving
+                          </Badge>
+                          <p className="text-base">88%</p>
+                        </div>
+                      </div>
+                      <Progress value={90} />
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="rounded-md p-3 bg-primary/10">
+                          <IconBook className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-base">Mathematics</p>
+                          <p className="text-sm text-muted-foreground">
+                            Position: 3 of 45
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant={"success"}>
+                            <IconTrendingUp />
+                            Improving
+                          </Badge>
+                          <p className="text-base">88%</p>
+                        </div>
+                      </div>
+                      <Progress value={90} />
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="rounded-md p-3 bg-primary/10">
+                          <IconBook className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-base">Mathematics</p>
+                          <p className="text-sm text-muted-foreground">
+                            Position: 3 of 45
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant={"success"}>
+                            <IconTrendingUp />
+                            Improving
+                          </Badge>
+                          <p className="text-base">88%</p>
+                        </div>
+                      </div>
+                      <Progress value={90} />
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="rounded-md p-3 bg-primary/10">
+                          <IconBook className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-base">Mathematics</p>
+                          <p className="text-sm text-muted-foreground">
+                            Position: 3 of 45
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant={"success"}>
+                            <IconTrendingUp />
+                            Improving
+                          </Badge>
+                          <p className="text-base">88%</p>
+                        </div>
+                      </div>
+                      <Progress value={90} />
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="rounded-md p-3 bg-primary/10">
+                          <IconBook className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-base">Mathematics</p>
+                          <p className="text-sm text-muted-foreground">
+                            Position: 3 of 45
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-end gap-2">
+                          <Badge variant={"success"}>
+                            <IconTrendingUp />
+                            Improving
+                          </Badge>
+                          <p className="text-base">88%</p>
+                        </div>
+                      </div>
+                      <Progress value={90} />
+                    </CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Test Scores</CardTitle>
+                </CardHeader>
+
+                <CardContent className="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  {assignments && assignments.length > 0 ? (
+                    // ✅ Process and render only graded submissions for the child
+                    assignments
+                      .map((assignment) => {
+                        const submission =
+                          assignment.assignmentSubmissions?.find(
+                            (s) =>
+                              s.studentId === child?.id && s.status === "GRADED"
+                          );
+
+                        if (!submission) return null; // Skip ungraded ones
+
+                        const grade = submission.grade || 0;
+                        const total = assignment.totalMarks || 100;
+                        const scorePercent = Math.round(
+                          (Number(grade) / total) * 100
+                        );
+
+                        return (
+                          <Card key={assignment.id}>
+                            <CardContent className="space-y-2">
+                              <Badge>{assignment.subject?.name || "N/A"}</Badge>
+                              <p className="text-2xl font-semibold">
+                                {grade} / {total}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatDate(submission.gradedAt)}
+                              </p>
+                              <Progress value={scorePercent} />
+                            </CardContent>
+                          </Card>
+                        );
+                      })
+                      .filter(Boolean).length > 0 ? (
+                      // ✅ Only render graded cards if any exist
                       assignments
                         .map((assignment) => {
-                          // 🔍 Find the submission for the current child
                           const submission =
                             assignment.assignmentSubmissions?.find(
                               (s) =>
@@ -340,7 +412,7 @@ const Page = () => {
                                 s.status === "GRADED"
                             );
 
-                          if (!submission) return null; // Skip if no graded submission for this child
+                          if (!submission) return null;
 
                           const grade = submission.grade || 0;
                           const total = assignment.totalMarks || 100;
@@ -354,11 +426,9 @@ const Page = () => {
                                 <Badge>
                                   {assignment.subject?.name || "N/A"}
                                 </Badge>
-
                                 <p className="text-2xl font-semibold">
                                   {grade} / {total}
                                 </p>
-
                                 <p className="text-xs text-muted-foreground">
                                   {formatDate(submission.gradedAt)}
                                 </p>
@@ -367,21 +437,22 @@ const Page = () => {
                             </Card>
                           );
                         })
-                        // ✅ Only keep graded ones
                         .filter(Boolean)
                     ) : (
-                      <p className="text-sm text-muted-foreground col-span-full text-center py-6">
-                        No graded tests yet.
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No details found for this child.
-              </p>
-            )}
+                      // ✅ No graded submissions
+                      <div className="col-span-full">
+                        <NothingFound message="No graded test scores found yet." />
+                      </div>
+                    )
+                  ) : (
+                    // ✅ No assignments at all
+                    <div className="col-span-full">
+                      <NothingFound message="No assignments found." />
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         )}
       </Tabs>

@@ -47,7 +47,7 @@ export const Logo = () => {
             alt={`${user.school.name}'s logo`}
             width={1000}
             height={1000}
-            className="object-cover size-[55px]"
+            className="object-cover aspect-video size-[45px] md:size-[55px]"
           />
         </div>
       ) : (

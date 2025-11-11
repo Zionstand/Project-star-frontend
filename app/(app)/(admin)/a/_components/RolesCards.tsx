@@ -13,11 +13,15 @@ import {
 } from "@tabler/icons-react";
 import React from "react";
 
-export const RolesCards = () => {
+interface Props {
+  total: number;
+}
+
+export const RolesCards = ({ total }: Props) => {
   const stats = [
     {
       title: "Total Users",
-      value: "1,264",
+      value: total,
       icon: IconUsers,
       bgColor: "bg-primary/10",
       textColor: "text-primary",

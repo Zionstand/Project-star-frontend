@@ -34,9 +34,11 @@ export const StudentActions = ({ username }: Props) => {
             View Details
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <IconEdit />
-          Edit Student
+        <DropdownMenuItem asChild>
+          <Link href={`/a/students/${username}/edit`}>
+            <IconEdit />
+            Edit Student
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <IconMessage />

@@ -43,7 +43,7 @@ import {
 import { allClasses, genders, relationships, sections } from "@/constant";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Class, useAuth } from "@/store/useAuth";
+import { Class, useAuth, User } from "@/store/useAuth";
 
 interface Props {
   states: {
@@ -59,13 +59,15 @@ interface Props {
     id: string;
     name: string;
   }[];
+  student: User;
 }
 
-export const AddStudentForm = ({
+export const EditStudentForm = ({
   states,
   classes,
   countries,
   departments,
+  student,
 }: Props) => {
   const router = useRouter();
   const { user } = useAuth();
@@ -74,26 +76,31 @@ export const AddStudentForm = ({
   const form = useForm<NewStudentFormType>({
     resolver: zodResolver(NewStudentForm),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      otherName: "",
-      email: "",
-      phoneNumber: "",
-      dob: "",
-      gender: "",
-      classId: "",
-      candidateNumber: "",
-      examScore: "",
-      address: "",
-      city: "",
-      country: "",
-      state: "",
-      parentEmail: "",
-      parentLastName: "",
-      parentFirstName: "",
-      parentPhoneNumber: "",
-      parentRelationship: "",
-      medicalConditions: "",
+      firstName: student?.firstName || "",
+      lastName: student?.lastName || "",
+      otherName: student?.otherName || "",
+      email: student?.email || "",
+      phoneNumber: student?.phoneNumber || "",
+      dob: student?.dob || "",
+      gender: student?.gender || "",
+      classId: student?.Student.Class.id || "",
+      candidateNumber: student?.Student.candidateNumber || "",
+      examScore: student?.Student.examScore || "",
+      address: student?.address || "",
+      city: student?.city || "",
+      state: student?.state || "",
+      country: student?.country || "",
+      previousSchool: student?.Student.previousSchool || "",
+      parentEmail:
+        student?.Student.ParentStudentLink[0].parent.user?.email || "",
+      parentLastName:
+        student?.Student.ParentStudentLink[0].parent.user?.lastName || "",
+      parentFirstName:
+        student?.Student.ParentStudentLink[0].parent.user?.firstName || "",
+      parentPhoneNumber:
+        student?.Student.ParentStudentLink[0].parent.user?.phoneNumber || "",
+      parentRelationship: student?.Student.ParentStudentLink[0].relation || "",
+      medicalConditions: student?.medicalConditions || "",
     },
   });
 
@@ -120,9 +127,12 @@ export const AddStudentForm = ({
 
     startTransition(async () => {
       try {
-        const res = await api.post(`/students/${user?.school?.id}`, values);
+        const res = await api.put(
+          `/students/${user?.schoolId}/update-profile/${student?.id}`,
+          values
+        );
         toast.success(res.data.message);
-        form.reset();
+        router.push(`/a/students/${res.data.user.username}`);
       } catch (error: any) {
         toast.error(error.response?.data?.message || "An error occurred");
       }
@@ -640,7 +650,7 @@ export const AddStudentForm = ({
                     Cancel
                   </Button>
                   <Button disabled={pending} type="submit">
-                    {pending ? <Loader text="Adding..." /> : "Add student"}
+                    {pending ? <Loader text="Saving..." /> : "Save changes"}
                   </Button>
                 </div>
               </div>

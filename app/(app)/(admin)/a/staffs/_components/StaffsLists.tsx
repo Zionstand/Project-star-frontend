@@ -7,12 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ExtendedUser, StaffRow } from "./StaffRow";
+import { StaffRow } from "./StaffRow";
 import { StaffCard } from "./StaffCard";
 import { User } from "@/store/useAuth";
+import { NothingFound } from "@/components/NothingFound";
 
 interface Props {
-  staffs: User[] | undefined | ExtendedUser[];
+  staffs: User[];
 }
 
 export const StaffsLists = ({ staffs }: Props) => {
@@ -20,10 +21,11 @@ export const StaffsLists = ({ staffs }: Props) => {
     <Card className="gap-0">
       <CardHeader>
         <h3 className="font-medium text-base">
-          Staff members ({staffs?.length})
+          Staff members {staffs?.length !== 0 && `(${staffs?.length})`}
         </h3>
       </CardHeader>
       <CardContent className="pt-4">
+        {staffs?.length === 0 && <NothingFound message="No staff found" />}
         <div className="hidden md:block">
           <Table>
             <TableHeader>

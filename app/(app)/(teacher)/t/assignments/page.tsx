@@ -189,8 +189,6 @@ const Page = () => {
     fetch();
   }, [user]);
 
-  console.log(assignments);
-
   if (loading) return <Loader />;
 
   return (

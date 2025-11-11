@@ -13,7 +13,7 @@ export const StudentsLists = ({ students }: Props) => {
   return (
     <Card className="gap-0">
       <CardHeader>
-        <h3 className="font-medium text-base">Students (4)</h3>
+        <h3 className="font-medium text-base">Students ({students.length})</h3>
       </CardHeader>
       <CardContent>
         <StudentsTable students={students} />
