@@ -1,11 +1,11 @@
 "use client";
-import { DeleteUserModal } from "@/components/DeleteUserModal";
 import { ResetPasswordModal } from "@/components/ResetPasswordModal";
 import { RoleModal } from "@/components/RoleModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SchoolRoles } from "@/store/useAuth";
 import {
+  IconBan,
   IconKey,
   IconTrash,
   IconUser,
@@ -18,14 +18,10 @@ interface Props {
   firstName: string;
   lastName: string;
   username: string;
-  staffId: string;
-  jobRoles: {
-    id: string;
-    name: string;
-  }[];
-  role: string;
+  studentId: string;
   image: string | null;
   email: string;
+  role: string;
   schoolRoles: SchoolRoles[];
   onRefresh: () => void;
 }
@@ -34,17 +30,14 @@ export const QuickActions = ({
   firstName,
   username,
   lastName,
-  staffId,
-  jobRoles,
-  role,
-  email,
+  studentId,
   image,
+  email,
+  role,
   schoolRoles,
   onRefresh,
 }: Props) => {
-  const [openRoleModal, setOpenRoleModal] = useState(false);
   const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
-  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
 
   return (
     <Card>
@@ -53,18 +46,14 @@ export const QuickActions = ({
       </CardHeader>
       <CardContent className="grid gap-2">
         <Button asChild className="justify-start" variant={"outline"}>
-          <Link href={`/a/staffs/${username}/edit`}>
+          <Link href={`/a/students/${username}/edit`}>
             <IconUser />
             Edit {firstName}'s details
           </Link>
         </Button>
-        <Button
-          onClick={() => setOpenRoleModal(true)}
-          className="justify-start"
-          variant={"outline"}
-        >
-          <IconUserQuestion />
-          Assign Role
+        <Button className="justify-start" variant={"outline"}>
+          <IconBan />
+          Suspend {firstName}
         </Button>
         <Button
           onClick={() => setOpenResetPasswordModal(true)}
@@ -74,30 +63,11 @@ export const QuickActions = ({
           <IconKey />
           Reset Password
         </Button>
-        <Button
-          onClick={() => setOpenDeleteUserModal(true)}
-          className="justify-start"
-          variant={"outlineDestructive"}
-        >
+        <Button className="justify-start" variant={"outlineDestructive"}>
           <IconTrash />
           Delete {firstName}'s account
         </Button>
       </CardContent>
-      {openRoleModal && (
-        <RoleModal
-          firstName={firstName}
-          lastName={lastName}
-          staffId={staffId}
-          open={openRoleModal}
-          jobRoles={jobRoles}
-          role={role}
-          schoolRoles={schoolRoles}
-          onClose={() => {
-            setOpenRoleModal(false);
-            onRefresh();
-          }}
-        />
-      )}
       {openResetPasswordModal && (
         <ResetPasswordModal
           open={openResetPasswordModal}
@@ -109,23 +79,24 @@ export const QuickActions = ({
           lastName={lastName}
           email={email}
           image={image}
-          id={staffId}
+          id={studentId}
         />
       )}
-      {openDeleteUserModal && (
-        <DeleteUserModal
-          open={openDeleteUserModal}
-          onClose={() => {
-            setOpenDeleteUserModal(false);
-          }}
-          role={role}
+      {/* {openRoleModal && (
+        <RoleModal
           firstName={firstName}
           lastName={lastName}
-          email={email}
-          image={image}
-          id={staffId}
+          studentId={studentId}
+          open={openRoleModal}
+          jobRoles={jobRoles}
+          role={role}
+          schoolRoles={schoolRoles}
+          onClose={() => {
+            setOpenRoleModal(false);
+            onRefresh();
+          }}
         />
-      )}
+      )} */}
     </Card>
   );
 };

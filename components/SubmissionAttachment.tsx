@@ -34,7 +34,6 @@ export const SubmissionAttachment = ({ attachment }: Props) => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
       } catch (error) {
-        console.error("Download failed:", error);
         toast.error("Download failed!");
       }
     });

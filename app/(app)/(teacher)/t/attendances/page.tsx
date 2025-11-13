@@ -145,12 +145,14 @@ const AttendancePage = () => {
         })),
       };
 
-      const res = await api.post(`/attendances/bulk`, payload);
+      const res = await api.post(
+        `/attendances/${payload.schoolId}/bulk`,
+        payload
+      );
       toast.success(res.data?.message || "Attendance saved");
       // optionally refresh students or attendance list from server:
       // re-fetch students or show confirmation
     } catch (err: any) {
-      console.error(err);
       toast.error(err.response?.data?.message || "Failed to mark attendance");
     } finally {
       setSubmitting(false);

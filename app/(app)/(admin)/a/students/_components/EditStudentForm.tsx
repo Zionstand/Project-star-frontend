@@ -642,7 +642,7 @@ export const EditStudentForm = ({
                 {/* ==== SAVE / CANCEL ==== */}
                 <div className="flex items-center justify-end gap-2">
                   <Button
-                    onClick={() => router.push("/a/school")}
+                    onClick={() => router.back()}
                     type="button"
                     variant="secondary"
                     disabled={pending}

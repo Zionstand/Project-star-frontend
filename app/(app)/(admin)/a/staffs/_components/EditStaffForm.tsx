@@ -69,8 +69,6 @@ export const EditStaffForm = ({
   countries,
   staff,
 }: Props) => {
-  console.log(staff);
-
   const router = useRouter();
   const { user } = useAuth();
   const [pending, startTransition] = useTransition();

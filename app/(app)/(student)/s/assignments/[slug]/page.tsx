@@ -3,7 +3,6 @@ import { AssignmentAttachment } from "@/components/AssignmentAttachment";
 import { Loader } from "@/components/Loader";
 import { PageHeader } from "@/components/PageHeader";
 import { StudentAssignmentSubmission } from "@/components/StudentAssignmentSubmission";
-import { RenderDescription } from "@/components/text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +21,6 @@ import {
   IconAward,
   IconBook,
   IconCalendar,
-  IconCheck,
   IconClock,
   IconFileDescription,
   IconMail,
@@ -30,8 +28,7 @@ import {
   IconUpload,
   IconUser,
 } from "@tabler/icons-react";
-import { Dot } from "lucide-react";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -69,6 +66,8 @@ const page = () => {
 
   if (loading) return <Loader />;
 
+  if (!assignment) return notFound();
+
   const { label, colorClass } = calculateTimeLeft(assignment?.dueDate!);
 
   const hasSubmitted = assignment?.assignmentSubmissions?.some(
@@ -82,7 +81,7 @@ const page = () => {
     <div className="space-y-6">
       <PageHeader
         title={
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="flex items-center gap-1">
             <span>{assignment?.title}</span>
             {(() => {
               if (!hasSubmitted) {
@@ -203,7 +202,7 @@ const page = () => {
                   </Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-base text-muted-foreground">
+              <CardContent className="text-base space-y-2 text-muted-foreground">
                 {assignment?.attachments.map((attachment) => (
                   <AssignmentAttachment
                     key={attachment.id}

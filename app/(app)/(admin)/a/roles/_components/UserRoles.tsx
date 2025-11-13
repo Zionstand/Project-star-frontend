@@ -138,6 +138,18 @@ export const UserRoles = ({ users, onRefresh, jobRoles }: Props) => {
                               ? "parent"
                               : user?.role === "TEACHER"
                               ? "teacher"
+                              : user?.role === "EXAM_OFFICER"
+                              ? "exam_officer"
+                              : user?.role === "LIBRARIAN"
+                              ? "librarian"
+                              : user?.role === "BURSAR"
+                              ? "bursar"
+                              : user?.role === "DATA_ANALYST"
+                              ? "data_analyst"
+                              : user?.role === "IT_SUPPORT"
+                              ? "it_support"
+                              : user?.role === "PRINCIPAL"
+                              ? "principal"
                               : "outlinePurple"
                           }
                         >

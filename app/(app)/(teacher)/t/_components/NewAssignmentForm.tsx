@@ -21,17 +21,14 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { Loader } from "@/components/Loader";
-import MultipleSelector, { Option } from "@/components/ui/multiselect";
 import {
   NewAssignmentFormSchema,
   NewAssignmentFormSchemaType,
 } from "@/lib/zodSchema";
 import api from "@/lib/api";
-import { Class, useAuth, User } from "@/store/useAuth";
+import { Class, useAuth } from "@/store/useAuth";
 import z from "zod";
-import { Subject } from "@/app/(app)/(admin)/a/subjects/page";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,7 +45,6 @@ import {
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { RichTextEditor } from "@/components/text-editor/Editor";
-// import { RichTextEditor } from "@/components/text-editor/Editor";
 
 interface Props {
   classes: Class[] | undefined;
@@ -103,9 +99,13 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
           }
         }
 
-        const res = await api.post("/assignments", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await api.post(
+          `/assignments/${user?.school?.id}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         toast.success(res.data.message);
         form.reset();

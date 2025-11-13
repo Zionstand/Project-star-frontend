@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useAuth, User } from "@/store/useAuth";
 import { EditStaffForm } from "../../_components/EditStaffForm";
 
@@ -49,6 +49,8 @@ const page = () => {
   }, []);
 
   if (loading) return <Loader />;
+
+  if (!staff) return notFound();
 
   return (
     <div className="space-y-6">

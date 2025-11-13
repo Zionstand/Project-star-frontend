@@ -35,6 +35,7 @@ export const adminNavLinks = [
     title: "Main",
     url: "#",
     icon: IconLayout,
+    isActive: true,
     items: [
       {
         title: "Dashboard",
@@ -45,28 +46,6 @@ export const adminNavLinks = [
         title: "Students Approvals",
         url: "/a/students/approval",
         icon: IconUserCheck,
-      },
-    ],
-  },
-  {
-    title: "Management",
-    url: "#",
-    icon: IconUsers,
-    items: [
-      {
-        title: "Students Management",
-        url: "/a/students",
-        icon: IconUsers,
-      },
-      {
-        title: "Staff Management",
-        url: "/a/staffs",
-        icon: IconUserCog,
-      },
-      {
-        title: "Roles & Permissions",
-        url: "/a/roles",
-        icon: IconShield,
       },
     ],
   },
@@ -86,20 +65,42 @@ export const adminNavLinks = [
         url: "/a/school/calendar",
         icon: IconCalendar,
       },
+    ],
+  },
+  {
+    title: "Management",
+    url: "#",
+    icon: IconUsers,
+    items: [
       {
-        title: "Teachers",
+        title: "Students Management",
+        url: "/a/students",
+        icon: IconUsers,
+      },
+      {
+        title: "Staff Management",
+        url: "/a/staffs",
+        icon: IconUserCog,
+      },
+      {
+        title: "Teachers Management",
         url: "/a/teachers",
         icon: IconChalkboardTeacher,
       },
       {
-        title: "Classes",
+        title: "Classes Management",
         url: "/a/classes",
         icon: IconBook,
       },
       {
-        title: "Subjects",
+        title: "Subjects Management",
         url: "/a/subjects",
         icon: IconSchool,
+      },
+      {
+        title: "Roles & Permissions",
+        url: "/a/roles",
+        icon: IconShield,
       },
     ],
   },
@@ -639,6 +640,7 @@ export const roleNavMap: Record<string, any[]> = {
   TEACHER: teacherNavLinks,
   IT_SUPPORT: ITSupportNavLinks,
   DATA_ANALYST: dataAnalystNavLinks,
+  EXAM_OFFICER: dataAnalystNavLinks,
   LIBRARIAN: librarianNavLinks,
   BURSAR: bursarNavLinks,
   STUDENT: studentNavLinks,

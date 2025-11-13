@@ -125,15 +125,15 @@ export const StaffRow = ({ staff }: Props) => {
       <TableCell>
         {staff?.role === "TEACHER" && staff?.Teacher?.assignments && (
           <>
-            {staff.Teacher.assignments.slice(0, 2).map((a, index) => (
+            {staff.Teacher.assignments.slice(0, 1).map((a, index) => (
               <Badge key={index} variant="secondary">
                 {a.Subject.name}
               </Badge>
             ))}
 
-            {staff.Teacher.assignments.length > 2 && (
+            {staff.Teacher.assignments.length > 1 && (
               <Badge variant="secondary">
-                +{staff.Teacher.assignments.length - 2}
+                +{staff.Teacher.assignments.length - 1}
               </Badge>
             )}
             {staff.Teacher.assignments.length === 0 && (

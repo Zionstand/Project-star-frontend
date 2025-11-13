@@ -161,9 +161,7 @@ export const UploadFilesModal = ({
       try {
         await onImport(completedFiles);
         if (onClose) onClose();
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     });
   };
 

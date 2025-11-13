@@ -3,7 +3,7 @@ import { Loader } from "@/components/Loader";
 import { PageHeader } from "@/components/PageHeader";
 import { schoolService } from "@/lib/school";
 import { Class, useAuth, User } from "@/store/useAuth";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { EditStudentForm } from "../../_components/EditStudentForm";
@@ -50,7 +50,9 @@ const page = () => {
     fetch();
   }, [user, username]);
 
-  if (loading || !student) return <Loader />;
+  if (loading) return <Loader />;
+
+  if (!student) return notFound();
 
   return (
     <div className="space-y-6">

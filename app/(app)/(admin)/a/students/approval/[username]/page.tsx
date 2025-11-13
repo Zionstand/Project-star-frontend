@@ -35,7 +35,7 @@ import {
   IconUsers,
   IconX,
 } from "@tabler/icons-react";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import React, { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import {
@@ -156,7 +156,9 @@ const page = () => {
     }
   };
 
-  if (loading || !student) return <Loader />;
+  if (loading) return <Loader />;
+
+  if (!student) return notFound();
 
   return (
     <div className="space-y-6">

@@ -180,16 +180,18 @@ export const StudentAssignmentSubmission = ({
           }
         }
 
-        const res = await api.post(`/assignment-submissions`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await api.post(
+          `/assignment-submissions/${user?.school?.id}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         toast.success(res.data.message);
         setSuccessModal(true); // ✅ open success modal
         setIsDisabled(true);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) {}
     });
   };
 
@@ -207,7 +209,6 @@ export const StudentAssignmentSubmission = ({
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
       } catch (error) {
-        console.error("Download failed:", error);
         toast.error("Download failed!");
       }
     });
@@ -442,7 +443,7 @@ export const StudentAssignmentSubmission = ({
               </p>
             )}
           </div>
-          <Button disabled variant={"success"}>
+          <Button className="w-full" disabled variant={"success"}>
             Graded
           </Button>
         </div>

@@ -64,12 +64,7 @@ export const StaffContactInformation = ({
           <IconMapPin2 className="size-5" />
           <p className="text-black font-medium">
             {address ? (
-              <a
-                className="hover:underline hover:text-primary"
-                href={`tel:${address}`}
-              >
-                {address}
-              </a>
+              <p>{address}</p>
             ) : (
               <span className="italic">No address</span>
             )}

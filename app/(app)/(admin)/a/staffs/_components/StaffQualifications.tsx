@@ -1,3 +1,4 @@
+import { ComingSoon } from "@/components/ComingSoon";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IconAward, IconSchool } from "@tabler/icons-react";
@@ -8,11 +9,12 @@ export const StaffQualifications = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-start gap-1">
-          <IconSchool className="size-4" />
+          <IconSchool className="text-primary size-4" />
           Academic Qualifications
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 relative">
+        <ComingSoon />
         <div className="rounded-md border px-3 py-4 space-y-1">
           <div>
             <p className="text-base flex items-center justify-between gap-2 font-medium">

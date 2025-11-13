@@ -1,3 +1,4 @@
+import { ComingSoon } from "@/components/ComingSoon";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -12,11 +13,12 @@ export const StaffCertifications = () => {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-start gap-1">
-          <IconFileDescription className="size-4" />
+          <IconFileDescription className="text-primary size-4" />
           Professional Certifications
         </CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+      <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-2 relative">
+        <ComingSoon />
         <div className="rounded-md border flex gap-1 text-sm items-center justify-start px-3 py-4 space-y-1">
           <IconAward className="size-5 text-primary" />
           <span>Nigeria Certificate in Education (NCE)</span>

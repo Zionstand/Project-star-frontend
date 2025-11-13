@@ -210,7 +210,9 @@ export type AssignmentSubmissions = {
 type AuthState = {
   user: User;
   setUser: (user: User) => void;
+  currentRole: string | null;
   clearUser: () => void;
+  setCurrentRole: (role: string) => void;
   updateSchool: (school: School) => void;
   updateStudent: (student: any) => void;
   _hasHydrated: boolean; // ✅ added
@@ -221,8 +223,14 @@ export const useAuth = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      currentRole: null,
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null }),
+      setCurrentRole: (role) => {
+        // persist in localStorage so refresh doesn’t lose it
+        localStorage.setItem("currentRole", role);
+        set({ currentRole: role });
+      },
       updateStudent: (updates: Partial<Student>) =>
         set((state) => {
           if (!state.user) return state;

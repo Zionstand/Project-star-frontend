@@ -28,20 +28,6 @@ export function useRoleRedirect(user: any) {
     if (isAtRoleRoot && pathname !== path) {
       router.replace(path);
     }
-
-    // // Fetch school only once
-    // if (!hasFetchedSchool.current) {
-    //   hasFetchedSchool.current = true;
-    //   api
-    //     .get(`${env.NEXT_PUBLIC_BACKEND_URL}/schools/${user.schoolId}`)
-    //     .then((res) => {
-    //       setSchool(res.data);
-    //     })
-    //     .catch((err) => {
-    //       handleSignout();
-    //       console.error("Failed to fetch school:", err);
-    //     });
-    // }
   }, [user, pathname, router, handleSignout]);
 }
 
@@ -52,10 +38,10 @@ export function getDashboardPath(role: string) {
     TEACHER: "/t/dashboard",
     STUDENT: "/s/dashboard",
     PARENT: "/p/dashboard",
-    "IT SUPPORT": "/it/dashboard",
-    "DATA ANALYST": "/da/dashboard",
+    IT_SUPPORT: "/it/dashboard",
+    DATA_ANALYST: "/da/dashboard",
     BURSAR: "/b/dashboard",
-    "EXAM OFFICER": "/eo/dashboard",
+    EXAM_OFFICER: "/eo/dashboard",
   };
 
   return roleRoutes[role] ?? "/";

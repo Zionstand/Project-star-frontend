@@ -12,7 +12,7 @@ import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
 import { Class, School, useAuth, User } from "@/store/useAuth";
 import { PageHeader } from "@/components/PageHeader";
-import { useParams, useSearchParams } from "next/navigation";
+import { notFound, useParams, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -38,8 +38,6 @@ const page = () => {
 
   const [loading, setLoading] = useState(true);
 
-  console.log(staff);
-
   useEffect(() => {
     const fetch = async () => {
       if (!user || !user.school?.schoolID || !username) return;
@@ -49,6 +47,9 @@ const page = () => {
           schoolService.getSchoolStaff(user?.school?.schoolID!, username!),
           configService.getCategory("JOB_ROLE"),
         ]);
+
+        console.log(staff);
+
         setStaff(staff);
         setJobRoles(jobRoles);
       } catch (error: any) {
@@ -78,7 +79,9 @@ const page = () => {
     }
   };
 
-  if (loading || !staff) return <Loader />;
+  if (loading) return <Loader />;
+
+  if (!staff) return notFound();
 
   return (
     <div className="space-y-6">
@@ -125,6 +128,8 @@ const page = () => {
                 firstName={staff.firstName}
                 lastName={staff.lastName}
                 role={staff.role}
+                image={staff.image}
+                email={staff.email}
                 username={staff?.username}
                 staffId={staff?.id}
                 jobRoles={jobRoles.items}
@@ -148,6 +153,8 @@ const page = () => {
                 username={staff?.username}
                 lastName={staff?.lastName}
                 role={staff?.role}
+                image={staff.image}
+                email={staff.email}
                 jobRoles={jobRoles.items}
                 staffId={staff?.id}
                 schoolRoles={staff?.schoolRoles}

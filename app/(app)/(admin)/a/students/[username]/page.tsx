@@ -34,10 +34,12 @@ import {
   IconWallet,
   IconX,
 } from "@tabler/icons-react";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Progress } from "@/components/ui/progress";
+import { ComingSoon } from "@/components/ComingSoon";
+import { QuickActions } from "../_components/QuickActions";
 
 const page = () => {
   const { user } = useAuth();
@@ -85,7 +87,36 @@ const page = () => {
     fetch();
   }, [user, username]);
 
-  if (loading || !student) return <Loader />;
+  if (loading) return <Loader />;
+
+  if (!student) return notFound();
+
+  const handleRefresh = async () => {
+    if (!user || !user.school?.schoolID || !username) return;
+
+    try {
+      const student = await schoolService.getStudentDetails(
+        user?.school?.id!,
+        username!
+      );
+
+      setStudent(student);
+      const publicHolidays: any = []; // get from DB or config
+
+      const stats = calculateAttendanceStats(
+        student.Student.Attendance || [], // raw attendance array from studentService.getMyAttendances
+        user?.school?.academicStartDate!, // required
+        user?.school?.academicEndDate!, // optional
+        publicHolidays
+      );
+
+      setAttendanceStats(stats);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const attendancePercentage = attendanceStats.attendancePercentage;
 
@@ -274,7 +305,7 @@ const page = () => {
                     <p className="text-xs">Address</p>
                     <p className="text-black font-medium">
                       {student.address ? (
-                        <p className="hover:underline hover:text-primary">
+                        <p>
                           {student.address}, {student.city}, {student.state},{" "}
                           {student.country}
                         </p>
@@ -286,6 +317,29 @@ const page = () => {
                 </div>
               </CardContent>
             </Card>
+            {student.medicalConditions && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Medical Information</CardTitle>
+                </CardHeader>
+                <CardContent className="text-muted-foreground text-sm">
+                  {student.medicalConditions}
+                </CardContent>
+              </Card>
+            )}
+            <div className="hidden md:block">
+              <QuickActions
+                lastName={student?.lastName}
+                firstName={student?.firstName}
+                image={student?.image}
+                email={student?.email}
+                role={student?.role}
+                username={student?.username}
+                studentId={student?.id}
+                schoolRoles={student?.schoolRoles}
+                onRefresh={() => handleRefresh()}
+              />
+            </div>
           </div>
         </div>
         <div className="lg:col-span-4">
@@ -399,7 +453,8 @@ const page = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 relative">
+                  <ComingSoon />
                   <div className="p-4 bg-primary/5 rounded-md">
                     <p className="text-xs text-muted-foreground">Current GPA</p>
                     <p className="text-primary">3.85</p>
@@ -415,7 +470,8 @@ const page = () => {
                   <p className="font-medium text-base">
                     Current Term Performance
                   </p>
-                  <div className="grid gap-4">
+                  <div className="grid gap-4 relative">
+                    <ComingSoon />
                     <div className="space-y-1">
                       <div className="flex items-center justify-between gap-2">
                         <p className="text-black">Mathematics</p>
@@ -536,7 +592,8 @@ const page = () => {
                   Payment Summary
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 relative">
+                <ComingSoon />
                 <div className="flex items-center justify-between p-4 bg-muted/30 rounded-md">
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">
@@ -594,6 +651,19 @@ const page = () => {
                 </div>
               </CardContent>
             </Card>
+            <div className="md:hidden">
+              <QuickActions
+                lastName={student?.lastName}
+                firstName={student?.firstName}
+                image={student?.image}
+                email={student?.email}
+                role={student?.role}
+                username={student?.username}
+                studentId={student?.id}
+                schoolRoles={student?.schoolRoles}
+                onRefresh={() => handleRefresh()}
+              />
+            </div>
           </div>
         </div>
       </div>

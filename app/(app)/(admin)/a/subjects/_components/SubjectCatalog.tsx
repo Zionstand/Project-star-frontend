@@ -14,8 +14,8 @@ export const SubjectCatalog = ({ subjects }: Props) => {
   return (
     <div className="space-y-4">
       <SubjectSearchComponent />
-      {subjects.map((subject) => (
-        <Card key={subject.id}>
+      {subjects.map((subject, index) => (
+        <Card key={index}>
           <CardContent className="space-y-4">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
               <div>
@@ -72,8 +72,10 @@ export const SubjectCatalog = ({ subjects }: Props) => {
                 Applicable Classes
               </p>
               <div className="flex gap-2 overflow-x-auto whitespace-nowrap p-1 custom-scroll">
-                {subject.classes.map((c) => (
-                  <Badge variant={"secondary"}>{c}</Badge>
+                {subject.classes.map((c, i) => (
+                  <Badge key={i} variant={"secondary"}>
+                    {c}
+                  </Badge>
                 ))}
               </div>
             </div>

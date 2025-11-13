@@ -13,10 +13,10 @@ import React from "react";
 export const QuickActions = () => {
   const quickActions = [
     {
-      action: "Mark Attendance",
+      action: "Mark Attendances",
       icon: IconUsers,
       color: "text-primary",
-      slug: "/t/attendance",
+      slug: "/t/attendances",
     },
     {
       action: "Enter Grades",

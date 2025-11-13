@@ -27,10 +27,14 @@ export function NavMain() {
   const { state, isMobile, setOpenMobile } = useSidebar();
   const isCollapsed = !isMobile && state === "collapsed";
   const pathname = usePathname();
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   // ✅ pick the correct nav links based on role
-  const navLinks = roleNavMap[user?.role as keyof typeof roleNavMap] || [];
+  // const navLinks = roleNavMap[user?.role as keyof typeof roleNavMap] || [];
+
+  const { user, currentRole } = useAuth();
+  const activeRole = currentRole || user?.role;
+  const navLinks = roleNavMap[activeRole as keyof typeof roleNavMap] || [];
 
   return (
     <SidebarGroup>

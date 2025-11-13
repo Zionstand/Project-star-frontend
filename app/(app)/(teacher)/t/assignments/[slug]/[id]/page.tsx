@@ -20,7 +20,7 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import { Award, CircleCheckBig, Dot } from "lucide-react";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { GradeForm } from "../../../_components/GradeForm";
@@ -71,6 +71,8 @@ const page = () => {
   };
 
   if (loading) return <Loader />;
+
+  if (!assignment) return notFound();
 
   return (
     <div className="space-y-6">

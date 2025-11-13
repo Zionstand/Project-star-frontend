@@ -66,8 +66,6 @@ export const RoleModal = ({
   schoolRoles,
 }: Props) => {
   const { user } = useAuth();
-  console.log(role, schoolRoles);
-
   const [pending, startTransition] = useTransition();
   const currentRole = jobRoles?.find((r) => r.name === role)?.name;
 

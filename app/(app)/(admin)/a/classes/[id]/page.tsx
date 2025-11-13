@@ -11,7 +11,7 @@ import { Loader } from "@/components/Loader";
 import { schoolService } from "@/lib/school";
 import { Class, School, useAuth, User } from "@/store/useAuth";
 import { PageHeader } from "@/components/PageHeader";
-import { useParams, useSearchParams } from "next/navigation";
+import { notFound, useParams, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { ClassDetailsCards } from "../_components/ClassDetailsCard";
 import { ClassTeacherBox } from "../_components/ClassTeacherBox";
@@ -50,7 +50,9 @@ const page = () => {
     fetch();
   }, [user, id]);
 
-  if (loading || !classDetails) return <Loader />;
+  if (loading) return <Loader />;
+
+  if (!classDetails) return notFound();
 
   return (
     <div className="space-y-6">

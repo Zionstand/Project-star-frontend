@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { useAuth } from "@/store/useAuth";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
@@ -13,6 +13,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   // useRoleRedirect(user);
   // useSchoolFetcher();
   // useAutoRefresh();
+  const setCurrentRole = useAuth((s) => s.setCurrentRole);
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem("currentRole");
+    if (savedRole) setCurrentRole(savedRole);
+  }, []);
 
   return (
     <SidebarProvider>

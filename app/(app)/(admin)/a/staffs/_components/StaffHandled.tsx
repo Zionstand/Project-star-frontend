@@ -10,12 +10,11 @@ interface Props {
 }
 
 export const StaffHandled = ({ assignments }: Props) => {
-  console.log(assignments);
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-start gap-1">
-          <IconBook className="size-4" />
+          <IconBook className="text-primary size-4" />
           Subjects Handled
         </CardTitle>
       </CardHeader>

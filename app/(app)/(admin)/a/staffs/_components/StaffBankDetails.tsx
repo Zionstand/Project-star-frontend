@@ -1,3 +1,4 @@
+import { ComingSoon } from "@/components/ComingSoon";
 import { NairaIcon } from "@/components/NairaIcon";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +16,8 @@ export const StaffBankDetails = () => {
       <CardHeader>
         <CardTitle>Bank Account Details</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-1">
+      <CardContent className="grid grid-cols-1 relative">
+        <ComingSoon />
         <div className="rounded-md text-sm px-3 py-3 space-y-1">
           <p className="text-muted-foreground text-xs">Bank Name</p>
           <p>First Bank of Nigeria</p>

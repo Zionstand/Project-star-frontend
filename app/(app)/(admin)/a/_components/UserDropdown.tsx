@@ -1,13 +1,5 @@
 "use client";
-import {
-  BoltIcon,
-  BookOpenIcon,
-  ChevronDownIcon,
-  Layers2Icon,
-  LogOutIcon,
-  PinIcon,
-  UserPenIcon,
-} from "lucide-react";
+import { ChevronDownIcon, LogOutIcon } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -26,10 +18,14 @@ import { useAuth } from "@/store/useAuth";
 import { formatWord } from "@/lib/utils";
 import { IconUser } from "@tabler/icons-react";
 import Link from "next/link";
+import { getDashboardPath } from "@/hooks/use-role-redirect";
+import { useRouter } from "next/navigation";
 
-export function AdminDropdown() {
+export function UserDropdown() {
   const handleSignout = useSignout();
-  const { user } = useAuth();
+  const router = useRouter();
+
+  const { user, setCurrentRole } = useAuth();
 
   if (!user) return null;
 
@@ -79,6 +75,26 @@ export function AdminDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          {user?.schoolRoles.length > 1 &&
+            user?.schoolRoles.map((role, index) => {
+              const href = getDashboardPath(role.role) || "/dashboard";
+              return (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={() => {
+                    setCurrentRole(role.role);
+                    router.push(href);
+                  }}
+                >
+                  <IconUser
+                    size={16}
+                    className="opacity-60"
+                    aria-hidden="true"
+                  />
+                  <span>Switch to {formatWord[role.role]}</span>
+                </DropdownMenuItem>
+              );
+            })}
           <DropdownMenuItem asChild>
             <Link href={`/profile/${user.username}`}>
               <IconUser size={16} className="opacity-60" aria-hidden="true" />

@@ -15,7 +15,6 @@ import {
   IconEye,
   IconFileDescription,
   IconFileText,
-  IconUpload,
 } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
@@ -24,7 +23,7 @@ import { Button } from "@/components/ui/button";
 const ItemCard = ({ item }: { item: Assignment }) => {
   return (
     <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
+      <CardContent>
         <div className="flex flex-col lg:flex-row items-start gap-4 justify-between">
           <div className="flex items-start gap-4 flex-1">
             <div className={`p-3 rounded-md bg-green-500/10`}>

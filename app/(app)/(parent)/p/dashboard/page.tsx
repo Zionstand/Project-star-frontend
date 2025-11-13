@@ -58,7 +58,10 @@ const Page = () => {
       if (!user?.id) return;
 
       try {
-        const res = await parentService.getMyChildren(user.id);
+        const res = await parentService.getMyChildren(
+          user.id,
+          user?.school?.id!
+        );
         setChildren(res.children || []);
 
         // Automatically select the first child
@@ -77,11 +80,9 @@ const Page = () => {
     fetchChildren();
   }, [user?.id]);
 
-  // ✅ Fetch details for the selected child
   useEffect(() => {
     if (!selectedChildId) return;
 
-    // Clear previous child data immediately
     setChild(undefined);
     setAssignments([]);
     setAttendanceStats({
@@ -96,9 +97,21 @@ const Page = () => {
       setLoadingChild(true);
       try {
         const [child, assignments, attendances] = await Promise.all([
-          parentService.getChildDetails(user.id, selectedChildId),
-          parentService.getChildAssignments(user.id, selectedChildId),
-          parentService.getChildAttendances(user?.id, selectedChildId),
+          parentService.getChildDetails(
+            user.id,
+            selectedChildId,
+            user?.school?.id!
+          ),
+          parentService.getChildAssignments(
+            user.id,
+            selectedChildId,
+            user?.school?.id!
+          ),
+          parentService.getChildAttendances(
+            user?.id,
+            selectedChildId,
+            user?.school?.id!
+          ),
         ]);
 
         setChild(child);

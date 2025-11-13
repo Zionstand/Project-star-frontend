@@ -5,6 +5,7 @@ import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { formatPhoneNumber } from "@/lib/utils";
 import { Student, User } from "@/store/useAuth";
 import { IconDotsVertical, IconPhone, IconUser } from "@tabler/icons-react";
+import Link from "next/link";
 import React from "react";
 
 interface Props {
@@ -17,10 +18,13 @@ export const StudentCard = ({ student }: Props) => {
       <div className="flex items-center justify-start gap-2">
         <UserProfilePicture />
         <div className="flex-1">
-          <h3 className="font-medium text-base line-clamp-1">
+          <Link
+            href={`/a/students/${student?.username}`}
+            className="font-medium hover:underline hover:text-primary text-base line-clamp-1"
+          >
             {student?.firstName} {student?.lastName} {student?.otherName}
             <Badge variant={"outlineSuccess"}>Active</Badge>
-          </h3>
+          </Link>
           <a
             className="hover:text-primary text-sm text-muted-foreground hover:underline transition-all line-clamp-1"
             href={`mailto:${student?.email}`}

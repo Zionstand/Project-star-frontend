@@ -6,7 +6,7 @@ import { IconBell } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { SearchBar } from "@/components/Searchbar";
 import { Logo } from "@/app/(app)/(admin)/a/_components/Logo";
-import { AdminDropdown } from "@/app/(app)/(admin)/a/_components/AdminDropdown";
+import { UserDropdown } from "@/app/(app)/(admin)/a/_components/UserDropdown";
 import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
 import { getDashboardPath } from "@/hooks/use-role-redirect";
@@ -50,7 +50,7 @@ export const AppSidebarHeader = () => {
             </Badge>
             <IconBell />
           </Button>
-          <AdminDropdown />
+          <UserDropdown />
         </div>
       </div>
     </header>
