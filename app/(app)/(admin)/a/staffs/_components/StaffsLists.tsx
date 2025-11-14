@@ -26,31 +26,35 @@ export const StaffsLists = ({ staffs }: Props) => {
       </CardHeader>
       <CardContent className="pt-4">
         {staffs?.length === 0 && <NothingFound message="No staff found yet!" />}
-        <div className="hidden md:block">
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
-                <TableHead>Name</TableHead>
-                <TableHead>Employee ID</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Subjects</TableHead>
-                <TableHead className="text-right"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+        {staffs?.length !== 0 && (
+          <>
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead>Name</TableHead>
+                    <TableHead>Employee ID</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Subjects</TableHead>
+                    <TableHead className="text-right"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {staffs?.map((staff) => (
+                    <StaffRow key={staff?.id} staff={staff} />
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <div className="md:hidden space-y-4">
               {staffs?.map((staff) => (
-                <StaffRow key={staff?.id} staff={staff} />
+                <StaffCard key={staff?.id} staff={staff} />
               ))}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="md:hidden space-y-4">
-          {staffs?.map((staff) => (
-            <StaffCard key={staff?.id} staff={staff} />
-          ))}
-        </div>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

@@ -12,6 +12,7 @@ import { SearchBar } from "@/components/Searchbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AssignmentCard } from "../_components/AssignmentCard";
+import { NothingFound } from "@/components/NothingFound";
 
 const page = () => {
   const { user } = useAuth();
@@ -65,12 +66,18 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="all" className="space-y-4 mt-6">
+          {assignments.length === 0 && (
+            <NothingFound message="No assignments found" />
+          )}
           {assignments.map((assignment) => (
             <AssignmentCard key={assignment.id} assignment={assignment} />
           ))}
         </TabsContent>
 
         <TabsContent value="pending" className="space-y-4 mt-6">
+          {assignments.length === 0 && (
+            <NothingFound message="No assignments found" />
+          )}
           {assignments
             .filter((assignment) => {
               const submission = assignment.assignmentSubmissions?.find(
@@ -84,6 +91,9 @@ const page = () => {
         </TabsContent>
 
         <TabsContent value="submitted" className="space-y-4 mt-6">
+          {assignments.length === 0 && (
+            <NothingFound message="No assignments found" />
+          )}
           {assignments
             .filter((assignment) => {
               const submission = assignment.assignmentSubmissions?.find(
@@ -97,6 +107,9 @@ const page = () => {
         </TabsContent>
 
         <TabsContent value="graded" className="space-y-4 mt-6">
+          {assignments.length === 0 && (
+            <NothingFound message="No assignments found" />
+          )}
           {assignments
             .filter((assignment) => {
               const submission = assignment.assignmentSubmissions?.find(

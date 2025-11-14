@@ -123,7 +123,7 @@ const DocumentItem = ({
 
   return (
     <Card className={cn(config.borderColor, "border-2")}>
-      <CardContent className="p-6">
+      <CardContent>
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-2 flex-1">
             <div className={cn("p-2 rounded-full", config.bgColor)}>
@@ -150,7 +150,10 @@ const DocumentItem = ({
               )}
 
               {status === "rejected" && (
-                <Button variant={"destructive"}>
+                <Button
+                  variant={"destructive"}
+                  onClick={() => setOpenModal(true)}
+                >
                   <IconUpload />
                   Re-upload Document
                 </Button>

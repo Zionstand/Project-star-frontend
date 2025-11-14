@@ -49,11 +49,6 @@ const page = () => {
           slug: "/a/staffs/new",
           icon: IconPlus,
         }}
-        secondaryCTA={{
-          label: "Export",
-          slug: "/a/staff/new",
-          icon: IconDownload,
-        }}
       />
       <StaffCards
         teachers={teachers?.length!}

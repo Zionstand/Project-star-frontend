@@ -45,10 +45,11 @@ import {
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { RichTextEditor } from "@/components/text-editor/Editor";
+import { Subject } from "@/app/(app)/(admin)/a/subjects/page";
 
 interface Props {
   classes: Class[] | undefined;
-  subjects: any;
+  subjects: Subject[];
 }
 
 export const NewAssignmentForm = ({ classes, subjects }: Props) => {
@@ -81,11 +82,15 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
 
         formData.append("title", values.title);
         formData.append("description", values.description);
-        formData.append("totalMarks", values.totalMarks);
+        {
+          values.totalMarks && formData.append("totalMarks", values.totalMarks);
+        }
         formData.append("type", values.type);
         formData.append("classId", values.classId);
         formData.append("subjectId", values.subjectId);
-        formData.append("dueDate", values.due);
+        {
+          values.due && formData.append("dueDate", values.due);
+        }
         formData.append("teacherId", user?.id || ""); // adjust if stored differently
         formData.append("schoolId", user?.school?.id || "");
 
@@ -229,7 +234,7 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
                     {classes?.map((c) => (
                       <SelectItem value={c.id} key={c.id}>
                         {c.level}
-                        {c.section}
+                        {c.section} {c.department ? `(${c.department})` : ""}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -251,6 +256,11 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    {subjects.length === 0 && (
+                      <span className="italic block text-center text-sm text-muted-foreground py-4">
+                        No subjects found
+                      </span>
+                    )}
                     {subjects?.map((subject: any) => (
                       <SelectItem
                         value={subject.Subject.id}
@@ -266,39 +276,42 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
             )}
           />
         </div>
+        {type === "ASSIGNMENT" && (
+          <FormField
+            control={form.control}
+            name="totalMarks"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Total Marks
+                  <RequiredAsterisk />
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter total score" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
-        <FormField
-          control={form.control}
-          name="totalMarks"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Total Marks
-                <RequiredAsterisk />
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="Enter total score" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="due"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Due Date <RequiredAsterisk />
-              </FormLabel>
-              <FormControl>
-                <DateSelector field={field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {type === "ASSIGNMENT" && (
+          <FormField
+            control={form.control}
+            name="due"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Due Date <RequiredAsterisk />
+                </FormLabel>
+                <FormControl>
+                  <DateSelector field={field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className="flex flex-col">
           <Label>Attachments (Optionals)</Label>

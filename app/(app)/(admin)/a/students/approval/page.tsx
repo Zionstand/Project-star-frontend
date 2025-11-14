@@ -8,6 +8,7 @@ import { schoolService } from "@/lib/school";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
 import { ApprovalStudentBox } from "./_components/ApprovalStudentBox";
+import { NothingFound } from "@/components/NothingFound";
 
 const page = () => {
   const { user } = useAuth();
@@ -91,6 +92,7 @@ const page = () => {
       />
       <StudentSearchComponent />
       <div className="space-y-4">
+        {allStudents.length === 0 && <NothingFound message="No students yet" />}
         {allStudents.map((student) => (
           <ApprovalStudentBox
             key={student?.id}

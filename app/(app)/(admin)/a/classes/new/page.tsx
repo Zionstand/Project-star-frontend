@@ -15,10 +15,10 @@ import { ImportClasses } from "../_components/ImportClasses";
 const page = () => {
   const { user } = useAuth();
 
-  const [teachers, setTeachers] = useState<User[]>();
-  const [classLevels, setClassLevels] = useState<any>();
-  const [classSections, setClassSections] = useState<any>();
-  const [departments, setDepartments] = useState<any>();
+  const [teachers, setTeachers] = useState<User[]>([]);
+  const [classLevels, setClassLevels] = useState<any>([]);
+  const [classSections, setClassSections] = useState<any>([]);
+  const [departments, setDepartments] = useState<any>([]);
 
   const [loading, setLoading] = useState(true);
 

@@ -61,6 +61,7 @@ export const DashboardParentInformationForm = ({
   departments,
 }: Props) => {
   const { user } = useAuth();
+  const setUser = useAuth((s) => s.setUser);
   const [pending, startTransition] = useTransition();
 
   const form = useForm<ParentInformationFormSchemaType>({
@@ -80,11 +81,36 @@ export const DashboardParentInformationForm = ({
   function onSubmit(values: ParentInformationFormSchemaType) {
     startTransition(async () => {
       try {
+        const payload = {
+          email: user?.email,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          otherName: user?.otherName,
+          address: user?.address,
+          city: user?.city,
+          state: user?.state,
+          country: user?.country,
+          phoneNumber: user?.phoneNumber,
+          title: user?.title,
+          dob: user?.dob,
+          medicalConditions: user?.medicalConditions,
+          image: user?.image,
+          candidateNumber: user?.Student?.candidateNumber,
+          examScore: user?.Student?.examScore,
+          previousSchool: user?.Student?.previousSchool,
+          department: user?.department,
+          parentEmail: values.parentEmail,
+          parentFirstName: values.parentFirstName,
+          parentLastName: values.parentLastName,
+          parentPhoneNumber: values.parentPhoneNumber,
+          parentRelationship: values.parentRelationship,
+        };
+
         const res = await api.put(
           `/students/${user?.schoolId}/update-profile/${user?.id}`,
-          values
+          payload
         );
-        // setUser(res.data.user);
+        setUser(res.data.user);
         toast.success(res.data.message);
       } catch (error: any) {
         toast.error(error.response?.data?.message || "An error occurred");

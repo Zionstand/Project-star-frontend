@@ -14,35 +14,50 @@ import { BasicInformation } from "./_components/BasicInformation";
 import { ContactDetails } from "./_components/ContactDetails";
 import { AcademicSettings } from "./_components/AcademicSettings";
 import { AdministrativeDetails } from "./_components/AdministrativeDetails";
-import { useAuth } from "@/store/useAuth";
 import { configService } from "@/lib/configs";
 import { PageHeader } from "@/components/PageHeader";
 import { Loader } from "@/components/Loader";
 import { toast } from "sonner";
+import { useAuth, User } from "@/store/useAuth";
+import { schoolService } from "@/lib/school";
 
 const page = () => {
+  const { user } = useAuth();
   const [schoolTypes, setSchoolTypes] = useState<any>();
   const [ownershipTypes, setOwnershipTypes] = useState<any>();
   const [states, setStates] = useState<any>();
   const [countries, setCountries] = useState<any>();
+  const [students, setStudents] = useState<User[]>([]);
+  const [teachers, setTeachers] = useState<User[]>([]);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchConfigs = async () => {
+      if (!user) return;
       try {
-        const [schoolTypes, ownershipTypes, states, countries] =
-          await Promise.all([
-            configService.getCategory("SCHOOL_TYPE"),
-            configService.getCategory("OWNERSHIP_TYPE"),
-            configService.getCategory("STATE"),
-            configService.getCategory("COUNTRY"),
-          ]);
+        const [
+          schoolTypes,
+          ownershipTypes,
+          states,
+          countries,
+          students,
+          teachers,
+        ] = await Promise.all([
+          configService.getCategory("SCHOOL_TYPE"),
+          configService.getCategory("OWNERSHIP_TYPE"),
+          configService.getCategory("STATE"),
+          configService.getCategory("COUNTRY"),
+          schoolService.getStudents(user?.school?.id!),
+          schoolService.getSchoolTeachers(user?.school?.id!),
+        ]);
 
         setSchoolTypes(schoolTypes);
         setOwnershipTypes(ownershipTypes);
         setStates(states);
         setCountries(countries);
+        setStudents(students);
+        setTeachers(teachers);
       } catch (error: any) {
         toast.error(error.response.data.message);
       } finally {
@@ -51,7 +66,7 @@ const page = () => {
     };
 
     fetchConfigs();
-  }, []);
+  }, [user]);
 
   if (loading) return <Loader />;
 
@@ -119,7 +134,10 @@ const page = () => {
             <AcademicSettings />
           </TabsContent>
           <TabsContent value="administrative">
-            <AdministrativeDetails />
+            <AdministrativeDetails
+              students={students?.length}
+              teachers={teachers?.length}
+            />
           </TabsContent>
         </Tabs>
       </Suspense>

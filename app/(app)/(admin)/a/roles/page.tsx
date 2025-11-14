@@ -27,7 +27,7 @@ const page = () => {
   const [students, setStudents] = useState<User[]>([]);
   const [admins, setAdmins] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [jobRoles, setJobRoles] = useState<any>();
+  const [jobRoles, setJobRoles] = useState<any>([]);
 
   useEffect(() => {
     const fetchStaffs = async () => {

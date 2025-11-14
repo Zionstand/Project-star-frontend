@@ -31,7 +31,7 @@ const page = () => {
           configService.getCategory("JOB_ROLE"),
           configService.getCategory("STATE"),
           configService.getCategory("COUNTRY"),
-          schoolService.getSchoolStaff(user?.school?.schoolID!, username!),
+          schoolService.getSchoolStaff(user?.school?.id!, username!),
         ]);
 
         setJobRoles(jobRoles);

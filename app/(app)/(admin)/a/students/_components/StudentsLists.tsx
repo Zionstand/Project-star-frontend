@@ -20,8 +20,12 @@ export const StudentsLists = ({ students }: Props) => {
         {students.length === 0 && (
           <NothingFound message="No students found yet!" />
         )}
-        <StudentsTable students={students} />
-        <StudentsCard students={students} />
+        {students.length !== 0 && (
+          <>
+            <StudentsTable students={students} />
+            <StudentsCard students={students} />
+          </>
+        )}
       </CardContent>
     </Card>
   );

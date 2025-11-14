@@ -34,9 +34,9 @@ import { Subject } from "../../subjects/page";
 import z from "zod";
 
 interface Props {
-  teachers: User[] | undefined;
-  classes: Class[] | undefined;
-  subjects: Subject[] | undefined;
+  teachers: User[];
+  classes: Class[];
+  subjects: Subject[];
 }
 
 export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
@@ -117,6 +117,11 @@ export const AssignTeacherForm = ({ teachers, classes, subjects }: Props) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
+                  {teachers.length === 0 && (
+                    <span className="italic block text-center text-sm text-muted-foreground py-4">
+                      No teachers found
+                    </span>
+                  )}
                   {teachers?.map((teacher) => (
                     <SelectItem value={teacher?.id!} key={teacher?.id}>
                       <span className="flex items-center gap-2">

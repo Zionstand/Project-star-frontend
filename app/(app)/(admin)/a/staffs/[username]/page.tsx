@@ -44,7 +44,7 @@ const page = () => {
 
       try {
         const [staff, jobRoles] = await Promise.all([
-          schoolService.getSchoolStaff(user?.school?.schoolID!, username!),
+          schoolService.getSchoolStaff(user?.school?.id!, username!),
           configService.getCategory("JOB_ROLE"),
         ]);
 
@@ -65,7 +65,7 @@ const page = () => {
 
     try {
       const [staff, jobRoles] = await Promise.all([
-        schoolService.getSchoolStaff(user?.school?.schoolID!, username!),
+        schoolService.getSchoolStaff(user?.school?.id!, username!),
         configService.getCategory("JOB_ROLE"),
       ]);
       setStaff(staff);
@@ -76,6 +76,8 @@ const page = () => {
       setLoading(false);
     }
   };
+
+  console.log(staff);
 
   if (loading) return <Loader />;
 

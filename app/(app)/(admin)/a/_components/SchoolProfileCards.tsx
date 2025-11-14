@@ -29,14 +29,14 @@ export const SchoolProfileCards = () => {
     },
     {
       title: "Current Session",
-      value: user?.school?.currentSession,
+      value: user?.school?.currentSession || "Not selected",
       icon: IconSchool,
       bgColor: "bg-green-500/20",
       textColor: "text-green-500",
     },
     {
       title: "Current Term",
-      value: user?.school?.currentTerm,
+      value: user?.school?.currentTerm || "Not selected",
       icon: IconBook,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",

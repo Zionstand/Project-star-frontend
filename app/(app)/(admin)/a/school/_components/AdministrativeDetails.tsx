@@ -66,7 +66,12 @@ import { useAuth } from "@/store/useAuth";
 import api from "@/lib/api";
 import { toast } from "sonner";
 
-export const AdministrativeDetails = () => {
+interface Props {
+  teachers: number;
+  students: number;
+}
+
+export const AdministrativeDetails = ({ teachers, students }: Props) => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -109,6 +114,8 @@ export const AdministrativeDetails = () => {
       }
     });
   }
+
+  const ratio = teachers > 0 ? Math.round(students / teachers) : 0;
 
   return (
     <Card>
@@ -227,7 +234,7 @@ export const AdministrativeDetails = () => {
                       Total Capacity
                     </p>
                     <p className="text-lg md:text-xl lg:text-2xl font-medium">
-                      2,500 Students
+                      {students} Students
                     </p>
                   </div>
                   <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">
@@ -235,7 +242,7 @@ export const AdministrativeDetails = () => {
                       Teaching Staff
                     </p>
                     <p className="text-lg md:text-xl lg:text-2xl font-medium">
-                      85 Teachers
+                      {teachers} Teachers
                     </p>
                   </div>
                   <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">
@@ -243,7 +250,7 @@ export const AdministrativeDetails = () => {
                       Student-Teacher Ratio
                     </p>
                     <p className="text-lg md:text-xl lg:text-2xl font-medium">
-                      1:29
+                      {students === 0 ? 0 : 1}:{ratio}
                     </p>
                   </div>
                   <div className="bg-muted rounded-md py-6 px-4 space-y-1.5">

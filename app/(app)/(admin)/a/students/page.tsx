@@ -49,11 +49,6 @@ const page = () => {
           slug: "/a/students/new",
           icon: IconPlus,
         }}
-        secondaryCTA={{
-          label: "Export",
-          slug: "/a/students/new",
-          icon: IconDownload,
-        }}
       />
       <StudentCards students={students.length} />
       <StudentSearchComponent />

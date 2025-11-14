@@ -34,6 +34,8 @@ import { Badge } from "@/components/ui/badge";
 import { calculateAttendanceStats, formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { NothingFound } from "@/components/NothingFound";
+import { ComingSoon } from "@/components/ComingSoon";
 
 const page = () => {
   const { user } = useAuth();
@@ -68,7 +70,9 @@ const page = () => {
       const [documents, timelines, assignments] = await Promise.all([
         schoolService.getStudentDocuments(user.id, user?.schoolId!),
         schoolService.getStudentTimelines(user.id, user?.schoolId!),
-        studentService.getStudentAssignments(user?.school?.id!, user.id),
+        user.Student.isApproved
+          ? studentService.getStudentAssignments(user?.school?.id!, user.id)
+          : Promise.resolve([]),
       ]);
 
       setDocuments(documents);
@@ -106,7 +110,9 @@ const page = () => {
           user.Student.isApproved
             ? studentService.getStudentAssignments(user?.schoolId!, user?.id)
             : Promise.resolve([]),
-          studentService.getMyAttendances(user?.id, user?.school?.id!),
+          user.Student.isApproved
+            ? studentService.getMyAttendances(user?.id, user?.school?.id!)
+            : Promise.resolve([]),
         ]);
 
         setStates(states);
@@ -170,7 +176,28 @@ const page = () => {
                   Today's classes
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4"></CardContent>
+              <CardContent className="space-y-4 relative">
+                <ComingSoon />
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas
+                ullam fuga voluptate. Vero ipsum cupiditate dolorum cumque
+                magnam odio asperiores, vitae facere quam doloribus sint quos
+                alias distinctio facilis. Tempora quam impedit ex voluptatibus!
+                Omnis quae ipsum, suscipit odio assumenda nobis cumque iusto
+                maxime! Fugit, deleniti? Tempore iste aliquam temporibus, est
+                numquam ratione similique veritatis consequatur alias officia
+                cum voluptatibus distinctio eius quos et doloribus. Aspernatur
+                ratione, atque eum similique sint dolor ad vero quam quod esse
+                quaerat reiciendis iusto eaque, molestias minima soluta iste.
+                Dolor illo sunt nam est architecto, delectus voluptates dolorum
+                ut numquam, non corporis voluptate. Aspernatur commodi dicta
+                itaque rem provident ex perferendis, voluptates ipsam ducimus
+                voluptatibus cupiditate temporibus nemo fugit error consequatur.
+                Modi ipsa quam molestiae id beatae deserunt neque ipsum totam
+                magni et debitis consectetur delectus quis, blanditiis fugit
+                ullam consequuntur! Tempore reprehenderit recusandae consectetur
+                rem eaque vel aliquid, ducimus aspernatur fugiat impedit
+                cupiditate perferendis nam. Optio quod amet, a magni repellat
+              </CardContent>
             </Card>
           </div>
           <div className="lg:col-span-2 grid gap-4">
@@ -182,6 +209,9 @@ const page = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
+                {assignments.length === 0 && (
+                  <NothingFound message="No assignments found" />
+                )}
                 {assignments.slice(0, 3).map((assignment, index) => {
                   const submission = assignment.assignmentSubmissions?.find(
                     (s) => s.studentId === user?.Student.id
@@ -220,9 +250,11 @@ const page = () => {
                     </Card>
                   );
                 })}
-                <Button variant={"outline"} className="w-full" asChild>
-                  <Link href={"/s/assignments"}>View all assignments</Link>
-                </Button>
+                {assignments.length > 3 && (
+                  <Button variant={"outline"} className="w-full" asChild>
+                    <Link href={"/s/assignments"}>View all assignments</Link>
+                  </Button>
+                )}
               </CardContent>
             </Card>
           </div>

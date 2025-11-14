@@ -86,9 +86,36 @@ export const DashboardPersonalInformationForm = ({
   function onSubmit(values: PersonalInformationFormSchemaType) {
     startTransition(async () => {
       try {
+        const payload = {
+          email: values?.email,
+          firstName: values?.firstName,
+          lastName: values?.lastName,
+          otherName: values?.otherName,
+          address: values?.address,
+          city: values?.city,
+          state: values?.state,
+          country: values?.country,
+          phoneNumber: values?.phoneNumber,
+          dob: values?.dob,
+          medicalConditions: values?.medicalConditions,
+          image: user?.image,
+          candidateNumber: user?.Student.candidateNumber,
+          examScore: user?.Student?.examScore,
+          previousSchool: user?.Student?.previousSchool,
+          department: user?.department,
+          parentEmail: user?.Student.ParentStudentLink[0].parent.user?.email,
+          parentFirstName:
+            user?.Student.ParentStudentLink[0].parent.user?.firstName,
+          parentLastName:
+            user?.Student.ParentStudentLink[0].parent.user?.lastName,
+          parentPhoneNumber:
+            user?.Student.ParentStudentLink[0].parent.user?.phoneNumber,
+          parentRelationship: user?.Student.ParentStudentLink[0].relation,
+        };
+
         const res = await api.put(
           `/students/${user?.schoolId}/update-profile/${user?.id}`,
-          values
+          payload
         );
         setUser(res.data.user);
         toast.success(res.data.message);
@@ -271,7 +298,12 @@ export const DashboardPersonalInformationForm = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {states.map((state) => (
+                        {states?.length === 0 && (
+                          <span className="italic block text-center text-sm text-muted-foreground py-4">
+                            No states found
+                          </span>
+                        )}
+                        {states?.map((state) => (
                           <SelectItem value={state.name} key={state.id}>
                             {state.name}
                           </SelectItem>
@@ -298,7 +330,12 @@ export const DashboardPersonalInformationForm = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {countries.map((country, index) => (
+                        {countries?.length === 0 && (
+                          <span className="italic block text-center text-sm text-muted-foreground py-4">
+                            No countries found
+                          </span>
+                        )}
+                        {countries?.map((country, index) => (
                           <SelectItem value={country.name} key={index}>
                             {country.name}
                           </SelectItem>

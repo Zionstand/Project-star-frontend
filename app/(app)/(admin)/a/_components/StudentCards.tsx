@@ -25,12 +25,12 @@ export const StudentCards = ({ students }: Props) => {
     },
     {
       title: "Inactive Students",
-      value: "45",
+      value: "0",
       textColor: "text-gray-700",
     },
     {
       title: "Suspended",
-      value: "5",
+      value: "0",
       textColor: "text-destructive",
     },
   ];

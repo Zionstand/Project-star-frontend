@@ -13,6 +13,7 @@ import { IconCheck, IconClock, IconUsers, IconX } from "@tabler/icons-react";
 import { Separator } from "@/components/ui/separator";
 import api from "@/lib/api";
 import { attendanceService } from "@/lib/attendance";
+import { NothingFound } from "@/components/NothingFound";
 
 type StudentWithStatus = User & {
   attendanceStatus?: "PRESENT" | "LATE" | "ABSENT";
@@ -209,15 +210,20 @@ const AttendancePage = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-start gap-2">
-            <Button variant={"outline"} onClick={markAllPresent}>
-              <IconCheck />
-              Mark all present
-            </Button>
-          </div>
+          <Button
+            disabled={students.length === 0}
+            variant={"outline"}
+            onClick={markAllPresent}
+          >
+            <IconCheck />
+            Mark all present
+          </Button>
 
           <Card>
             <CardContent className="grid gap-4">
+              {students.length === 0 && (
+                <NothingFound message="No students found" />
+              )}
               {students.map((student) => {
                 const studId = (student as any).id;
                 return (
@@ -242,7 +248,7 @@ const AttendancePage = () => {
 
                       <div className="flex flex-col md:flex-row items-center w-full md:w-auto justify-between md:justify-end gap-2">
                         <Button
-                          size="sm"
+                          // size="sm"
                           variant={
                             student.attendanceStatus === "PRESENT"
                               ? "default"
@@ -259,7 +265,7 @@ const AttendancePage = () => {
                           Present
                         </Button>
                         <Button
-                          size="sm"
+                          // size="sm"
                           variant={
                             student.attendanceStatus === "LATE"
                               ? "pending"
@@ -276,7 +282,7 @@ const AttendancePage = () => {
                           Late
                         </Button>
                         <Button
-                          size="sm"
+                          // size="sm"
                           className="w-full md:w-auto"
                           variant={
                             student.attendanceStatus === "ABSENT"
@@ -294,7 +300,7 @@ const AttendancePage = () => {
                 );
               })}
 
-              <Separator />
+              {/* <Separator /> */}
               <div className="flex items-center justify-end">
                 <Button
                   onClick={handleSubmitAttendance}

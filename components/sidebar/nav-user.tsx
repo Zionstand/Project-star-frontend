@@ -28,12 +28,20 @@ import {
 import { useAuth } from "@/store/useAuth";
 import { DEFAULT_PROFILE_IMAGE } from "@/constant";
 import { useSignout } from "@/hooks/use-signout";
+import { useRouter } from "next/navigation";
+import { getDashboardPath } from "@/hooks/use-role-redirect";
+import { IconUser } from "@tabler/icons-react";
+import { formatWord } from "@/lib/utils";
+import Link from "next/link";
 
 export function NavUser() {
-  const handleSignout = useSignout();
-
   const { isMobile } = useSidebar();
-  const { user } = useAuth();
+  const handleSignout = useSignout();
+  const router = useRouter();
+
+  const { user, setCurrentRole } = useAuth();
+
+  if (!user) return null;
 
   return (
     <SidebarMenu>
@@ -83,7 +91,7 @@ export function NavUser() {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
@@ -104,7 +112,46 @@ export function NavUser() {
                 <Bell />
                 Notifications
               </DropdownMenuItem>
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
+            {user?.schoolRoles.length > 1 &&
+              user?.schoolRoles.map((role, index) => {
+                const href = getDashboardPath(role.role) || "/dashboard";
+                return (
+                  <DropdownMenuItem
+                    key={index}
+                    onClick={() => {
+                      setCurrentRole(role.role);
+                      router.push(href);
+                    }}
+                  >
+                    <IconUser
+                      size={16}
+                      className="opacity-60"
+                      aria-hidden="true"
+                    />
+                    <span>Switch to {formatWord[role.role]}</span>
+                  </DropdownMenuItem>
+                );
+              })}
+
+            {(user.role === "ADMINISTRATOR" ||
+              user.schoolRoles.some(
+                (role) => role.role === "ADMINISTRATOR"
+              )) && (
+              <>
+                <DropdownMenuItem asChild>
+                  <Link href={`/profile/${user.username}`}>
+                    <IconUser
+                      size={16}
+                      className="opacity-60"
+                      aria-hidden="true"
+                    />
+                    <span>View profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignout}>
               <LogOut />

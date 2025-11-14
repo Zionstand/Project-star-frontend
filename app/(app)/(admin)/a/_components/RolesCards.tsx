@@ -45,7 +45,7 @@ export const RolesCards = ({ total }: Props) => {
     },
     {
       title: "Recent Changes",
-      value: "23",
+      value: "0",
       icon: IconRestore,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",

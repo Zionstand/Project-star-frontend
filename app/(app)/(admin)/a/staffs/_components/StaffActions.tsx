@@ -36,9 +36,11 @@ export const StaffActions = ({ id, username }: Props) => {
             View Details
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <IconEdit />
-          Edit Staff
+        <DropdownMenuItem asChild>
+          <Link href={`/a/staffs/${username || id}/edit`}>
+            <IconEdit />
+            Edit Staff
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <IconMessage />

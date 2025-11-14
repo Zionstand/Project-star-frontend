@@ -41,7 +41,7 @@ export const AttendanceSearchComponent = ({ classes, onChange }: Props) => {
         <div className="flex flex-col md:flex-row items-center gap-4 w-full">
           {/* 🏫 Class Selector */}
           <div className="flex-1 w-full">
-            <Label>Class</Label>
+            <Label className="mb-2 block">Class</Label>
             <Select
               value={selectedClass}
               onValueChange={(value) => {
@@ -56,7 +56,7 @@ export const AttendanceSearchComponent = ({ classes, onChange }: Props) => {
                 {classes.map((c, index) => (
                   <SelectItem key={index} value={c.id}>
                     {c.level}
-                    {c.section}
+                    {c.section} {c.department ? `(${c.department})` : ""}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -65,7 +65,7 @@ export const AttendanceSearchComponent = ({ classes, onChange }: Props) => {
 
           {/* 🗓️ Date Picker */}
           <div className="flex-1 w-full">
-            <Label>Date</Label>
+            <Label className="mb-2 block">Date</Label>
             <input
               type="date"
               value={date}

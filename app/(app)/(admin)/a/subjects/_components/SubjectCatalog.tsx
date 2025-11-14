@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { IconEdit, IconEye } from "@tabler/icons-react";
+import { NothingFound } from "@/components/NothingFound";
 
 interface Props {
   subjects: Subject[];
@@ -14,6 +15,7 @@ export const SubjectCatalog = ({ subjects }: Props) => {
   return (
     <div className="space-y-4">
       <SubjectSearchComponent />
+      {subjects.length === 0 && <NothingFound message="No subjects found" />}
       {subjects.map((subject, index) => (
         <Card key={index}>
           <CardContent className="space-y-4">

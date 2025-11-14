@@ -30,6 +30,7 @@ import { Loader } from "@/components/Loader";
 import { formatDate } from "@/lib/utils";
 import { Item } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
+import { NothingFound } from "@/components/NothingFound";
 
 const ItemCard = ({ item }: { item: Assignment }) => {
   const isAssignment = item.type === "ASSIGNMENT";
@@ -92,10 +93,12 @@ const ItemCard = ({ item }: { item: Assignment }) => {
                     {item.Class.section} - {item.subject.department}
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <IconCalendar className="w-4 h-4" />
-                  <span>Due: {formatDate(item.dueDate)}</span>
-                </div>
+                {isAssignment && (
+                  <div className="flex items-center gap-2">
+                    <IconCalendar className="w-4 h-4" />
+                    <span>Due: {formatDate(item.dueDate)}</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <IconClock className="w-4 h-4" />
                   <span>Created: {formatDate(item.createdAt)}</span>
@@ -227,18 +230,27 @@ const Page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="all" className="space-y-4 mt-6">
+          {documents.length === 0 && (
+            <NothingFound message="No documents found" />
+          )}
           {documents.map((document) => (
             <ItemCard key={document.id} item={document} />
           ))}
         </TabsContent>
 
         <TabsContent value="assignments" className="space-y-4 mt-6">
+          {assignments.length === 0 && (
+            <NothingFound message="No assignments found" />
+          )}
           {assignments.map((assignment) => (
             <ItemCard key={assignment.id} item={assignment} />
           ))}
         </TabsContent>
 
         <TabsContent value="lesson-notes" className="space-y-4 mt-6">
+          {lessonNotes.length === 0 && (
+            <NothingFound message="No notes found" />
+          )}
           {lessonNotes.map((note) => (
             <ItemCard key={note.id} item={note} />
           ))}

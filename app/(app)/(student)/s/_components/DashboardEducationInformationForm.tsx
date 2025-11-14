@@ -75,9 +75,38 @@ export const DashboardEducationInformationForm = ({
   function onSubmit(values: EducationInformationFormSchemaType) {
     startTransition(async () => {
       try {
+        const payload = {
+          email: user?.email,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          otherName: user?.otherName,
+          address: user?.address,
+          city: user?.city,
+          state: user?.state,
+          country: user?.country,
+          phoneNumber: user?.phoneNumber,
+          title: user?.title,
+          dob: user?.dob,
+          medicalConditions: user?.medicalConditions,
+          image: user?.image,
+          candidateNumber: values.candidateNumber,
+          examScore: values?.examScore,
+          previousSchool: values?.previousSchool,
+          department: values?.department,
+          level: values?.level,
+          parentEmail: user?.Student.ParentStudentLink[0].parent.user?.email,
+          parentFirstName:
+            user?.Student.ParentStudentLink[0].parent.user?.firstName,
+          parentLastName:
+            user?.Student.ParentStudentLink[0].parent.user?.lastName,
+          parentPhoneNumber:
+            user?.Student.ParentStudentLink[0].parent.user?.phoneNumber,
+          parentRelationship: user?.Student.ParentStudentLink[0].relation,
+        };
+
         const res = await api.put(
           `/students/${user?.schoolId}/update-profile/${user?.id}`,
-          values
+          payload
         );
         setUser(res.data.user);
         toast.success(res.data.message);
@@ -148,7 +177,12 @@ export const DashboardEducationInformationForm = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {classLevels.map((level) => (
+                        {classLevels?.length === 0 && (
+                          <span className="italic block text-center text-sm text-muted-foreground py-4">
+                            No levels found
+                          </span>
+                        )}
+                        {classLevels?.map((level) => (
                           <SelectItem value={level.value} key={level.id}>
                             {level.name}
                           </SelectItem>
@@ -176,7 +210,12 @@ export const DashboardEducationInformationForm = ({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {departments.map((department) => (
+                          {departments?.length === 0 && (
+                            <span className="italic block text-center text-sm text-muted-foreground py-4">
+                              No departments found
+                            </span>
+                          )}
+                          {departments?.map((department) => (
                             <SelectItem
                               value={department.name}
                               key={department.id}

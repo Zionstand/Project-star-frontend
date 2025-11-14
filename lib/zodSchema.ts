@@ -625,17 +625,58 @@ export const EducationInformationFormSchema = z
     }
   });
 
-export const NewAssignmentFormSchema = z.object({
-  type: z.string(),
-  title: z.string().min(1),
-  description: z.string().min(1),
-  instructions: z.string().optional(),
-  totalMarks: z.string().min(1),
-  classId: z.string().min(1),
-  subjectId: z.string().min(1),
-  due: z.string().min(1),
-  attachments: z.any().optional(),
-});
+// export const NewAssignmentFormSchema = z.object({
+//   type: z.string(),
+//   title: z.string().min(1),
+//   description: z.string().min(1),
+//   instructions: z.string().optional(),
+//   totalMarks: z.string().min(1),
+//   classId: z.string().min(1),
+//   subjectId: z.string().min(1),
+//   due: z.string().min(1),
+//   attachments: z.any().optional(),
+// });
+
+export const NewAssignmentFormSchema = z
+  .object({
+    type: z.enum(["ASSIGNMENT", "LESSON-NOTE"]),
+
+    title: z.string().min(1),
+    description: z.string().min(1),
+    instructions: z.string().optional(),
+
+    totalMarks: z.string().optional(),
+    classId: z.string().min(1),
+    subjectId: z.string().min(1),
+
+    due: z.string().optional(),
+
+    attachments: z.any().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.type === "ASSIGNMENT") {
+        return data.totalMarks && data.totalMarks.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: "Total marks is required for assignments",
+      path: ["totalMarks"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.type === "ASSIGNMENT") {
+        return data.due && data.due.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: "Due date is required for assignments",
+      path: ["due"],
+    }
+  );
 
 export const GradeFormSchema = z.object({
   grade: z.string().min(0, { message: "Please enter a grade" }),

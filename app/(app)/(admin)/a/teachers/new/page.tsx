@@ -11,9 +11,9 @@ import { Subject } from "../../subjects/page";
 const page = () => {
   const { user } = useAuth();
 
-  const [teachers, setTeachers] = useState<User[]>();
+  const [teachers, setTeachers] = useState<User[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [classes, setClasses] = useState<Class[]>();
+  const [classes, setClasses] = useState<Class[]>([]);
 
   const [loading, setLoading] = useState(true);
 

@@ -44,6 +44,7 @@ import { allClasses, genders, relationships, sections } from "@/constant";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Class, useAuth } from "@/store/useAuth";
+import { NothingFound } from "@/components/NothingFound";
 
 interface Props {
   states: {
@@ -362,6 +363,11 @@ export const AddStudentForm = ({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
+                              {classes.length === 0 && (
+                                <span className="italic block text-center text-sm text-muted-foreground py-4">
+                                  No classes found
+                                </span>
+                              )}
                               {classes.map((c) => (
                                 <SelectItem value={c.id} key={c.id}>
                                   {c.level}

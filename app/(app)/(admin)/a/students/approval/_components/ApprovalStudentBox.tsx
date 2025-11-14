@@ -29,8 +29,6 @@ export const ApprovalStudentBox = ({
   onStudentStatusChange,
   classes,
 }: Props) => {
-  const { user } = useAuth();
-
   const [isVisible, setIsVisible] = useState(true); // ✅ fade control
   const [studentRejectModalOpen, setStudentRejectModalOpen] = useState(false);
   const [studentApprovalModalOpen, setStudentApprovalModalOpen] =
@@ -46,7 +44,10 @@ export const ApprovalStudentBox = ({
               alt={`${student?.firstName}'s picture`}
             />
             <div className="w-full">
-              <h3 className="font-medium text-base">
+              <Link
+                href={`/a/students/approval/${student?.username}`}
+                className="font-medium text-base hover:underline hover:text-primary"
+              >
                 {student?.firstName} {student?.lastName} {student?.otherName} {}
                 <Badge
                   variant={
@@ -63,7 +64,7 @@ export const ApprovalStudentBox = ({
                     ? "Rejected"
                     : "Pending"}
                 </Badge>
-              </h3>
+              </Link>
               <div className="text-muted-foreground text-sm w-full">
                 <a
                   className="hover:text-primary hover:underline transition-all"

@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useAuth } from "@/store/useAuth";
 import { roleNavMap } from "@/constant/nav-links";
+import { Badge } from "../ui/badge";
 
 export function NavMain() {
   const { state, isMobile, setOpenMobile } = useSidebar();
@@ -92,25 +93,60 @@ export function NavMain() {
                       {item.items.map((subItem: any) => {
                         const isActive = pathname.startsWith(subItem.url);
                         return (
+                          // <SidebarMenuSubItem key={subItem.title}>
+                          //   <SidebarMenuSubButton
+                          //     size="md"
+                          //     asChild
+                          //     className={cn(
+                          //       isActive &&
+                          //         "bg-white text-primary font-medium [&>svg]:text-primary"
+                          //     )}
+                          //     onClick={() => {
+                          //       if (isMobile) {
+                          //         setOpenMobile(false); // closes sidebar on mobile
+                          //       }
+                          //     }}
+                          //   >
+                          //     <Link href={subItem.url}>
+                          //       {subItem.icon && <subItem.icon />}
+                          //       <span>
+                          //         {subItem.title}{" "}
+                          //         {subItem.comingSoon && (
+                          //           <Badge variant={"secondary"}>
+                          //             Coming soon
+                          //           </Badge>
+                          //         )}
+                          //       </span>
+                          //     </Link>
+                          //   </SidebarMenuSubButton>
+                          // </SidebarMenuSubItem>
                           <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton
-                              size="md"
-                              asChild
-                              className={cn(
-                                isActive &&
-                                  "bg-white text-primary font-medium [&>svg]:text-primary"
-                              )}
-                              onClick={() => {
-                                if (isMobile) {
-                                  setOpenMobile(false); // closes sidebar on mobile
-                                }
-                              }}
-                            >
-                              <Link href={subItem.url}>
-                                {subItem.icon && <subItem.icon />}
-                                <span>{subItem.title}</span>
-                              </Link>
-                            </SidebarMenuSubButton>
+                            {subItem.comingSoon ? (
+                              <SidebarMenuSubButton className="cursor-not-allowed hover:text-black">
+                                {subItem.icon && (
+                                  <subItem.icon className="text-muted-foreground" />
+                                )}
+                                <span className="flex items-center gap-2">
+                                  {subItem.title}
+                                  <Badge variant="secondary">Soon</Badge>
+                                </span>
+                              </SidebarMenuSubButton>
+                            ) : (
+                              <SidebarMenuSubButton
+                                size="md"
+                                asChild
+                                className={cn(
+                                  isActive &&
+                                    "bg-white text-primary font-medium [&>svg]:text-primary"
+                                )}
+                                onClick={() => isMobile && setOpenMobile(false)}
+                              >
+                                <Link href={subItem.url}>
+                                  {subItem.icon && <subItem.icon />}
+                                  <span>{subItem.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            )}
                           </SidebarMenuSubItem>
                         );
                       })}

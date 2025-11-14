@@ -16,8 +16,8 @@ export const schoolService = {
     return res.data;
   },
 
-  getSchoolStaff: async (schoolID: string, staffID: string | string[]) => {
-    const res = await api.get(`/schools/${schoolID}/staffs/${staffID}`);
+  getSchoolStaff: async (schoolId: string, staffID: string | string[]) => {
+    const res = await api.get(`/schools/${schoolId}/staffs/${staffID}`);
     return res.data;
   },
 

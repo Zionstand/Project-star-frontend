@@ -244,6 +244,11 @@ export const AddClassForm = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
+                        {teachers?.length === 0 && (
+                          <span className="italic block text-center text-sm text-muted-foreground py-4">
+                            No teachers found
+                          </span>
+                        )}
                         {teachers?.map((teacher) => (
                           <SelectItem value={teacher?.id!} key={teacher?.id}>
                             <span className="flex items-center gap-2">

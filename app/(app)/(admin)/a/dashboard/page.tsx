@@ -18,11 +18,12 @@ import { schoolService } from "@/lib/school";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
 import Link from "next/link";
+import { ComingSoon } from "@/components/ComingSoon";
 
 const page = () => {
   const { user } = useAuth();
 
-  const [classes, setClasses] = useState<Class[]>();
+  const [classes, setClasses] = useState<Class[]>([]);
   const [students, setStudents] = useState<User[]>([]);
 
   const [loading, setLoading] = useState(true);
@@ -160,7 +161,8 @@ const page = () => {
                 Recent Activity
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 mt-2">
+            <CardContent className="space-y-2 mt-2 relative">
+              <ComingSoon />
               {recentActivities.map(
                 ({ time, title, description, type }, index) => (
                   <RecentActivityBox

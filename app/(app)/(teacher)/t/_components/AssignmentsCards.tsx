@@ -49,7 +49,7 @@ export const AssignmentsCards = ({
     },
     {
       title: "Pending Reviews",
-      value: 47,
+      value: 0,
       icon: IconFileDescription,
       bgColor: "bg-orange-600/20",
       textColor: "text-orange-600",

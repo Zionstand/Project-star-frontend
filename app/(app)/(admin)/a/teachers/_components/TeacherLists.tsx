@@ -1,3 +1,4 @@
+import { NothingFound } from "@/components/NothingFound";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
@@ -6,12 +7,13 @@ import { IconTrash } from "@tabler/icons-react";
 import React from "react";
 
 interface Props {
-  teachers: User[] | undefined;
+  teachers: User[];
 }
 
 export const TeacherLists = ({ teachers }: Props) => {
   return (
     <div className="grid gap-4 max-w-full overflow-hidden">
+      {teachers?.length === 0 && <NothingFound message="No teachers found" />}
       {teachers?.map((teacher) => (
         <Card key={teacher?.id} className="max-w-full overflow-hidden">
           <CardContent className="flex items-start justify-start gap-3 max-w-full overflow-hidden">

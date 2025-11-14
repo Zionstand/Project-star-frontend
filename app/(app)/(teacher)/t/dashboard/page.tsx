@@ -30,7 +30,7 @@ import { ComingSoon } from "@/components/ComingSoon";
 const page = () => {
   const { user } = useAuth();
 
-  const [classes, setClasses] = useState<Class[]>();
+  const [classes, setClasses] = useState<Class[]>([]);
 
   const [loading, setLoading] = useState(true);
 

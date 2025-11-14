@@ -15,10 +15,13 @@ import {
   IconEye,
   IconFileDescription,
   IconFileText,
+  IconUser,
 } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { NothingFound } from "@/components/NothingFound";
+import Link from "next/link";
 
 const ItemCard = ({ item }: { item: Assignment }) => {
   return (
@@ -33,7 +36,12 @@ const ItemCard = ({ item }: { item: Assignment }) => {
             <div className="flex-1 space-y-3">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-medium text-lg">{item.title}</h3>
+                  <Link
+                    href={`/s/notes/${item.slug || item.id}`}
+                    className="font-medium text-lg line-clamp-1 hover:underline hover:text-primary"
+                  >
+                    {item.title}
+                  </Link>
                   <Badge variant={"outlineSuccess"} className="text-xs">
                     {item.type}
                   </Badge>
@@ -45,19 +53,19 @@ const ItemCard = ({ item }: { item: Assignment }) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <IconFileDescription className="w-4 h-4" />
+                  <IconFileDescription className="size-4" />
                   <span>{item.subject.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <IconCalendar className="w-4 h-4" />
+                  <IconCalendar className="size-4" />
                   <span>Assigned: {formatDate(item.createdAt)}</span>
                 </div>
-                <div className="flex text-red-600 items-center gap-2">
-                  <IconClock className="w-4 h-4" />
+                {/* <div className="flex text-red-600 items-center gap-2">
+                  <IconClock className="size-4" />
                   <span>Due: {formatDate(item.dueDate)}</span>
-                </div>
+                </div> */}
                 <div className="flex items-center gap-2">
-                  <IconClock className="w-4 h-4" />
+                  <IconUser className="size-4" />
                   <span>
                     Teacher: {item.Teacher.user?.title}{" "}
                     {item.Teacher.user?.firstName} {item.Teacher.user?.lastName}
@@ -72,7 +80,7 @@ const ItemCard = ({ item }: { item: Assignment }) => {
               variant="outline"
               className="w-full lg:w-auto hover:bg-gray-100"
             >
-              <IconEye className="w-4 h-4" /> <span>View</span>
+              <IconEye className="size-4" /> <span>View</span>
             </Button>
           </div>
         </div>
@@ -122,6 +130,7 @@ const page = () => {
       />
       <SearchBar placeholder="Search notes..." />
       <div className="space-y-6">
+        {notes.length === 0 && <NothingFound message="No notes found" />}
         {notes.map((document) => (
           <ItemCard key={document.id} item={document} />
         ))}
