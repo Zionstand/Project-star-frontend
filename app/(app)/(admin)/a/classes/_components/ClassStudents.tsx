@@ -68,7 +68,15 @@ export const ClassStudents = ({ students }: Props) => {
                     <Badge variant={"outlineSuccess"}>Active</Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <StudentActions username={student?.user?.username!} />
+                    <StudentActions
+                      lastName={student?.user?.lastName!}
+                      firstName={student?.user?.firstName!}
+                      image={student?.user?.image!}
+                      email={student?.user?.email!}
+                      role={student?.user?.role!}
+                      username={student?.user?.username!}
+                      studentId={student?.user?.id!}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -96,7 +104,15 @@ export const ClassStudents = ({ students }: Props) => {
                     {student?.user?.email}
                   </a>
                 </div>
-                <StudentActions username={student?.user?.username!} />
+                <StudentActions
+                  lastName={student?.user?.lastName!}
+                  firstName={student?.user?.firstName!}
+                  image={student?.user?.image!}
+                  email={student?.user?.email!}
+                  role={student?.user?.role!}
+                  username={student?.user?.username!}
+                  studentId={student?.user?.id!}
+                />
               </div>
               <div className="text-sm text-muted-foreground space-y-2">
                 <p>

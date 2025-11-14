@@ -49,7 +49,10 @@ const Page = () => {
       if (!user?.id) return;
 
       try {
-        const res = await parentService.getMyChildren(user.id);
+        const res = await parentService.getMyChildren(
+          user.id,
+          user?.school?.id!
+        );
         const fetchedChildren = res.children || [];
         setChildren(fetchedChildren);
 
@@ -80,9 +83,21 @@ const Page = () => {
       setLoadingChild(true);
       try {
         const [child, assignments, attendances] = await Promise.all([
-          parentService.getChildDetails(user.id, selectedChildId),
-          parentService.getChildAssignments(user.id, selectedChildId),
-          parentService.getChildAttendances(user?.id, selectedChildId),
+          parentService.getChildDetails(
+            user.id,
+            selectedChildId,
+            user?.school?.id!
+          ),
+          parentService.getChildAssignments(
+            user.id,
+            selectedChildId,
+            user?.school?.id!
+          ),
+          parentService.getChildAttendances(
+            user?.id,
+            selectedChildId,
+            user?.school?.id!
+          ),
         ]);
 
         setChild(child);
