@@ -64,7 +64,7 @@ export default function ClientOnboardingStaff() {
         jobRoles={jobRoles.items}
         countries={countries.items}
         states={states.items}
-        schoolID={school.id}
+        schoolID={school.schoolID!}
         acronym={school.acronym!}
       />
     </div>

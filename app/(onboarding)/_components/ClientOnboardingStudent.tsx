@@ -67,7 +67,7 @@ export default function ClientOnboardingStudent() {
       <OnboardingStudentForm
         countries={countries.items}
         states={states.items}
-        schoolID={school?.id}
+        schoolID={school?.schoolID!}
         acronym={school.acronym!}
         classLevels={classLevels.items}
         departments={departments.items}
