@@ -177,11 +177,6 @@ export function EditProfileForm({
 
   return (
     <div className="space-y-6">
-      {/* <UploadPhotosModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onImport={handleImport}
-      /> */}
       <ProfilePictureUpload
         isOpen={showModal}
         onClose={() => setShowModal(false)}

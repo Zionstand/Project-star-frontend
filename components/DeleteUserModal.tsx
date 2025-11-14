@@ -52,7 +52,7 @@ export const DeleteUserModal = ({
           `${firstName} ${lastName}'s account has been permanently deleted.`
         );
         onClose();
-        router.push("/a/staffs");
+        router.back();
         setConfirmationText("");
       } catch (error: any) {
         toast.error(error.response?.data?.message || "Failed to delete user");

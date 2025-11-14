@@ -14,7 +14,10 @@ export const StudentRow = ({ student }: Props) => {
     <TableRow>
       <TableCell>
         <div className="flex items-center gap-3">
-          <UserProfilePicture />
+          <UserProfilePicture
+            src={student?.image}
+            alt={`${student?.firstName}'s picture`}
+          />
           <div>
             <Link
               href={`/a/students/${student?.username}`}
@@ -40,7 +43,15 @@ export const StudentRow = ({ student }: Props) => {
         <Badge variant={"outlineSuccess"}>Active</Badge>
       </TableCell>
       <TableCell className="text-right">
-        <StudentActions username={student?.username!} />
+        <StudentActions
+          lastName={student?.lastName!}
+          firstName={student?.firstName!}
+          image={student?.image!}
+          email={student?.email!}
+          role={student?.role!}
+          username={student?.username!}
+          studentId={student?.id!}
+        />
       </TableCell>
     </TableRow>
   );

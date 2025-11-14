@@ -16,7 +16,10 @@ export const StudentCard = ({ student }: Props) => {
   return (
     <div className="space-y-4 border-b last:border-0 pb-4">
       <div className="flex items-center justify-start gap-2">
-        <UserProfilePicture />
+        <UserProfilePicture
+          src={student?.image}
+          alt={`${student?.firstName}'s picture`}
+        />
         <div className="flex-1">
           <Link
             href={`/a/students/${student?.username}`}
@@ -32,7 +35,15 @@ export const StudentCard = ({ student }: Props) => {
             {student?.email}
           </a>
         </div>
-        <StudentActions username={student?.username!} />
+        <StudentActions
+          lastName={student?.lastName!}
+          firstName={student?.firstName!}
+          image={student?.image!}
+          email={student?.email!}
+          role={student?.role!}
+          username={student?.username!}
+          studentId={student?.id!}
+        />
       </div>
       <div className="text-sm text-muted-foreground space-y-2">
         <p>

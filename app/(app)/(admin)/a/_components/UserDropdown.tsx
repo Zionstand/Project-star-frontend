@@ -95,14 +95,24 @@ export function UserDropdown() {
                 </DropdownMenuItem>
               );
             })}
-          <DropdownMenuItem asChild>
-            <Link href={`/profile/${user.username}`}>
-              <IconUser size={16} className="opacity-60" aria-hidden="true" />
-              <span>View profile</span>
-            </Link>
-          </DropdownMenuItem>
+
+          {(user.role === "ADMINISTRATOR" ||
+            user.schoolRoles.some((role) => role.role === "ADMINISTRATOR")) && (
+            <>
+              <DropdownMenuItem asChild>
+                <Link href={`/profile/${user.username}`}>
+                  <IconUser
+                    size={16}
+                    className="opacity-60"
+                    aria-hidden="true"
+                  />
+                  <span>View profile</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignout}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>

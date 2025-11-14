@@ -1,4 +1,5 @@
 "use client";
+import { DeleteUserModal } from "@/components/DeleteUserModal";
 import { ResetPasswordModal } from "@/components/ResetPasswordModal";
 import { RoleModal } from "@/components/RoleModal";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,7 @@ export const QuickActions = ({
   onRefresh,
 }: Props) => {
   const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
+  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
 
   return (
     <Card>
@@ -63,7 +65,11 @@ export const QuickActions = ({
           <IconKey />
           Reset Password
         </Button>
-        <Button className="justify-start" variant={"outlineDestructive"}>
+        <Button
+          onClick={() => setOpenDeleteUserModal(true)}
+          className="justify-start"
+          variant={"outlineDestructive"}
+        >
           <IconTrash />
           Delete {firstName}'s account
         </Button>
@@ -82,21 +88,20 @@ export const QuickActions = ({
           id={studentId}
         />
       )}
-      {/* {openRoleModal && (
-        <RoleModal
+      {openDeleteUserModal && (
+        <DeleteUserModal
+          open={openDeleteUserModal}
+          onClose={() => {
+            setOpenDeleteUserModal(false);
+          }}
+          role={role}
           firstName={firstName}
           lastName={lastName}
-          studentId={studentId}
-          open={openRoleModal}
-          jobRoles={jobRoles}
-          role={role}
-          schoolRoles={schoolRoles}
-          onClose={() => {
-            setOpenRoleModal(false);
-            onRefresh();
-          }}
+          email={email}
+          image={image}
+          id={studentId}
         />
-      )} */}
+      )}
     </Card>
   );
 };

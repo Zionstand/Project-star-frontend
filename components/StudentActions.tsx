@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,12 +15,29 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { DeleteUserModal } from "./DeleteUserModal";
 
 interface Props {
+  firstName: string;
+  lastName: string;
   username: string;
+  studentId: string;
+  image: string | null;
+  email: string;
+  role: string;
 }
 
-export const StudentActions = ({ username }: Props) => {
+export const StudentActions = ({
+  firstName,
+  username,
+  lastName,
+  studentId,
+  image,
+  email,
+  role,
+}: Props) => {
+  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -44,11 +62,28 @@ export const StudentActions = ({ username }: Props) => {
           <IconMessage />
           Send Message
         </DropdownMenuItem>
-        <DropdownMenuItem className="text-destructive">
+        <DropdownMenuItem
+          onClick={() => setOpenDeleteUserModal(true)}
+          className="text-destructive"
+        >
           <IconTrash />
-          Remove Student
+          Delete Student
         </DropdownMenuItem>
       </DropdownMenuContent>
+      {openDeleteUserModal && (
+        <DeleteUserModal
+          open={openDeleteUserModal}
+          onClose={() => {
+            setOpenDeleteUserModal(false);
+          }}
+          role={role}
+          firstName={firstName}
+          lastName={lastName}
+          email={email}
+          image={image}
+          id={studentId}
+        />
+      )}
     </DropdownMenu>
   );
 };

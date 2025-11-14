@@ -25,10 +25,10 @@ export const TeacherLists = ({ teachers }: Props) => {
                   {teacher?.firstName} {teacher?.lastName}
                 </h2>
                 <a
-                  href={`mailto:${teacher.email}`}
+                  href={`mailto:${teacher?.email}`}
                   className="text-sm block text-muted-foreground hover:text-primary hover:underline"
                 >
-                  {teacher.email}
+                  {teacher?.email}
                 </a>
               </div>
 

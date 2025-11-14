@@ -25,6 +25,7 @@ import { schoolService } from "@/lib/school";
 import { teacherService } from "@/lib/teacher";
 import { toast } from "sonner";
 import { Loader } from "@/components/Loader";
+import { ComingSoon } from "@/components/ComingSoon";
 
 const page = () => {
   const { user } = useAuth();
@@ -105,11 +106,12 @@ const page = () => {
           <Card className="gap-0">
             <CardHeader>
               <CardTitle className="flex items-center justify-start">
-                <IconCalendar className="inline-block mr-1" />
+                <IconCalendar className="inline-block mr-1 text-primary size-4" />
                 Today's schedule
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 mt-2">
+            <CardContent className="space-y-2 mt-2 relative">
+              <ComingSoon />
               <TodaySchedule />
               <TodaySchedule />
               <TodaySchedule />
@@ -124,11 +126,12 @@ const page = () => {
           <Card className="gap-0">
             <CardHeader>
               <CardTitle className="flex items-center justify-start">
-                <IconClock className="inline-block mr-1" />
+                <IconClock className="inline-block mr-1 text-primary size-4" />
                 Today's schedule
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 mt-3">
+            <CardContent className="space-y-2 mt-3  relative">
+              <ComingSoon />
               <PendingTask />
               <PendingTask />
               <PendingTask />

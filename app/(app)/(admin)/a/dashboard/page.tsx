@@ -27,6 +27,8 @@ const page = () => {
 
   const [loading, setLoading] = useState(true);
 
+  console.log(user);
+
   useEffect(() => {
     const fetch = async () => {
       if (!user?.schoolId) return;
