@@ -151,9 +151,12 @@ export const formatWord: Record<string, string> = {
   SECONDARY: "Secondary",
   COMBINED: "Combined",
   EXAM_OFFICER: "Examination officer",
+  "EXAM OFFICER": "Examination officer",
   BURSAR: "Bursar",
   IT_SUPPORT: "IT Support",
+  "IT SUPPORT": "IT Support",
   DATA_ANALYST: "Data Analyst",
+  "DATA ANALYST": "Data Analyst",
   STUDENT: "Student",
   PARENT: "Parent",
 };
