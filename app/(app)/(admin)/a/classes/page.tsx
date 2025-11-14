@@ -9,6 +9,7 @@ import { ClassSearchComponent } from "../_components/ClassSearchComponent";
 import { ClassBox } from "./_components/ClassBox";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
+import { NothingFound } from "@/components/NothingFound";
 
 const page = () => {
   const { user } = useAuth();
@@ -57,6 +58,9 @@ const page = () => {
       />
       <ClassesCards classes={classes?.length} />
       <ClassSearchComponent />
+      {classes?.length === 0 && (
+        <NothingFound message="No classes found yet!" />
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {classes?.map((c) => (
           <ClassBox key={c.id} schoolClass={c} />

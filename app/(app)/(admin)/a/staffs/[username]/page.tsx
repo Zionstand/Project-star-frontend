@@ -48,8 +48,6 @@ const page = () => {
           configService.getCategory("JOB_ROLE"),
         ]);
 
-        console.log(staff);
-
         setStaff(staff);
         setJobRoles(jobRoles);
       } catch (error: any) {

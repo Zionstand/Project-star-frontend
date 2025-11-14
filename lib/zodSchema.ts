@@ -270,9 +270,7 @@ export const NewStaffForm = z.object({
   country: z.string().optional(),
   role: z.string().min(2, { message: "Role must be selected" }),
   emergencyContactName: z.string().optional(),
-  emergencyPhoneNumber: z.string().regex(/^(\+?\d{10,15})$/, {
-    message: "Enter a valid phone number.",
-  }),
+  emergencyPhoneNumber: z.string().optional(),
   medicalConditions: z.string().optional(),
 });
 

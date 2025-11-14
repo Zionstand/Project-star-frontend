@@ -25,7 +25,7 @@ export const StaffsLists = ({ staffs }: Props) => {
         </h3>
       </CardHeader>
       <CardContent className="pt-4">
-        {staffs?.length === 0 && <NothingFound message="No staff found" />}
+        {staffs?.length === 0 && <NothingFound message="No staff found yet!" />}
         <div className="hidden md:block">
           <Table>
             <TableHeader>

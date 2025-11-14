@@ -4,6 +4,7 @@ import { StudentCard } from "./StudentCard";
 import { StudentsTable } from "./StudentsTable";
 import { StudentsCard } from "./StudentsCard";
 import { User } from "@/store/useAuth";
+import { NothingFound } from "@/components/NothingFound";
 
 interface Props {
   students: User[];
@@ -16,6 +17,9 @@ export const StudentsLists = ({ students }: Props) => {
         <h3 className="font-medium text-base">Students ({students.length})</h3>
       </CardHeader>
       <CardContent>
+        {students.length === 0 && (
+          <NothingFound message="No students found yet!" />
+        )}
         <StudentsTable students={students} />
         <StudentsCard students={students} />
       </CardContent>
