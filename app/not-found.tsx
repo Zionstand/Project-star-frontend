@@ -13,7 +13,7 @@ const page = () => {
   return (
     <div>
       <div className="relative">
-        <PageGradient />
+        {/* <PageGradient /> */}
         <div className="container flex items-center justify-center">
           {/* {session === null ? <Header /> : <MemberHeader />} */}
           <div className="space-y-2.5">
