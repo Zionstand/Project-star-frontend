@@ -49,19 +49,6 @@ export const AssignmentCard = ({ assignment }: Props) => {
                   >
                     {assignment.title}
                   </Link>
-                  <Badge
-                    variant={
-                      assignment.type === "ASSIGNMENT"
-                        ? "outlinePrimary"
-                        : assignment.type === "HOMEWORK"
-                        ? "outlineSuccess"
-                        : "outlinePurple"
-                    }
-                  >
-                    {assignment.type}
-                  </Badge>
-
-                  {/* Submission Status Badge */}
                   {hasGraded ? (
                     <Badge variant="success">Graded</Badge>
                   ) : hasSubmitted ? (

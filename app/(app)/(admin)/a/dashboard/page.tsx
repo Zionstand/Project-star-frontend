@@ -70,7 +70,7 @@ const page = () => {
     },
     {
       title: "Upcoming Events",
-      value: "8",
+      value: "0",
       icon: IconCalendar,
       bgColor: "bg-orange-500/20",
       textColor: "text-orange-500",
@@ -78,7 +78,7 @@ const page = () => {
     },
     {
       title: "Performance",
-      value: "94.2%",
+      value: "100%",
       icon: IconTrendingUp,
       bgColor: "bg-purple-500/20",
       textColor: "text-purple-500",

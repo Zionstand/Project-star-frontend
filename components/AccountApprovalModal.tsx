@@ -520,7 +520,7 @@ const WelcomeTour = ({
               {!isFirstStep && (
                 <Button onClick={handlePrevious} variant="outline">
                   <IconChevronLeft />
-                  Previous
+                  <span className="hidden md:block">Previous</span>
                 </Button>
               )}
 
@@ -535,7 +535,7 @@ const WelcomeTour = ({
                   </>
                 ) : (
                   <>
-                    Next
+                    <span className="hidden md:block">Next</span>
                     <IconArrowRight />
                   </>
                 )}

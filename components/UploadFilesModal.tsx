@@ -167,7 +167,7 @@ export const UploadFilesModal = ({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="flex flex-col gap-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5 space-y-4">
+      <AlertDialogContent className="flex flex-col gap-0 sm:max-h-[min(640px,80vh)] overflow-hidden sm:max-w-lg [&>button:last-child]:top-3.5 space-y-4">
         <AlertDialogHeader className="flex flex-row items-center justify-between gap-1">
           <AlertDialogTitle>Upload Files</AlertDialogTitle>
           <Button size="icon" variant="ghost" onClick={onClose}>
@@ -202,7 +202,7 @@ export const UploadFilesModal = ({
                   </button>
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Supports: PDF, DOC, DOCX, TXT, PNG, JPG, JPEG, WEBP
+                  Supports: PDF, DOC, JPG,
                 </p>
               </div>
             </div>

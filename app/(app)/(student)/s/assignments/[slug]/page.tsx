@@ -1,8 +1,10 @@
 "use client";
 import { AssignmentAttachment } from "@/components/AssignmentAttachment";
 import { Loader } from "@/components/Loader";
+import { NothingFound } from "@/components/NothingFound";
 import { PageHeader } from "@/components/PageHeader";
 import { StudentAssignmentSubmission } from "@/components/StudentAssignmentSubmission";
+import { RenderDescription } from "@/components/text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -186,7 +188,7 @@ const page = () => {
               </CardHeader>
               <CardContent className="text-base text-muted-foreground">
                 {assignment?.instructions ? (
-                  ""
+                  <RenderDescription json={assignment?.instructions} />
                 ) : (
                   <span className="italic">No instructions given</span>
                 )}
@@ -203,6 +205,9 @@ const page = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-base space-y-2 text-muted-foreground">
+                {assignment?.attachments.length === 0 && (
+                  <NothingFound message="No attachments found" />
+                )}
                 {assignment?.attachments.map((attachment) => (
                   <AssignmentAttachment
                     key={attachment.id}

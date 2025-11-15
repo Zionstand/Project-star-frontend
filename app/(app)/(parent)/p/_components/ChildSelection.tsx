@@ -41,13 +41,13 @@ export const ChildSelection = ({ children, onChange }: Props) => {
         <SelectContent>
           {children.map((child, index) => (
             <SelectItem value={child?.student?.user?.id!} key={child?.id}>
-              <span className="flex items-center gap-2">
+              <span className="flex items-center text-left gap-2">
                 <UserProfilePicture
                   src={child?.student?.user?.image!}
                   alt={`${child?.student?.user?.firstName}'s picture`}
                   size="sm"
                 />
-                <span>
+                <span className="text-left">
                   <span className="block font-medium">
                     {child?.student?.user?.firstName}{" "}
                     {child?.student?.user?.lastName}

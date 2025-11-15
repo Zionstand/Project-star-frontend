@@ -2,6 +2,7 @@
 import { AssignmentAttachment } from "@/components/AssignmentAttachment";
 import { Loader } from "@/components/Loader";
 import { PageHeader } from "@/components/PageHeader";
+import { RenderDescription } from "@/components/text-editor/RenderDescription";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,7 +93,6 @@ const page = () => {
         title={
           <div className="flex items-center gap-2">
             <span>{lessonNote?.title}</span>
-            <Badge variant="outline">{lessonNote?.subject.name}</Badge>
           </div>
         }
         back
@@ -106,12 +106,16 @@ const page = () => {
               <IconUser className="size-4" />
               <span>
                 {lessonNote?.Teacher.user?.title}{" "}
-                {lessonNote?.Teacher.user?.firstName}
+                {lessonNote?.Teacher.user?.firstName}{" "}
+                {lessonNote?.Teacher?.user?.lastName}
               </span>
             </div>
             <div className="flex items-center justify-start gap-2">
               <IconMail className="size-4" />
-              <a href={`mailto:${lessonNote?.Teacher.user?.email}`}>
+              <a
+                className="hover:underline hover:text-primary"
+                href={`mailto:${lessonNote?.Teacher.user?.email}`}
+              >
                 {lessonNote?.Teacher.user?.email}
               </a>
             </div>
@@ -174,7 +178,7 @@ const page = () => {
           </p>
           <p className="text-primary">
             {lessonNote?.Class?.level}
-            {lessonNote.Class.section}
+            {lessonNote?.Class?.section} {lessonNote?.Class?.department}
           </p>
         </div>
         <div className="space-y-2 rounded-md p-4 border">
@@ -211,7 +215,7 @@ const page = () => {
               </CardHeader>
               <CardContent className="text-base text-muted-foreground">
                 {lessonNote?.instructions ? (
-                  ""
+                  <RenderDescription json={lessonNote?.instructions} />
                 ) : (
                   <span className="italic">No instructions given</span>
                 )}

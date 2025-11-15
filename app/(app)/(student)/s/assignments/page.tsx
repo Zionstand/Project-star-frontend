@@ -75,9 +75,12 @@ const page = () => {
         </TabsContent>
 
         <TabsContent value="pending" className="space-y-4 mt-6">
-          {assignments.length === 0 && (
-            <NothingFound message="No assignments found" />
-          )}
+          {assignments.filter((assignment) => {
+            const submission = assignment.assignmentSubmissions?.find(
+              (s) => s.studentId === user?.Student.id
+            );
+            return !submission; // No submission yet → pending
+          }).length === 0 && <NothingFound message="No assignments found" />}
           {assignments
             .filter((assignment) => {
               const submission = assignment.assignmentSubmissions?.find(
@@ -91,9 +94,12 @@ const page = () => {
         </TabsContent>
 
         <TabsContent value="submitted" className="space-y-4 mt-6">
-          {assignments.length === 0 && (
-            <NothingFound message="No assignments found" />
-          )}
+          {assignments.filter((assignment) => {
+            const submission = assignment.assignmentSubmissions?.find(
+              (s) => s.studentId === user?.Student.id
+            );
+            return submission && submission.status !== "GRADED"; // Submitted but not graded
+          }).length === 0 && <NothingFound message="No assignments found" />}
           {assignments
             .filter((assignment) => {
               const submission = assignment.assignmentSubmissions?.find(
@@ -107,9 +113,12 @@ const page = () => {
         </TabsContent>
 
         <TabsContent value="graded" className="space-y-4 mt-6">
-          {assignments.length === 0 && (
-            <NothingFound message="No assignments found" />
-          )}
+          {assignments.filter((assignment) => {
+            const submission = assignment.assignmentSubmissions?.find(
+              (s) => s.studentId === user?.Student.id
+            );
+            return submission?.status === "GRADED"; // Only graded
+          }).length === 0 && <NothingFound message="No assignments found" />}
           {assignments
             .filter((assignment) => {
               const submission = assignment.assignmentSubmissions?.find(

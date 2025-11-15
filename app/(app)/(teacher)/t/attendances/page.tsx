@@ -44,6 +44,7 @@ const AttendancePage = () => {
         );
         setClasses(classes);
         if (classes?.length > 0) setSelectedClassId(classes[0].id);
+        if (classes.length === 0) setLoading(false);
       } catch (error: any) {
         toast.error(error?.response?.data?.message || "Failed to load classes");
       } finally {

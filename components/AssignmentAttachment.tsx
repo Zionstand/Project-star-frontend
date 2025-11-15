@@ -5,6 +5,7 @@ import {
   IconDownload,
   IconEye,
   IconFileDescription,
+  IconFileText,
 } from "@tabler/icons-react";
 import { Button } from "./ui/button";
 import { Attachment } from "@/store/useAuth";
@@ -41,7 +42,9 @@ export const AssignmentAttachment = ({ attachment }: Props) => {
     <Card>
       <CardContent className="flex items-center justify-between gap-2">
         <div className="flex items-center justify-start gap-2">
-          <IconFileDescription className="size-5" />
+          <div className={`p-3 rounded-md bg-green-500/10`}>
+            <IconFileText className="size-5 text-green-500" />
+          </div>
           <div>
             <p className="text-sm font-medium break-all line-clamp-1">
               {attachment.fileName}

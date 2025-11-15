@@ -202,7 +202,7 @@ const page = () => {
                         );
                       })()}
                     </div>
-                    <p className="flex items-center justify-start gap-1 text-xs text-muted-foreground mt-1.5">
+                    <p className="flex items-center justify-start line-clamp-1 gap-1 text-xs text-muted-foreground mt-1.5">
                       <CircleCheckBig className="size-3" />
                       Graded on {formatDate(assignment.gradedAt)} by{" "}
                       {assignment?.gradedBy?.user?.firstName}{" "}
@@ -245,10 +245,17 @@ const page = () => {
                     {" "}
                     {assignment?.Student?.admissionNumber}
                   </p>
-                  <Badge variant={"secondary"}>
-                    {assignment?.Class.level}
-                    {assignment?.Class.section}
-                  </Badge>
+                  <div className="flex items-center justify-center gap-2">
+                    <Badge variant={"secondary"}>
+                      {assignment?.Class.level}
+                      {assignment?.Class.section}
+                    </Badge>
+                    {assignment?.Student?.user?.department && (
+                      <Badge variant={"secondary"}>
+                        {assignment?.Student?.user?.department}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
               <Separator />
@@ -330,7 +337,7 @@ const page = () => {
                     <span>{assignment?.Assignment.totalMarks}</span>
                   </p>
                   <p className="flex items-center justify-between gap-1">
-                    <span>Submitted:</span>
+                    <span>Status:</span>
                     <span>{assignment?.status}</span>
                   </p>
                 </div>

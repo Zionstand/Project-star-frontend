@@ -371,7 +371,8 @@ export const AddStudentForm = ({
                               {classes.map((c) => (
                                 <SelectItem value={c.id} key={c.id}>
                                   {c.level}
-                                  {c.section}
+                                  {c.section}{" "}
+                                  {c.department ? `(${c.department})` : ""}
                                 </SelectItem>
                               ))}
                             </SelectContent>

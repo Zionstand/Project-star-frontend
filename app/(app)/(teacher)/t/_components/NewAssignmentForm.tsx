@@ -348,10 +348,10 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <p className="text-sm font-medium truncate">
+                      <p className="text-sm font-medium flex-1 line-clamp-1 w-full">
                         {file.name}
                       </p>
-                      <span className="text-xs text-muted-foreground ml-2 flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground line-clamp-1 ml-2 flex items-center gap-1">
                         <span className="text-primary font-medium">
                           {file.type}
                         </span>{" "}
@@ -368,7 +368,7 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
 
                   <div className="flex items-center gap-2">
                     {file.status === "completed" ? (
-                      <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
+                      <div className="hidden w-8 h-8 bg-green-100 rounded md:flex items-center justify-center">
                         <IconCheck size={16} className="text-green-600" />
                       </div>
                     ) : (
@@ -376,14 +376,17 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
                         size="icon"
                         variant="ghost"
                         onClick={() => togglePause(file.id)}
-                        className="hover:bg-gray-200"
+                        className="hover:bg-gray-200 hidden md:flex"
                       >
                         {file.paused ? (
-                          <IconPlayerPlay size={16} className="text-gray-600" />
+                          <IconPlayerPlay
+                            size={16}
+                            className="text-muted-foreground hidden md:flex"
+                          />
                         ) : (
                           <IconPlayerPauseFilled
                             size={16}
-                            className="text-gray-600"
+                            className="text-muted-foreground hidden md:flex"
                           />
                         )}
                       </Button>

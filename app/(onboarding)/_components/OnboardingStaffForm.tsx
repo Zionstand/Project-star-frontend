@@ -255,7 +255,11 @@ export function OnboardingStaffForm({
                           <RequiredAsterisk />
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="example@lagelu.com" {...field} />
+                          <Input
+                            type="email"
+                            placeholder="example@lagelu.com"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

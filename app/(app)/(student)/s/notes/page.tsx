@@ -30,7 +30,7 @@ const ItemCard = ({ item }: { item: Assignment }) => {
         <div className="flex flex-col lg:flex-row items-start gap-4 justify-between">
           <div className="flex items-start gap-4 flex-1">
             <div className={`p-3 rounded-md bg-green-500/10`}>
-              <IconFileText className="w-6 h-6 text-green-500" />
+              <IconFileText className="size-5 text-green-500" />
             </div>
 
             <div className="flex-1 space-y-3">
@@ -42,9 +42,9 @@ const ItemCard = ({ item }: { item: Assignment }) => {
                   >
                     {item.title}
                   </Link>
-                  <Badge variant={"outlineSuccess"} className="text-xs">
+                  {/* <Badge variant={"outlineSuccess"} className="text-xs">
                     {item.type}
-                  </Badge>
+                  </Badge> */}
                 </div>
                 <p className="text-sm text-muted-foreground">
                   {item.description}
