@@ -130,10 +130,17 @@ const DocumentItem = ({
               <Icon className={cn("size-5", config.iconColor)} />
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-medium">{title}</h3>
-                {required && <Badge variant={"secondary"}>Required</Badge>}
-              </div>
+              <h3 className="font-medium mb-1">
+                {title}
+                <span className="hidden md:inline-block">
+                  {required && <Badge variant={"secondary"}>Required</Badge>}
+                </span>
+                <Badge
+                  className={cn(config.badgeBg, config.badgeText, "md:block")}
+                >
+                  {config.badge}
+                </Badge>
+              </h3>
               <p className="text-sm text-muted-foreground mb-3">
                 {description}
                 {remarks && status === "rejected" && (
@@ -162,12 +169,12 @@ const DocumentItem = ({
           </div>
 
           {config.badge && (
-            <div className="space-y-0.5 text-right">
+            <div className="space-y-0.5 text-right hidden md:block">
               <Badge className={cn(config.badgeBg, config.badgeText)}>
                 {config.badge}
               </Badge>
               {remarks && status === "rejected" && (
-                <p className="text-xs text-muted-foreground hidden md:block mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Remarks: {remarks}
                 </p>
               )}
@@ -250,7 +257,7 @@ export const DashboardDocuments = ({ documents, onRefresh }: Props) => {
           <h4 className="font-medium text-primary mb-1">
             Document Upload Guidelines
           </h4>
-          <ul className="text-sm text-primary space-y-1 list-disc list-inside">
+          <ul className="text-sm text-primary space-y-1 list-disc md:list-inside">
             <li>Accepted formats: PDF, JPG, PNG (Max size: 5MB per file)</li>
             <li>Ensure documents are clear and readable</li>
             <li>All required documents must be uploaded for approval</li>

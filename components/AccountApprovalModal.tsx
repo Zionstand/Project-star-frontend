@@ -184,7 +184,7 @@ export const AccountApprovedModal = ({ onClose }: Props) => {
         <div className="overflow-y-auto custom-scroll w-full flex-1">
           <div className="bg-white rounded-2xl shadow-xl w-full">
             {/* Header */}
-            <div className="bg-primary px-6 py-12 text-center relative">
+            <div className="bg-primary px-2 lg:px-6 py-12 text-center relative">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-4 shadow-lg">
                 <IconCheck
                   className="w-10 h-10 text-green-500"
@@ -221,7 +221,7 @@ export const AccountApprovedModal = ({ onClose }: Props) => {
             </div>
 
             {/* Content */}
-            <div className="px-8 py-8">
+            <div className="p-2 md:p-4 lg:p-8">
               {/* Welcome Message */}
               <div className="text-center mb-8">
                 <h3 className="text-base md:text-xl font-medium text-gray-900 mb-1">
@@ -342,7 +342,7 @@ export const AccountApprovedModal = ({ onClose }: Props) => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <Button onClick={handleGetStarted} className="flex-1">
                   Get Started
                   <IconArrowRight />
@@ -358,7 +358,7 @@ export const AccountApprovedModal = ({ onClose }: Props) => {
             </div>
 
             {/* Footer */}
-            <div className="bg-gray-50 px-8 py-4 text-center border-t border-gray-200 text-xs text-muted-foreground">
+            <div className="bg-gray-50 px-4 lg:px-8 py-4 text-center border-t border-gray-200 text-xs text-muted-foreground">
               Need help getting started? Contact us at{" "}
               <a
                 className="text-primary hover:underline font-medium"

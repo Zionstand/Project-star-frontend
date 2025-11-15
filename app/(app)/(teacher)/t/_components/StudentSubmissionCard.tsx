@@ -62,13 +62,13 @@ export const StudentSubmissionCard = ({
                 {formatDate(submission.submittedAt)}
               </p>
               {submission.comment && (
-                <p className="text-muted-foreground flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
+                <p className="hidden text-muted-foreground md:flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
                   <IconMail className="size-4" />
                   {submission.comment}
                 </p>
               )}
               {submission.status === "GRADED" && (
-                <p className="text-sm w-full bg-green-100/80 rounded-md p-2 break-words whitespace-normal">
+                <p className="hidden md:block text-sm w-full bg-green-100/80 rounded-md p-2 break-words whitespace-normal">
                   <p className="flex items-center w-full justify-between gap-2 text-green-800">
                     <p className="flex items-center justify-start gap-1">
                       <Award className="size-4" />
@@ -84,6 +84,30 @@ export const StudentSubmissionCard = ({
               )}
             </div>
           </div>
+        </div>
+
+        <div className="space-y-2 md:hidden">
+          {submission.comment && (
+            <p className="text-muted-foreground flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
+              <IconMail className="size-4" />
+              {submission.comment}
+            </p>
+          )}
+          {submission.status === "GRADED" && (
+            <p className="text-sm w-full bg-green-100/80 rounded-md p-2 break-words whitespace-normal">
+              <p className="flex items-center w-full justify-between gap-2 text-green-800">
+                <p className="flex items-center justify-start gap-1">
+                  <Award className="size-4" />
+                  Score
+                </p>
+                <p>
+                  {" "}
+                  {submission.grade}/{totalMarks === 0 ? 100 : totalMarks}
+                </p>
+              </p>
+              <p className="text-black mt-1">{submission.gradingComment}</p>
+            </p>
+          )}
         </div>
 
         <div className="flex flex-col sm:flex-row 2xl:justify-end gap-2 w-full 2xl:w-auto mt-2 2xl:mt-0">

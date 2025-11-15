@@ -364,8 +364,8 @@ export const RolesDefinitions = ({
       </CardContent>
       {role && (
         <Dialog open={openModal} onOpenChange={setOpenModal}>
-          <DialogContent className="flex flex-col gap-0 p-0 sm:max-h-[min(640px,80vh)] sm:max-w-lg [&>button:last-child]:top-3.5">
-            <DialogHeader className="contents space-y-0 text-left">
+          <DialogContent className="flex  h-screen flex-col gap-0 p-0 overflow-hidden max-h-[70vh] max-w-[90vw] sm:max-w-xl sm:max-h-[min(640px,80vh)] [&>button:last-child]:top-3.5">
+            <DialogHeader className="contents overflow-y-auto custom-scroll space-y-0 text-left">
               <div className="px-6 py-4 space-y-1">
                 <DialogTitle className="text-base flex items-center justify-start gap-2">
                   <div
