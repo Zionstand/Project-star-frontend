@@ -77,8 +77,6 @@ const page = () => {
     }
   };
 
-  console.log(staff);
-
   if (loading) return <Loader />;
 
   if (!staff) return notFound();

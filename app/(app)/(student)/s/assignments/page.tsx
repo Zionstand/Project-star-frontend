@@ -45,9 +45,11 @@ const page = () => {
 
   return (
     <div className="space-y-6">
-      {user?.Student.applicationStatus === "pending" && <AccountPendingModal />}
-      {user?.Student.applicationStatus === "rejected" && (
-        <RejectedApprovalBanner reasons={user.Student.rejectionReason} />
+      {user?.Student?.applicationStatus === "pending" && (
+        <AccountPendingModal />
+      )}
+      {user?.Student?.applicationStatus === "rejected" && (
+        <RejectedApprovalBanner reasons={user?.Student?.rejectionReason} />
       )}
       <PageHeader
         title="My Assignments"

@@ -153,7 +153,7 @@ const page = () => {
     return !submission || (!submission.grade && submission.status !== "GRADED");
   });
 
-  if (user?.Student.isApproved)
+  if (user?.Student?.isApproved)
     return (
       <div className="space-y-6">
         {showApprovalModal && (
@@ -309,24 +309,24 @@ const page = () => {
       </div>
     );
 
-  if (user?.Student.isApproved === false)
+  if (user?.Student?.isApproved === false)
     return (
       <div className="space-y-6">
-        {user?.Student.applicationStatus === "pending" && (
+        {user?.Student?.applicationStatus === "pending" && (
           <PendingApprovalBanner />
         )}
-        {user?.Student.applicationStatus === "rejected" && (
-          <RejectedApprovalBanner reasons={user.Student.rejectionReason} />
+        {user?.Student?.applicationStatus === "rejected" && (
+          <RejectedApprovalBanner reasons={user?.Student?.rejectionReason} />
         )}
         <StudentDashboardCard
           firstName={user?.firstName}
           lastName={user?.lastName}
-          desiredClass={user?.Student.desiredClass}
+          desiredClass={user?.Student?.desiredClass}
           appliedDate={user?.createdAt}
           email={user?.email}
           image={user?.image}
-          candidateNumber={user?.Student.candidateNumber}
-          applicationStatus={user?.Student.applicationStatus}
+          candidateNumber={user?.Student?.candidateNumber}
+          applicationStatus={user?.Student?.applicationStatus}
         />
         <ApplicationProgress documents={documents} />
         <Tabs

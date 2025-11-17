@@ -59,6 +59,7 @@ api.interceptors.response.use(
 
       try {
         // Attempt to refresh the access token using the refresh token cookie
+
         const { data } = await api.post(
           "/auth/refresh",
           {},
@@ -85,7 +86,7 @@ api.interceptors.response.use(
 
     // Handle 403 or other unauthorized access
     if (
-      // status === 403 ||
+      status === 403 ||
       message === "Unauthorized" ||
       message === "Forbidden"
     ) {
