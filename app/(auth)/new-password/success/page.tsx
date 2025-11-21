@@ -1,5 +1,4 @@
 import React from "react";
-import { Metadata } from "next";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconArrowRight,
@@ -12,10 +11,9 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { FullLogo } from "../../_components/Logo";
 import { maskEmail } from "@/lib/utils";
+import { authMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Success - Set new password | EduManage School Management",
-};
+export const metadata = authMetadata.passwordSuccess;
 
 type SearchParams = Promise<{
   email: string;

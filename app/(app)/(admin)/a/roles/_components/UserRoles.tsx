@@ -52,7 +52,7 @@ export const UserRoles = ({ users, onRefresh, jobRoles }: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SearchBarWrapper />
+        <SearchBarWrapper placeholder="Search users by name, email, role..." />
         {users.length === 0 && <NothingFound message="No user found..." />}
 
         <div className="hidden md:block">

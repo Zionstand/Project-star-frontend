@@ -1,14 +1,12 @@
 import React from "react";
 import { IconBook, IconShield, IconUsers } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import { Metadata } from "next";
 import { FullLogo } from "../_components/Logo";
 import { RegisterForm } from "../_components/RegisterForm";
 import { configService } from "@/lib/configs";
+import { authMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "EduManage School Management",
-};
+export const metadata = authMetadata.register;
 
 const page = async () => {
   try {

@@ -62,14 +62,14 @@ export const StudentSubmissionCard = ({
                 {formatDate(submission.submittedAt)}
               </p>
               {submission.comment && (
-                <p className="hidden text-muted-foreground md:flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
+                <p className="hidden text-muted-foreground dark:text-white md:flex items-center justify-start gap-1 text-sm w-full bg-muted rounded-md p-2 break-words whitespace-normal">
                   <IconMail className="size-4" />
                   {submission.comment}
                 </p>
               )}
               {submission.status === "GRADED" && (
-                <p className="hidden md:block text-sm w-full bg-green-100/80 rounded-md p-2 break-words whitespace-normal">
-                  <p className="flex items-center w-full justify-between gap-2 text-green-800">
+                <p className="hidden md:block text-sm w-full bg-green-100/80 dark:bg-green-900 rounded-md p-2 break-words whitespace-normal">
+                  <p className="flex items-center w-full justify-between gap-2 text-green-800 dark:text-green-100">
                     <p className="flex items-center justify-start gap-1">
                       <Award className="size-4" />
                       Score
@@ -79,7 +79,9 @@ export const StudentSubmissionCard = ({
                       {submission.grade}/{totalMarks === 0 ? 100 : totalMarks}
                     </p>
                   </p>
-                  <p className="text-black mt-1">{submission.gradingComment}</p>
+                  <p className="text-black dark:text-white mt-1">
+                    {submission.gradingComment}
+                  </p>
                 </p>
               )}
             </div>

@@ -1,11 +1,9 @@
 import React from "react";
-import { Metadata } from "next";
 import { NewPasswordForm } from "../_components/NewPasswordForm";
 import { FullLogo } from "../_components/Logo";
+import { authMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Set new password | EduManage School Management",
-};
+export const metadata = authMetadata.newPassword;
 
 type SearchParams = Promise<{
   email: string;

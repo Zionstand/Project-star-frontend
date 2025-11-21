@@ -231,6 +231,11 @@ export const NewAssignmentForm = ({ classes, subjects }: Props) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
+                    {classes?.length === 0 && (
+                      <span className="italic block text-center text-sm text-muted-foreground py-4">
+                        No classes found
+                      </span>
+                    )}
                     {classes?.map((c) => (
                       <SelectItem value={c.id} key={c.id}>
                         {c.level}

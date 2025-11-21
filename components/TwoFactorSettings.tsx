@@ -242,8 +242,8 @@ export function TwoFactorSettings({
             </div>
             {status?.enabled && (
               <Badge variant="default" className="bg-green-500">
-                <ShieldCheck className="mr-1 h-3 w-3" />
-                Enabled
+                <ShieldCheck className="md:mr-1 size-3" />
+                <span className="hidden md:inline-block">Enabled</span>
               </Badge>
             )}
           </div>
@@ -293,11 +293,12 @@ export function TwoFactorSettings({
                     </div>
                   </div>
 
-                  <div className="flex space-x-2">
+                  <div className="flex flex-col md:flex-row items-center justify-start gap-2">
                     <Button
                       variant="outline"
                       onClick={handleGenerateBackupCodes}
                       disabled={processingBackupCodes}
+                      className="flex-1"
                     >
                       {processingBackupCodes ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -309,6 +310,7 @@ export function TwoFactorSettings({
                     {!status?.schoolEnforced && (
                       <Button
                         variant="destructive"
+                        className="flex-1"
                         onClick={() => setDisableModalOpen(true)}
                       >
                         Disable 2FA
@@ -330,7 +332,10 @@ export function TwoFactorSettings({
                     </div>
                   </div>
 
-                  <Button onClick={() => setSetupModalOpen(true)}>
+                  <Button
+                    className="w-full"
+                    onClick={() => setSetupModalOpen(true)}
+                  >
                     <ShieldCheck className="mr-2 h-4 w-4" />
                     Enable Two-Factor Authentication
                   </Button>

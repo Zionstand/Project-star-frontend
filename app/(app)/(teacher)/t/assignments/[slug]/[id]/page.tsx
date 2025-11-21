@@ -25,6 +25,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { GradeForm } from "../../../_components/GradeForm";
 import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
 
 const page = () => {
   const { user } = useAuth();
@@ -348,9 +349,17 @@ const page = () => {
               <div className="space-y-2">
                 <p className="font-medium text-base">Quick Actions</p>
                 <div className="space-y-2">
-                  <Button variant={"outline"} className="w-full justify-start">
-                    <IconUser />
-                    View Student Profile
+                  <Button
+                    asChild
+                    variant={"outline"}
+                    className="w-full justify-start"
+                  >
+                    <Link
+                      href={`/t/students/${assignment?.Student?.user?.username}`}
+                    >
+                      <IconUser />
+                      View Student Profile
+                    </Link>
                   </Button>
                   <Button variant={"outline"} className="w-full justify-start">
                     <IconMessage />

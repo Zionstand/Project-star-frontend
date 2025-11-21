@@ -77,16 +77,17 @@ const page = () => {
     }
   };
 
-  if (loading) return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Staff Details"
-        description="Loading staff information..."
-        back
-      />
-      <DetailsSkeleton sections={6} showAvatar={true} />
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Staff Details"
+          description="Loading staff information..."
+          back
+        />
+        <DetailsSkeleton sections={6} showAvatar={true} />
+      </div>
+    );
 
   if (!staff) return notFound();
 
@@ -95,11 +96,6 @@ const page = () => {
       <PageHeader
         title={`Staff Details`}
         description={`Complete information about the ${staff.firstName} ${staff.lastName}`}
-        destructiveCTA={{
-          label: "Delete",
-          slug: ``,
-          icon: IconTrash,
-        }}
         secondaryCTA={{
           label: "Edit",
           slug: `/a/staffs/${staff?.username}/edit`,

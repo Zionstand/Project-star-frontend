@@ -3,11 +3,9 @@ import { FullLogo } from "./_components/Logo";
 import { IconBook, IconShield, IconUsers } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { LoginForm } from "./_components/LoginForm";
-import { Metadata } from "next";
+import { authMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "EduManage School Management",
-};
+export const metadata = authMetadata.login;
 
 const page = () => {
   const features = [

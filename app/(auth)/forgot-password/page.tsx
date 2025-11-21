@@ -1,11 +1,9 @@
 import React from "react";
 import { ForgotPasswordForm } from "../_components/ForgotPasswordForm";
-import { Metadata } from "next";
 import { FullLogo } from "../_components/Logo";
+import { authMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Forgot password | EduManage School Management",
-};
+export const metadata = authMetadata.forgotPassword;
 
 const page = () => {
   return (

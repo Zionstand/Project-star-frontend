@@ -22,7 +22,6 @@ import { configService } from "@/lib/configs";
 import { PaginationMeta } from "@/lib/types/pagination";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
-import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Loader } from "@/components/Loader";
 
 const RolesPageContent = () => {
@@ -55,31 +54,37 @@ const RolesPageContent = () => {
 
       setLoading(true);
       try {
-        const [usersResponse, teachersResponse, parentsResponse, studentsResponse, admins, jobRoles] =
-          await Promise.all([
-            schoolService.getSchoolUsers(user?.schoolId!, {
-              page: currentPage,
-              limit,
-              search: search || undefined,
-            }),
-            schoolService.getSchoolTeachers(user?.schoolId!, {
-              page: currentPage,
-              limit,
-              search: search || undefined,
-            }),
-            schoolService.getSchoolParents(user?.schoolId!, {
-              page: currentPage,
-              limit,
-              search: search || undefined,
-            }),
-            schoolService.getStudents(user?.schoolId!, {
-              page: currentPage,
-              limit,
-              search: search || undefined,
-            }),
-            schoolService.getSchoolAdmins(user?.schoolId!),
-            configService.getCategory("JOB_ROLE"),
-          ]);
+        const [
+          usersResponse,
+          teachersResponse,
+          parentsResponse,
+          studentsResponse,
+          admins,
+          jobRoles,
+        ] = await Promise.all([
+          schoolService.getSchoolUsers(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getSchoolTeachers(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getSchoolParents(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getStudents(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getSchoolAdmins(user?.schoolId!),
+          configService.getCategory("JOB_ROLE"),
+        ]);
 
         if (isMounted) {
           // Extract data from paginated responses
@@ -117,31 +122,37 @@ const RolesPageContent = () => {
 
     setLoading(true);
     try {
-      const [usersResponse, teachersResponse, parentsResponse, studentsResponse, admins, jobRoles] =
-        await Promise.all([
-          schoolService.getSchoolUsers(user?.schoolId!, {
-            page: currentPage,
-            limit,
-            search: search || undefined,
-          }),
-          schoolService.getSchoolTeachers(user?.schoolId!, {
-            page: currentPage,
-            limit,
-            search: search || undefined,
-          }),
-          schoolService.getSchoolParents(user?.schoolId!, {
-            page: currentPage,
-            limit,
-            search: search || undefined,
-          }),
-          schoolService.getStudents(user?.schoolId!, {
-            page: currentPage,
-            limit,
-            search: search || undefined,
-          }),
-          schoolService.getSchoolAdmins(user?.schoolId!),
-          configService.getCategory("JOB_ROLE"),
-        ]);
+      const [
+        usersResponse,
+        teachersResponse,
+        parentsResponse,
+        studentsResponse,
+        admins,
+        jobRoles,
+      ] = await Promise.all([
+        schoolService.getSchoolUsers(user?.schoolId!, {
+          page: currentPage,
+          limit,
+          search: search || undefined,
+        }),
+        schoolService.getSchoolTeachers(user?.schoolId!, {
+          page: currentPage,
+          limit,
+          search: search || undefined,
+        }),
+        schoolService.getSchoolParents(user?.schoolId!, {
+          page: currentPage,
+          limit,
+          search: search || undefined,
+        }),
+        schoolService.getStudents(user?.schoolId!, {
+          page: currentPage,
+          limit,
+          search: search || undefined,
+        }),
+        schoolService.getSchoolAdmins(user?.schoolId!),
+        configService.getCategory("JOB_ROLE"),
+      ]);
 
       // Extract data from paginated responses
       setUsers(usersResponse.data || []);
@@ -161,18 +172,24 @@ const RolesPageContent = () => {
     }
   }, [user?.schoolId, currentPage, limit, search]);
 
-  const handlePageChange = useCallback((newPage: number) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", newPage.toString());
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, [router]);
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", newPage.toString());
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router]
+  );
 
-  const handleLimitChange = useCallback((newLimit: number) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("limit", newLimit.toString());
-    params.set("page", "1");
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, [router]);
+  const handleLimitChange = useCallback(
+    (newLimit: number) => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("limit", newLimit.toString());
+      params.set("page", "1");
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router]
+  );
 
   return (
     <div className="space-y-6">
@@ -186,9 +203,6 @@ const RolesPageContent = () => {
       ) : (
         <RolesCards total={usersMeta?.total || users.length || 0} />
       )}
-
-      {/* Search Bar */}
-      <SearchBarWrapper placeholder="Search users by name, email, role..." />
 
       <Tabs defaultValue="users">
         <ScrollArea>

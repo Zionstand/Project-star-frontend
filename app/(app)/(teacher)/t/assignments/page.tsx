@@ -88,7 +88,7 @@ const ItemCard = ({ item }: { item: Assignment }) => {
               <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2 md:gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-2 line-clamp-1">
                   <IconUsers className="w-4 h-4" />
-                  <span>
+                  <span className="line-clamp-1">
                     {item.Class.level}
                     {item.Class.section} - {item.subject.department}
                   </span>
@@ -96,12 +96,16 @@ const ItemCard = ({ item }: { item: Assignment }) => {
                 {isAssignment && (
                   <div className="flex items-center gap-2 line-clamp-1">
                     <IconCalendar className="w-4 h-4" />
-                    <span>Due: {formatDate(item.dueDate)}</span>
+                    <span className="line-clamp-1">
+                      Due: {formatDate(item.dueDate)}
+                    </span>
                   </div>
                 )}
                 <div className="flex items-center gap-2 line-clamp-1">
                   <IconClock className="w-4 h-4" />
-                  <span>Created: {formatDate(item.createdAt)}</span>
+                  <span className="line-clamp-1">
+                    Created: {formatDate(item.createdAt)}
+                  </span>
                 </div>
               </div>
 

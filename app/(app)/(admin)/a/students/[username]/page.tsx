@@ -87,16 +87,17 @@ const page = () => {
     fetch();
   }, [user, username]);
 
-  if (loading) return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Student Details"
-        description="Loading student information..."
-        back
-      />
-      <DetailsSkeleton sections={8} showAvatar={true} />
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Student Details"
+          description="Loading student information..."
+          back
+        />
+        <DetailsSkeleton sections={8} showAvatar={true} />
+      </div>
+    );
 
   if (!student) return notFound();
 
@@ -148,11 +149,6 @@ const page = () => {
       <PageHeader
         title={`Student Details`}
         description={`Complete information about ${student.firstName} ${student.lastName}`}
-        destructiveCTA={{
-          label: "Delete",
-          slug: ``,
-          icon: IconTrash,
-        }}
         secondaryCTA={{
           label: "Edit",
           slug: `/a/students/${student?.username}/edit`,

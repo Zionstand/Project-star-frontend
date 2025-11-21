@@ -21,11 +21,6 @@ const page = () => {
       <PageHeader
         title="Settings"
         description="Manage your system preferences and configurations"
-        primaryCTA={{
-          label: "Save Changes",
-          slug: "/a/staff/new",
-          icon: IconDeviceFloppy,
-        }}
       />
       <Tabs defaultValue="notifications">
         <ScrollArea>

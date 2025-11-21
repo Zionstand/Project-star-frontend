@@ -1,11 +1,9 @@
 import React from "react";
 import { VerifyCodeForm } from "../_components/VerifyCodeForm";
-import { Metadata } from "next";
 import { FullLogo } from "../_components/Logo";
+import { authMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Verify Code | EduManage School Management",
-};
+export const metadata = authMetadata.verifyCode;
 
 type SearchParams = Promise<{
   email: string;
