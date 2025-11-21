@@ -1,4 +1,4 @@
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
@@ -15,7 +15,7 @@ export const SubjectSearchComponent = () => {
     <Card>
       <CardContent className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex-1 w-full md:flex-2">
-          <SearchBar />
+          <SearchBarWrapper />
         </div>
         <div className="w-full flex-1 grid grid-cols-2 gap-4">
           <Select>

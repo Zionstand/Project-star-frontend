@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import { IconDownload, IconPlus } from "@tabler/icons-react";
 import { StudentCards } from "../_components/StudentCards";
 import { StudentSearchComponent } from "../_components/StudentSearchComponent";
@@ -13,9 +13,10 @@ import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 import { PaginatedResponse } from "@/lib/types/pagination";
 import { Pagination } from "@/components/Pagination";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
+import { Loader } from "@/components/Loader";
 
-const page = () => {
+const StudentsPageContent = () => {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -107,7 +108,7 @@ const page = () => {
       )}
 
       {/* Search Bar */}
-      <SearchBar placeholder="Search students by name, email, admission number..." />
+      <SearchBarWrapper placeholder="Search students by name, email, admission number..." />
 
       {loading ? (
         <TableSkeleton columns={7} rows={limit} />
@@ -124,6 +125,14 @@ const page = () => {
         />
       )}
     </div>
+  );
+};
+
+const page = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <StudentsPageContent />
+    </Suspense>
   );
 };
 

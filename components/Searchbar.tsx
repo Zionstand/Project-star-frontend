@@ -12,10 +12,7 @@ interface Props {
   label?: string;
 }
 
-export const SearchBar = ({
-  placeholder = "Search...",
-  label,
-}: Props) => {
+export const SearchBar = ({ placeholder = "Search...", label }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -31,7 +28,8 @@ export const SearchBar = ({
   // Debounced update to URL
   useEffect(() => {
     const timer = setTimeout(() => {
-      const currentSearch = new URLSearchParams(window.location.search).get("search") || "";
+      const currentSearch =
+        new URLSearchParams(window.location.search).get("search") || "";
 
       // Only update URL if query has actually changed
       if (query.trim() !== currentSearch) {

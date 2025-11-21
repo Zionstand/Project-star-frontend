@@ -1,4 +1,4 @@
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -16,7 +16,7 @@ export const ClassSubjects = () => {
         <CardTitle>Class Subjects & Teachers</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SearchBar />
+        <SearchBarWrapper />
         <div>
           <Table>
             <TableHeader>

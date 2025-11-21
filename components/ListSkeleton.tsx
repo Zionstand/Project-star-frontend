@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface ListSkeletonProps {
   items?: number;
   showHeader?: boolean;
-  itemHeight?: "sm" | "md" | "lg";
+  itemHeight?: "sm" | "md" | "lg" | string;
 }
 
 export const ListSkeleton = ({

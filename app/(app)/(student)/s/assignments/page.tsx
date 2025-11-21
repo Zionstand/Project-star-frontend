@@ -8,7 +8,7 @@ import { AssignmentsCards } from "../_components/AssignmentsCards";
 import { studentService } from "@/lib/student";
 import { Loader } from "@/components/Loader";
 import { toast } from "sonner";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AssignmentCard } from "../_components/AssignmentCard";
@@ -56,7 +56,7 @@ const page = () => {
         description="View and submit your assignments"
       />
       <AssignmentsCards assignments={assignments} />
-      <SearchBar placeholder="Search assignments..." />
+      <SearchBarWrapper placeholder="Search assignments..." />
       <Tabs defaultValue="all">
         <ScrollArea>
           <TabsList className="mb-3 w-full">

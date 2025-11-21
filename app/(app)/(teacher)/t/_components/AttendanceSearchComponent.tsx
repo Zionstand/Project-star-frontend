@@ -1,5 +1,5 @@
 import { DateSelector } from "@/components/DateSelector";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
@@ -33,7 +33,7 @@ export const AttendanceSearchComponent = ({ classes, onChange }: Props) => {
     <Card>
       <CardContent className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         {/* 🔍 Search bar */}
-        <SearchBar
+        <SearchBarWrapper
           label="Search students"
           placeholder="Search by name or admission number..."
         />

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import { IconPlus } from "@tabler/icons-react";
 import { schoolService } from "@/lib/school";
 import { useAuth, User } from "@/store/useAuth";
@@ -7,15 +7,16 @@ import { TableSkeleton } from "@/components/TableSkeleton";
 import { CardsSkeleton } from "@/components/CardsSkeleton";
 import { TeachersCards } from "../_components/TeachersCard";
 import { PageHeader } from "@/components/PageHeader";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { TeacherLists } from "./_components/TeacherLists";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import { PaginationMeta } from "@/lib/types/pagination";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
+import { Loader } from "@/components/Loader";
 
-const page = () => {
+const TeachersPageContent = () => {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -106,7 +107,7 @@ const page = () => {
 
       <Card>
         <CardContent className="space-y-4">
-          <SearchBar placeholder="Search teachers by name, email, subject..." />
+          <SearchBarWrapper placeholder="Search teachers by name, email, subject..." />
           {loading ? (
             <TableSkeleton columns={6} rows={limit} />
           ) : (
@@ -124,6 +125,14 @@ const page = () => {
         />
       )}
     </div>
+  );
+};
+
+const page = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <TeachersPageContent />
+    </Suspense>
   );
 };
 

@@ -4,7 +4,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { IconBell } from "@tabler/icons-react";
 import { Badge } from "@/components/ui/badge";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Logo } from "@/app/(app)/(admin)/a/_components/Logo";
 import { UserDropdown } from "@/app/(app)/(admin)/a/_components/UserDropdown";
 import { useAuth } from "@/store/useAuth";
@@ -35,7 +35,7 @@ export const AppSidebarHeader = () => {
         </div>
         <div className="flex flex-1 lg:flex-2 xl:flex-1 w-full items-center justify-end gap-2">
           <div className="hidden w-full md:block">
-            <SearchBar />
+            <SearchBarWrapper />
           </div>
           <Button
             size="icon"

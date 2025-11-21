@@ -1,4 +1,4 @@
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import {
   Card,
   CardContent,
@@ -52,7 +52,7 @@ export const UserRoles = ({ users, onRefresh, jobRoles }: Props) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SearchBar />
+        <SearchBarWrapper />
         {users.length === 0 && <NothingFound message="No user found..." />}
 
         <div className="hidden md:block">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import { StaffCards } from "../_components/StaffCards";
 import { PageHeader } from "../../../../../components/PageHeader";
 import { IconDownload, IconPlus } from "@tabler/icons-react";
@@ -10,11 +10,12 @@ import { toast } from "sonner";
 import { PaginatedResponse, PaginationMeta } from "@/lib/types/pagination";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { TableSkeleton } from "@/components/TableSkeleton";
 import { CardsSkeleton } from "@/components/CardsSkeleton";
+import { Loader } from "@/components/Loader";
 
-const page = () => {
+const StaffsPageContent = () => {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -112,7 +113,7 @@ const page = () => {
       )}
 
       {/* Search Bar */}
-      <SearchBar placeholder="Search staff by name, email, role..." />
+      <SearchBarWrapper placeholder="Search staff by name, email, role..." />
 
       {loading ? (
         <TableSkeleton columns={7} rows={limit} />
@@ -129,6 +130,14 @@ const page = () => {
         />
       )}
     </div>
+  );
+};
+
+const page = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <StaffsPageContent />
+    </Suspense>
   );
 };
 

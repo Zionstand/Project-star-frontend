@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { studentService } from "@/lib/student";
 import { Loader } from "@/components/Loader";
 import { toast } from "sonner";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   IconCalendar,
@@ -130,7 +130,7 @@ const page = () => {
         title="My Notes"
         description="View all your notes from your classes"
       />
-      <SearchBar placeholder="Search notes..." />
+      <SearchBarWrapper placeholder="Search notes..." />
       <div className="space-y-6">
         {notes.length === 0 && <NothingFound message="No notes found" />}
         {notes.map((document) => (

@@ -21,7 +21,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import { AssignmentsCards } from "../_components/AssignmentsCards";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Assignment, useAuth } from "@/store/useAuth";
 import { teacherService } from "@/lib/teacher";
@@ -212,7 +212,7 @@ const Page = () => {
         lessonNotes={lessonNotes.length}
       />
 
-      <SearchBar placeholder="Search assignments, lesson notes or homeworks" />
+      <SearchBarWrapper placeholder="Search assignments, lesson notes or homeworks" />
 
       {/* Tabs */}
       <Tabs defaultValue="all">

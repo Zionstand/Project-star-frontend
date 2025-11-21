@@ -2,7 +2,7 @@
 import { AssignmentAttachment } from "@/components/AssignmentAttachment";
 import { Loader } from "@/components/Loader";
 import { PageHeader } from "@/components/PageHeader";
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -207,7 +207,7 @@ const page = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <SearchBar placeholder="Search students..." />
+              <SearchBarWrapper placeholder="Search students..." />
               {assignment?.assignmentSubmissions.map((submission) => (
                 <StudentSubmissionCard
                   key={submission.id}

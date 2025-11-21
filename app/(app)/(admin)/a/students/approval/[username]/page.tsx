@@ -50,6 +50,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { StudentRejectionModal } from "@/components/StudentRejectionModal";
 import { StudentApprovalModal } from "@/components/StudentApprovalModal";
+import { Loader } from "@/components/Loader";
 
 const page = () => {
   const { user } = useAuth();
@@ -156,16 +157,17 @@ const page = () => {
     }
   };
 
-  if (loading) return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Student Details"
-        description="Loading student information..."
-        back
-      />
-      <DetailsSkeleton sections={6} showAvatar={true} />
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Student Details"
+          description="Loading student information..."
+          back
+        />
+        <DetailsSkeleton sections={6} showAvatar={true} />
+      </div>
+    );
 
   if (!student) return notFound();
 

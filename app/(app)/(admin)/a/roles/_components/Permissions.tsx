@@ -1,4 +1,4 @@
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -1061,7 +1061,7 @@ export function Permissions() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SearchBar />
+        <SearchBarWrapper />
         <div className="flex items-center justify-start bg-muted p-3 rounded-md gap-4">
           <div className="flex items-center justify-start gap-1 text-sm">
             <IconCircleCheck className="size-4 text-green-500" />

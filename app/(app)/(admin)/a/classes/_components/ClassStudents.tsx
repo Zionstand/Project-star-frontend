@@ -1,4 +1,4 @@
-import { SearchBar } from "@/components/Searchbar";
+import { SearchBarWrapper } from "@/components/SearchbarWrapper";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Student } from "@/store/useAuth";
 import { UserProfilePicture } from "@/components/UserProfilePicture";
@@ -28,7 +28,7 @@ export const ClassStudents = ({ students }: Props) => {
         <CardTitle>Class students</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SearchBar />
+        <SearchBarWrapper />
         {students.length === 0 && <NothingFound message="No students found" />}
         {students.length !== 0 && (
           <>
