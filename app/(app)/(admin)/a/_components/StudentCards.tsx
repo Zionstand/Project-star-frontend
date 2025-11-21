@@ -16,7 +16,7 @@ export const StudentCards = ({ students }: Props) => {
     {
       title: "Total Students",
       value: `${students}`,
-      textColor: "text-black",
+      textColor: "text-black dark:text-white",
     },
     {
       title: "Active Students",
@@ -26,7 +26,7 @@ export const StudentCards = ({ students }: Props) => {
     {
       title: "Inactive Students",
       value: "0",
-      textColor: "text-gray-700",
+      textColor: "text-gray-700 dark:text-gray-200",
     },
     {
       title: "Suspended",

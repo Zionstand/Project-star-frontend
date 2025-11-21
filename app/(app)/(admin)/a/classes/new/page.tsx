@@ -8,7 +8,7 @@ import { AddClassForm } from "./_components/AddClassForm";
 import { configService } from "@/lib/configs";
 import { schoolService } from "@/lib/school";
 import { useAuth, User } from "@/store/useAuth";
-import { Loader } from "@/components/Loader";
+import { FormSkeleton } from "@/components/FormSkeleton";
 import { toast } from "sonner";
 import { ImportClasses } from "../_components/ImportClasses";
 
@@ -27,7 +27,7 @@ const page = () => {
       if (!user?.schoolId) return;
 
       try {
-        const [teachers, classSections, classLevels, departments] =
+        const [teachersResponse, classSections, classLevels, departments] =
           await Promise.all([
             schoolService.getSchoolTeachers(user?.schoolId!),
             configService.getCategory("CLASS_SECTION"),
@@ -35,7 +35,8 @@ const page = () => {
             configService.getCategory("SCHOOL_DEPARTMENT"),
           ]);
 
-        setTeachers(teachers);
+        // Extract data from paginated response
+        setTeachers(teachersResponse.data || []);
         setClassLevels(classLevels);
         setClassSections(classSections);
         setDepartments(departments);
@@ -49,7 +50,6 @@ const page = () => {
     fetchStaffs();
   }, [user]);
 
-  if (loading) return <Loader />;
   return (
     <div className="space-y-6">
       <PageHeader
@@ -57,40 +57,44 @@ const page = () => {
         description="Add a new class to the school system"
         back
       />
-      <Tabs defaultValue="manual">
-        <ScrollArea>
-          <TabsList className="mb-3 w-full">
-            <TabsTrigger value="manual">
-              <IconUserPlus
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Manual Entry
-            </TabsTrigger>
-            <TabsTrigger value="import" className="group">
-              <IconFileTypeXls
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Import from file
-            </TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-        <TabsContent value="manual">
-          <AddClassForm
-            classLevels={classLevels?.items}
-            classSections={classSections?.items}
-            teachers={teachers}
-            departments={departments.items}
-          />
-        </TabsContent>
-        <TabsContent value="import">
-          <ImportClasses />
-        </TabsContent>
-      </Tabs>
+      {loading ? (
+        <FormSkeleton fields={6} showHeader={false} />
+      ) : (
+        <Tabs defaultValue="manual">
+          <ScrollArea>
+            <TabsList className="mb-3 w-full">
+              <TabsTrigger value="manual">
+                <IconUserPlus
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Manual Entry
+              </TabsTrigger>
+              <TabsTrigger value="import" className="group">
+                <IconFileTypeXls
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Import from file
+              </TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          <TabsContent value="manual">
+            <AddClassForm
+              classLevels={classLevels?.items}
+              classSections={classSections?.items}
+              teachers={teachers}
+              departments={departments.items}
+            />
+          </TabsContent>
+          <TabsContent value="import">
+            <ImportClasses />
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 };

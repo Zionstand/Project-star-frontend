@@ -32,7 +32,7 @@ import z from "zod";
 import { RequiredAsterisk } from "@/components/RequiredAsterisk";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import DateSelector from "@/components/DateSelector";
+import { DateSelector } from "@/components/DateSelector";
 import { UploadFilesModal } from "@/components/UploadFilesModal";
 import { Label } from "react-aria-components";
 import {

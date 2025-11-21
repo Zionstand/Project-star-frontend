@@ -226,8 +226,8 @@ export const StudentAssignmentSubmission = ({
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-md py-12 text-center transition-colors ${
               isDragging
-                ? "border-primary bg-primary/10"
-                : "border-gray-300 bg-gray-50"
+                ? "border-primary/50 bg-primary/50"
+                : "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950"
             }`}
           >
             <div className="flex flex-col items-center gap-3">
@@ -249,7 +249,7 @@ export const StudentAssignmentSubmission = ({
                   </button>
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Supports: PDF, DOC, DOCX, TXT, PNG, JPG, JPEG, WEBP
+                  Supports: PNG, JPG, JPEG, WEBP
                 </p>
               </div>
             </div>
@@ -295,7 +295,7 @@ export const StudentAssignmentSubmission = ({
                         className="flex items-center gap-3 p-3 bg-muted rounded-md"
                       >
                         {/* Thumbnail */}
-                        <div className="size-10 rounded-md overflow-hidden flex-shrink-0 bg-primary/10 flex items-center justify-center">
+                        <div className="size-10 rounded-md overflow-hidden flex shrink-0 bg-primary/10 items-center justify-center">
                           {isImage ? (
                             <Image
                               src={fileUrl}
@@ -316,7 +316,7 @@ export const StudentAssignmentSubmission = ({
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex-1 min-w-0">
-                              <p className="line-clamp-1 text-sm font-medium break-words whitespace-normal flex-1">
+                              <p className="line-clamp-1 max-w-20 text-sm font-medium truncate whitespace-normal flex-1">
                                 {fileName}
                               </p>
                             </div>
@@ -347,10 +347,10 @@ export const StudentAssignmentSubmission = ({
                         {!isServerFile && (
                           <div className="flex items-center gap-2">
                             {file.status === "completed" ? (
-                              <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
+                              <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded flex items-center justify-center">
                                 <IconCheck
                                   size={16}
-                                  className="text-green-600"
+                                  className="text-green-600 dark:text-green-200"
                                 />
                               </div>
                             ) : (
@@ -419,7 +419,6 @@ export const StudentAssignmentSubmission = ({
           readOnly={hasSubmitted}
           disabled={hasSubmitted}
           onChange={(e) => setComment(e.target.value)}
-          className="text-black"
           placeholder="Add any notes or comments for your teacher"
         />
       </div>

@@ -51,7 +51,7 @@ export const Logo = () => {
           />
         </div>
       ) : (
-        <div className="p-3 bg-white rounded-md flex items-center justify-center">
+        <div className="p-3 bg-white dark:bg-card rounded-md flex items-center justify-center">
           <span className="text-primary font-bold text-lg">
             {user?.school?.acronym}
           </span>

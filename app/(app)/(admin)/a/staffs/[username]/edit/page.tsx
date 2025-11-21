@@ -6,7 +6,7 @@ import { IconFileTypeXls, IconShare, IconUserPlus } from "@tabler/icons-react";
 import { configService } from "@/lib/configs";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
-import { Loader } from "@/components/Loader";
+import { FormSkeleton } from "@/components/FormSkeleton";
 import { schoolService } from "@/lib/school";
 import { notFound, useParams } from "next/navigation";
 import { useAuth, User } from "@/store/useAuth";
@@ -48,7 +48,16 @@ const page = () => {
     fetchConfigs();
   }, []);
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Edit Staff Details"
+        description="Loading staff information..."
+        back
+      />
+      <FormSkeleton fields={10} showHeader={false} columns={2} />
+    </div>
+  );
 
   if (!staff) return notFound();
 

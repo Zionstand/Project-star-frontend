@@ -1,5 +1,5 @@
 "use client";
-import { Loader } from "@/components/Loader";
+import { DetailsSkeleton } from "@/components/DetailsSkeleton";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,7 +87,16 @@ const page = () => {
     fetch();
   }, [user, username]);
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Student Details"
+        description="Loading student information..."
+        back
+      />
+      <DetailsSkeleton sections={8} showAvatar={true} />
+    </div>
+  );
 
   if (!student) return notFound();
 
@@ -198,7 +207,7 @@ const page = () => {
                     <IconSchool className="size-5" />
                     <div>
                       <p className="text-xs">Class</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {student.Student.Class.level}
                         {student?.Student.Class.section}
                       </p>
@@ -212,7 +221,7 @@ const page = () => {
                         <IconBuilding className="size-5" />
                         <div>
                           <p className="text-xs">Department</p>
-                          <p className="text-black font-medium">
+                          <p className="text-black dark:text-white font-medium">
                             {student.department || (
                               <span className="italic">
                                 No department selected
@@ -226,7 +235,7 @@ const page = () => {
                     <IconUser className="size-5" />
                     <div>
                       <p className="text-xs">Gender</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {student.gender || (
                           <span className="italic">No gender selected</span>
                         )}
@@ -237,7 +246,7 @@ const page = () => {
                     <IconCalendar className="size-5" />
                     <div>
                       <p className="text-xs">Date of Birth</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {`${formatDate(student.dob)} (${calculateAge(
                           student?.dob!
                         )} years)` || (
@@ -250,7 +259,7 @@ const page = () => {
                     <IconAward className="size-5" />
                     <div>
                       <p className="text-xs">Admission Number</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {student.Student.admissionNumber}
                       </p>
                     </div>
@@ -267,7 +276,7 @@ const page = () => {
                   <IconMail className="size-5" />
                   <div>
                     <p className="text-xs">Email</p>
-                    <p className="text-black font-medium">
+                    <p className="text-black dark:text-white font-medium">
                       {student.email ? (
                         <a
                           className="hover:underline hover:text-primary"
@@ -285,7 +294,7 @@ const page = () => {
                   <IconPhone className="size-5" />
                   <div>
                     <p className="text-xs">Phone</p>
-                    <p className="text-black font-medium">
+                    <p className="text-black dark:text-white font-medium">
                       {student.phoneNumber ? (
                         <a
                           className="hover:underline hover:text-primary"
@@ -303,7 +312,7 @@ const page = () => {
                   <IconMapPin2 className="size-5" />
                   <div>
                     <p className="text-xs">Address</p>
-                    <p className="text-black font-medium">
+                    <p className="text-black dark:text-white font-medium">
                       {student.address ? (
                         <p>
                           {student.address}, {student.city}, {student.state},{" "}
@@ -369,7 +378,7 @@ const page = () => {
                     <CardContent className="text-muted-foreground text-sm grid gap-4">
                       <div>
                         <p className="text-xs">Name</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.title}{" "}
                           {parent.parent.user?.firstName}{" "}
                           {parent.parent.user?.lastName}{" "}
@@ -377,7 +386,7 @@ const page = () => {
                       </div>
                       <div>
                         <p className="text-xs">Phone</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.phoneNumber ? (
                             <a
                               className="hover:underline hover:text-primary"
@@ -394,7 +403,7 @@ const page = () => {
                       </div>
                       <div>
                         <p className="text-xs">Phone</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.email ? (
                             <a
                               className="hover:underline hover:text-primary"
@@ -409,7 +418,7 @@ const page = () => {
                       </div>
                       <div>
                         <p className="text-xs">Occupation</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.occupation ? (
                             parent.parent.user.occupation
                           ) : (
@@ -432,13 +441,13 @@ const page = () => {
               <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-2 lg:grid-cols-2">
                 <div>
                   <p className="text-xs">Admission Date:</p>
-                  <p className="text-black font-medium">
+                  <p className="text-black dark:text-white font-medium">
                     {formatDate(student.Student.approvalDate)}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs">Current Class:</p>
-                  <p className="text-black font-medium">
+                  <p className="text-black dark:text-white font-medium">
                     {student.Student.Class.level}
                     {student.Student.Class.section}
                   </p>
@@ -474,7 +483,9 @@ const page = () => {
                     <ComingSoon />
                     <div className="space-y-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-black">Mathematics</p>
+                        <p className="text-black dark:text-white">
+                          Mathematics
+                        </p>
                         <p className="text-muted-foreground flex items-center justify-end gap-2">
                           <span>92%</span> <Badge variant={"outline"}>A</Badge>
                         </p>
@@ -483,7 +494,9 @@ const page = () => {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-black">Mathematics</p>
+                        <p className="text-black dark:text-white">
+                          Mathematics
+                        </p>
                         <p className="text-muted-foreground flex items-center justify-end gap-2">
                           <span>92%</span> <Badge variant={"outline"}>A</Badge>
                         </p>
@@ -492,7 +505,9 @@ const page = () => {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-black">Mathematics</p>
+                        <p className="text-black dark:text-white">
+                          Mathematics
+                        </p>
                         <p className="text-muted-foreground flex items-center justify-end gap-2">
                           <span>92%</span> <Badge variant={"outline"}>A</Badge>
                         </p>
@@ -501,7 +516,9 @@ const page = () => {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-black">Mathematics</p>
+                        <p className="text-black dark:text-white">
+                          Mathematics
+                        </p>
                         <p className="text-muted-foreground flex items-center justify-end gap-2">
                           <span>92%</span> <Badge variant={"outline"}>A</Badge>
                         </p>
@@ -510,7 +527,9 @@ const page = () => {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="text-black">Mathematics</p>
+                        <p className="text-black dark:text-white">
+                          Mathematics
+                        </p>
                         <p className="text-muted-foreground flex items-center justify-end gap-2">
                           <span>92%</span> <Badge variant={"outline"}>A</Badge>
                         </p>
@@ -530,25 +549,25 @@ const page = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid text-center grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="rounded-md bg-blue-50 p-4">
+                  <div className="rounded-md bg-blue-50 dark:bg-blue-950 p-4">
                     <p className="text-muted-foreground text-xs mb-1">
                       Total Days
                     </p>
-                    <p className="text-2xl font-medium text-primary">
+                    <p className="text-2xl font-medium text-primary dark:text-white">
                       {attendanceStats.totalSchoolDays}
                     </p>
                   </div>
-                  <div className="rounded-md bg-green-50 p-4">
+                  <div className="rounded-md bg-green-50 dark:bg-green-950 p-4">
                     <p className="text-muted-foreground text-xs mb-1">
                       Present
                     </p>
-                    <p className="text-2xl font-medium text-green-600">
+                    <p className="text-2xl font-medium text-green-600 dark:text-white">
                       {attendanceStats.presentDays}
                     </p>
                   </div>
-                  <div className="rounded-md bg-red-50 p-4">
+                  <div className="rounded-md bg-red-50 dark:bg-red-950 p-4">
                     <p className="text-muted-foreground text-xs mb-1">Absent</p>
-                    <p className="text-2xl font-medium text-red-600">
+                    <p className="text-2xl font-medium text-red-600 dark:text-white">
                       {attendanceStats.absentDays}
                     </p>
                   </div>

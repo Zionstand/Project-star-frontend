@@ -60,12 +60,13 @@ export function NavMain() {
                   <SidebarMenuButton
                     tooltip={item.title}
                     className={cn(
-                      `font-medium text-xs ${
+                      `font-medium hover:text-primary text-xs ${
                         isCollapsed
                           ? "justify-center w-12 h-12 p-0"
                           : "justify-start px-3"
                       }`,
-                      isSectionActive && "bg-white text-primary font-medium"
+                      isSectionActive &&
+                        "bg-white dark:bg-sidebar text-primary dark:text-white font-medium"
                     )}
                     onClick={() => {
                       // Close sidebar on mobile if top-level link is clicked
@@ -93,33 +94,6 @@ export function NavMain() {
                       {item.items.map((subItem: any) => {
                         const isActive = pathname.startsWith(subItem.url);
                         return (
-                          // <SidebarMenuSubItem key={subItem.title}>
-                          //   <SidebarMenuSubButton
-                          //     size="md"
-                          //     asChild
-                          //     className={cn(
-                          //       isActive &&
-                          //         "bg-white text-primary font-medium [&>svg]:text-primary"
-                          //     )}
-                          //     onClick={() => {
-                          //       if (isMobile) {
-                          //         setOpenMobile(false); // closes sidebar on mobile
-                          //       }
-                          //     }}
-                          //   >
-                          //     <Link href={subItem.url}>
-                          //       {subItem.icon && <subItem.icon />}
-                          //       <span>
-                          //         {subItem.title}{" "}
-                          //         {subItem.comingSoon && (
-                          //           <Badge variant={"secondary"}>
-                          //             Coming soon
-                          //           </Badge>
-                          //         )}
-                          //       </span>
-                          //     </Link>
-                          //   </SidebarMenuSubButton>
-                          // </SidebarMenuSubItem>
                           <SidebarMenuSubItem key={subItem.title}>
                             {subItem.comingSoon ? (
                               <SidebarMenuSubButton className="cursor-not-allowed hover:text-black">
@@ -137,7 +111,7 @@ export function NavMain() {
                                 asChild
                                 className={cn(
                                   isActive &&
-                                    "bg-white text-primary font-medium [&>svg]:text-primary"
+                                    "bg-white hover:text-primary dark:bg-sidebar-accent text-primary dark:text-white font-medium hover:[&>svg]:text-primary [&>svg]:text-primary dark:[&>svg]:text-white"
                                 )}
                                 onClick={() => isMobile && setOpenMobile(false)}
                               >

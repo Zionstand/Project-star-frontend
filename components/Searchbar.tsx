@@ -2,85 +2,65 @@
 
 import { Input } from "@/components/ui/input";
 import { LoaderCircleIcon, SearchIcon, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { formatMoneyInput } from "@/lib/utils";
 import { Label } from "./ui/label";
 
 interface Props {
   placeholder?: string;
-  search?: string;
   label?: string;
 }
 
 export const SearchBar = ({
   placeholder = "Search...",
-  search,
   label,
 }: Props) => {
   const router = useRouter();
-  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
-  // Only use searchParams when we're in the browser
-  const isClient = typeof window !== "undefined";
-  const searchParams = isClient ? useSearchParams() : null;
+  const [query, setQuery] = useState(() => searchParams.get("search") || "");
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [query, setQuery] = useState(search || "");
-
-  // Sync query with URL param safely
+  // Sync query state with URL search param
   useEffect(() => {
-    if (!searchParams) return;
-
-    const urlQuery = searchParams.get("query") || "";
-    if (urlQuery) {
-      if (/^\d+$/.test(urlQuery)) {
-        setQuery(formatMoneyInput(urlQuery));
-      } else {
-        setQuery(urlQuery);
-      }
-    } else {
-      setQuery("");
-    }
+    const urlSearch = searchParams.get("search") || "";
+    setQuery(urlSearch);
   }, [searchParams]);
-
-  // Loading indicator when typing
-  useEffect(() => {
-    if (query) {
-      setIsLoading(true);
-      const timer = setTimeout(() => setIsLoading(false), 3000);
-      return () => clearTimeout(timer);
-    }
-    setIsLoading(false);
-  }, [query]);
 
   // Debounced update to URL
   useEffect(() => {
-    if (!isClient) return; // skip on server
+    const timer = setTimeout(() => {
+      const currentSearch = new URLSearchParams(window.location.search).get("search") || "";
 
-    const delayDebounceFn = setTimeout(() => {
-      const params = new URLSearchParams(searchParams?.toString() || "");
+      // Only update URL if query has actually changed
+      if (query.trim() !== currentSearch) {
+        startTransition(() => {
+          const params = new URLSearchParams(window.location.search);
 
-      if (query) {
-        const sanitized = query.replace(/,/g, "");
-        params.set("query", sanitized);
-      } else {
-        params.delete("query");
+          if (query.trim()) {
+            params.set("search", query.trim());
+          } else {
+            params.delete("search");
+          }
+
+          // Reset to page 1 when searching
+          params.set("page", "1");
+
+          router.replace(`?${params.toString()}`, { scroll: false });
+        });
       }
+    }, 500);
 
-      params.delete("page");
-
-      const newUrl = `${pathname}?${params.toString()}`;
-      router.push(newUrl, { scroll: false });
-    }, 3000);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [query, pathname, router, isClient, searchParams]);
+    return () => clearTimeout(timer);
+  }, [query, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    setQuery(formatMoneyInput(raw));
+    setQuery(e.target.value);
+  };
+
+  const handleClear = () => {
+    setQuery("");
   };
 
   return (
@@ -94,7 +74,7 @@ export const SearchBar = ({
           onChange={handleChange}
         />
         <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-          {isLoading ? (
+          {isPending ? (
             <LoaderCircleIcon
               className="animate-spin"
               size={16}
@@ -110,7 +90,7 @@ export const SearchBar = ({
             size="icon"
             variant={"ghost"}
             className="absolute right-1"
-            onClick={() => setQuery("")}
+            onClick={handleClear}
           >
             <X />
           </Button>

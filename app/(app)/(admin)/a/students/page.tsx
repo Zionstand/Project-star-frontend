@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { IconDownload, IconPlus } from "@tabler/icons-react";
 import { StudentCards } from "../_components/StudentCards";
 import { StudentSearchComponent } from "../_components/StudentSearchComponent";
@@ -7,37 +7,86 @@ import { StudentsLists } from "./_components/StudentsLists";
 import { PageHeader } from "@/components/PageHeader";
 import { useAuth, User } from "@/store/useAuth";
 import { schoolService } from "@/lib/school";
-import { Loader } from "@/components/Loader";
+import { TableSkeleton } from "@/components/TableSkeleton";
+import { CardsSkeleton } from "@/components/CardsSkeleton";
 import { toast } from "sonner";
+import { useSearchParams, useRouter } from "next/navigation";
+import { PaginatedResponse } from "@/lib/types/pagination";
+import { Pagination } from "@/components/Pagination";
+import { SearchBar } from "@/components/Searchbar";
 
 const page = () => {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const [students, setStudents] = useState<User[]>([]);
-
+  const [studentsData, setStudentsData] =
+    useState<PaginatedResponse<User> | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Get pagination params from URL
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 10;
+  const search = searchParams.get("search") || "";
+
   useEffect(() => {
-    const fetch = async () => {
+    let isMounted = true;
+
+    const fetchStudents = async () => {
       if (!user?.schoolId) return;
 
+      setLoading(true);
       try {
-        const [students] = await Promise.all([
-          schoolService.getStudents(user?.schoolId!),
-        ]);
+        const data = await schoolService.getStudents(user.schoolId, {
+          page: currentPage,
+          limit,
+          search: search || undefined,
+        });
 
-        setStudents(students);
+        if (isMounted) {
+          setStudentsData(data);
+        }
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        if (isMounted) {
+          toast.error(
+            error?.response?.data?.message || "Failed to fetch students"
+          );
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
-    fetch();
-  }, [user]);
+    fetchStudents();
 
-  if (loading) return <Loader />;
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.schoolId, currentPage, limit, search]);
+
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", newPage.toString());
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router]
+  );
+
+  const handleLimitChange = useCallback(
+    (newLimit: number) => {
+      const params = new URLSearchParams(window.location.search);
+      params.set("limit", newLimit.toString());
+      params.set("page", "1");
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router]
+  );
+
+  const students = studentsData?.data || [];
+  const meta = studentsData?.meta;
 
   return (
     <div className="space-y-6">
@@ -50,9 +99,30 @@ const page = () => {
           icon: IconPlus,
         }}
       />
-      <StudentCards students={students.length} />
-      <StudentSearchComponent />
-      <StudentsLists students={students} />
+
+      {loading ? (
+        <CardsSkeleton count={1} />
+      ) : (
+        <StudentCards students={meta?.total || 0} />
+      )}
+
+      {/* Search Bar */}
+      <SearchBar placeholder="Search students by name, email, admission number..." />
+
+      {loading ? (
+        <TableSkeleton columns={7} rows={limit} />
+      ) : (
+        <StudentsLists students={students} />
+      )}
+
+      {/* Pagination */}
+      {!loading && meta && meta.total > 0 && (
+        <Pagination
+          meta={meta}
+          onPageChange={handlePageChange}
+          onLimitChange={handleLimitChange}
+        />
+      )}
     </div>
   );
 };

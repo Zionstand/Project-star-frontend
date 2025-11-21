@@ -95,7 +95,7 @@ export function formatDate(dateString: string | any): string {
 }
 
 export const maskEmail = (email: string) => {
-  const [name, domain] = email.split("@");
+  const [name, domain] = email?.split("@");
   if (!name || !domain) return email; // fallback for invalid emails
 
   const maskedName =

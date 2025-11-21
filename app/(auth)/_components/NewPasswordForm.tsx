@@ -104,7 +104,7 @@ export function NewPasswordForm({ email, otp }: Props) {
       try {
         const res = await api.post("/auth/set-new-password", data);
         toast.success(res.data.message);
-        router.push(`/new-password/success`);
+        router.push(`/new-password/success?email=${data.email}`);
       } catch (error: any) {
         toast.error(error.response?.data?.message || "Something went wrong");
       }
@@ -112,7 +112,7 @@ export function NewPasswordForm({ email, otp }: Props) {
   }
 
   return (
-    <Card className="bg-white w-full md:min-w-md">
+    <Card className="bg-white dark:bg-card w-full md:min-w-md">
       <CardContent className="space-y-10 py-6">
         <div className="space-y-3 text-center">
           <div

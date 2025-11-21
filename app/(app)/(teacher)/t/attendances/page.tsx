@@ -188,21 +188,21 @@ const AttendancePage = () => {
               </div>
               <IconUsers className="text-primary" />
             </div>
-            <div className="flex border border-green-200 bg-green-50 items-center justify-between gap-1 rounded-md p-4">
+            <div className="flex border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950 items-center justify-between gap-1 rounded-md p-4">
               <div>
                 <p className="text-green-500">Present</p>
                 <p className="font-medium text-2xl">{counts.present}</p>
               </div>
               <IconUsers className="text-green-500" />
             </div>
-            <div className="flex border border-red-200 bg-red-50 items-center justify-between gap-1 rounded-md p-4">
+            <div className="flex border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 items-center justify-between gap-1 rounded-md p-4">
               <div>
                 <p className="text-red-500">Absent</p>
                 <p className="font-medium text-2xl">{counts.absent}</p>
               </div>
               <IconX className="text-red-500" />
             </div>
-            <div className="flex border border-amber-200 bg-amber-50 items-center justify-between gap-1 rounded-md p-4">
+            <div className="flex border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950 items-center justify-between gap-1 rounded-md p-4">
               <div>
                 <p className="text-amber-500">Late</p>
                 <p className="font-medium text-2xl">{counts.late}</p>

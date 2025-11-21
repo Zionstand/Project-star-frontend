@@ -24,7 +24,7 @@ import { QuickActions } from "./_components/QuickActions";
 import { schoolService } from "@/lib/school";
 import { teacherService } from "@/lib/teacher";
 import { toast } from "sonner";
-import { Loader } from "@/components/Loader";
+import { DashboardSkeleton } from "@/components/DashboardSkeleton";
 import { ComingSoon } from "@/components/ComingSoon";
 
 const page = () => {
@@ -54,7 +54,15 @@ const page = () => {
     fetch();
   }, [user]);
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title={`Welcome back`}
+        description={"Loading your dashboard..."}
+      />
+      <DashboardSkeleton statCards={4} showChart={false} showRecentActivity={true} />
+    </div>
+  );
 
   const stats = [
     {

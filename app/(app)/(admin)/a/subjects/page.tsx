@@ -11,7 +11,8 @@ import {
 import { SubjectCatalog } from "./_components/SubjectCatalog";
 import { useAuth } from "@/store/useAuth";
 import { schoolService } from "@/lib/school";
-import { Loader } from "@/components/Loader";
+import { CardsSkeleton } from "@/components/CardsSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SubjectsCards } from "./_components/SubjectsCards";
 import { configService } from "@/lib/configs";
 import { PageHeader } from "@/components/PageHeader";
@@ -59,8 +60,6 @@ const page = () => {
     fetch();
   }, [user]);
 
-  if (loading) return <Loader />;
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -72,41 +71,49 @@ const page = () => {
           icon: IconPlus,
         }}
       />
-      <SubjectsCards
-        subjects={subjects.length}
-        departments={departments.items.length}
-      />
-      <Tabs defaultValue="catalog">
-        <ScrollArea>
-          <TabsList className="mb-3 w-full">
-            <TabsTrigger value="catalog">
-              <IconCategoryFilled
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Subject Catalog
-            </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
-              <IconGridScan
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Subject Mapping
-            </TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-        <TabsContent value="catalog">
-          <SubjectCatalog subjects={subjects} />
-        </TabsContent>
-        <TabsContent value="mapping">
-          <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
-            Content for Tab 3
-          </p>
-        </TabsContent>
-      </Tabs>
+      {loading ? (
+        <CardsSkeleton count={2} />
+      ) : (
+        <SubjectsCards
+          subjects={subjects.length}
+          departments={departments.items.length}
+        />
+      )}
+      {loading ? (
+        <Skeleton className="h-96 w-full" />
+      ) : (
+        <Tabs defaultValue="catalog">
+          <ScrollArea>
+            <TabsList className="mb-3 w-full">
+              <TabsTrigger value="catalog">
+                <IconCategoryFilled
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Subject Catalog
+              </TabsTrigger>
+              <TabsTrigger value="mapping" className="group">
+                <IconGridScan
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Subject Mapping
+              </TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          <TabsContent value="catalog">
+            <SubjectCatalog subjects={subjects} />
+          </TabsContent>
+          <TabsContent value="mapping">
+            <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
+              Content for Tab 3
+            </p>
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 };

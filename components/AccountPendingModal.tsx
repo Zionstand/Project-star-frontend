@@ -19,9 +19,9 @@ export const AccountPendingModal = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center h-screen bg-black/5 backdrop-blur-xs">
-      <div className="bg-white rounded-2xl shadow w-full max-h-[70vh] max-w-[90vw] sm:max-w-xl sm:max-h-[min(640px,80vh)] mx-4 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow w-full max-h-[70vh] max-w-[90vw] sm:max-w-xl sm:max-h-[min(640px,80vh)] mx-4 flex flex-col overflow-hidden">
         {/* Header with icon */}
-        <div className="bg-gradient-to-br overflow-y-auto custom-scroll from-amber-50 to-orange-50 px-6 py-8 text-center">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 px-6 py-8 text-center flex-shrink-0">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-4">
             <IconClock className="w-8 h-8 text-amber-600" />
           </div>
@@ -30,8 +30,8 @@ export const AccountPendingModal = () => {
           </h2>
         </div>
 
-        {/* Content */}
-        <div className="px-6 py-8">
+        {/* Scrollable Content */}
+        <div className="px-6 py-8 overflow-y-auto flex-1 dark:bg-muted">
           <p className="text-muted-foreground text-center leading-relaxed mb-6">
             Your account is currently pending approval from your school
             administrator. You'll be able to access this page once your account
@@ -63,7 +63,7 @@ export const AccountPendingModal = () => {
         </div>
 
         {/* Footer */}
-        <div className="bg-muted px-6 py-4 text-center border-t border-gray-100">
+        <div className="bg-muted px-6 py-4 text-center border-t border-gray-100 flex-shrink-0">
           <p className="text-xs text-muted-foreground">
             Need help? Contact support at{" "}
             <a

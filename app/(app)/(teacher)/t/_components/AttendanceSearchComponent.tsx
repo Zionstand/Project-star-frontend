@@ -1,3 +1,4 @@
+import { DateSelector } from "@/components/DateSelector";
 import { SearchBar } from "@/components/Searchbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -66,14 +67,12 @@ export const AttendanceSearchComponent = ({ classes, onChange }: Props) => {
           {/* 🗓️ Date Picker */}
           <div className="flex-1 w-full">
             <Label className="mb-2 block">Date</Label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => {
-                setDate(e.target.value);
-                handleChange(selectedClass, e.target.value);
+            <DateSelector
+              dateValue={date}
+              onChange={(newDate) => {
+                setDate(newDate);
+                handleChange(selectedClass, newDate);
               }}
-              className="border rounded-md px-3 py-2 w-full bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         </div>

@@ -7,7 +7,7 @@ import {
   IconTrash,
   IconUsers,
 } from "@tabler/icons-react";
-import { Loader } from "@/components/Loader";
+import { DetailsSkeleton } from "@/components/DetailsSkeleton";
 import { schoolService } from "@/lib/school";
 import { Class, School, useAuth, User } from "@/store/useAuth";
 import { PageHeader } from "@/components/PageHeader";
@@ -50,7 +50,16 @@ const page = () => {
     fetch();
   }, [user, id]);
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Class Details"
+        description="Loading class information..."
+        back
+      />
+      <DetailsSkeleton sections={4} showAvatar={false} />
+    </div>
+  );
 
   if (!classDetails) return notFound();
 
@@ -91,25 +100,27 @@ const page = () => {
                 size={16}
                 aria-hidden="true"
               />
-              Students (42)
+              Students{" "}
+              {classDetails.students.length !== 0 &&
+                `(${classDetails.students.length})`}
             </TabsTrigger>
-            <TabsTrigger value="subjects">
+            {/* <TabsTrigger value="subjects">
               <IconBooks
                 className="-ms-0.5 me-1.5 opacity-60"
                 size={16}
                 aria-hidden="true"
               />
               Subjects (12)
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="students">
           <ClassStudents students={classDetails.students} />
         </TabsContent>
-        <TabsContent value="subjects">
+        {/* <TabsContent value="subjects">
           <ClassSubjects />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

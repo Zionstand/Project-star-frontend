@@ -1,6 +1,6 @@
 "use client";
 import { PageHeader } from "@/components/PageHeader";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { RolesCards } from "../_components/RolesCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -14,87 +14,181 @@ import { UserRoles } from "./_components/UserRoles";
 import { useAuth, User } from "@/store/useAuth";
 import { schoolService } from "@/lib/school";
 import { toast } from "sonner";
-import { Loader } from "@/components/Loader";
+import { TableSkeleton } from "@/components/TableSkeleton";
+import { CardsSkeleton } from "@/components/CardsSkeleton";
 import { RolesDefinitions } from "./_components/RolesDefinitions";
 import { Permissions } from "./_components/Permissions";
 import { configService } from "@/lib/configs";
+import { PaginationMeta } from "@/lib/types/pagination";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Pagination } from "@/components/Pagination";
+import { SearchBar } from "@/components/Searchbar";
 
 const page = () => {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [users, setUsers] = useState<User[]>([]);
   const [teachers, setTeachers] = useState<User[]>([]);
   const [parents, setParents] = useState<User[]>([]);
   const [students, setStudents] = useState<User[]>([]);
   const [admins, setAdmins] = useState<User[]>([]);
+  const [usersMeta, setUsersMeta] = useState<PaginationMeta | null>(null);
+  const [teachersMeta, setTeachersMeta] = useState<PaginationMeta | null>(null);
+  const [parentsMeta, setParentsMeta] = useState<PaginationMeta | null>(null);
+  const [studentsMeta, setStudentsMeta] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
   const [jobRoles, setJobRoles] = useState<any>([]);
 
+  // Get pagination and search params from URL
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 10;
+  const search = searchParams.get("search") || "";
+
   useEffect(() => {
+    let isMounted = true;
+
     const fetchStaffs = async () => {
       if (!user?.schoolId) return;
 
+      setLoading(true);
       try {
-        const [users, teachers, parents, students, admins, jobRoles] =
+        const [usersResponse, teachersResponse, parentsResponse, studentsResponse, admins, jobRoles] =
           await Promise.all([
-            schoolService.getSchoolUsers(user?.schoolId!),
-            schoolService.getSchoolTeachers(user?.schoolId!),
-            schoolService.getSchoolParents(user?.schoolId!),
-            schoolService.getStudents(user?.schoolId!),
+            schoolService.getSchoolUsers(user?.schoolId!, {
+              page: currentPage,
+              limit,
+              search: search || undefined,
+            }),
+            schoolService.getSchoolTeachers(user?.schoolId!, {
+              page: currentPage,
+              limit,
+              search: search || undefined,
+            }),
+            schoolService.getSchoolParents(user?.schoolId!, {
+              page: currentPage,
+              limit,
+              search: search || undefined,
+            }),
+            schoolService.getStudents(user?.schoolId!, {
+              page: currentPage,
+              limit,
+              search: search || undefined,
+            }),
             schoolService.getSchoolAdmins(user?.schoolId!),
             configService.getCategory("JOB_ROLE"),
           ]);
 
-        setUsers(users);
-        setTeachers(teachers);
-        setParents(parents);
-        setStudents(students);
-        setAdmins(admins);
-        setJobRoles(jobRoles);
+        if (isMounted) {
+          // Extract data from paginated responses
+          setUsers(usersResponse.data || []);
+          setTeachers(teachersResponse.data || []);
+          setParents(parentsResponse.data || []);
+          setStudents(studentsResponse.data || []);
+          setUsersMeta(usersResponse.meta || null);
+          setTeachersMeta(teachersResponse.meta || null);
+          setParentsMeta(parentsResponse.meta || null);
+          setStudentsMeta(studentsResponse.meta || null);
+          setAdmins(admins);
+          setJobRoles(jobRoles);
+        }
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        if (isMounted) {
+          toast.error(error.response?.data?.message || "Failed to fetch roles");
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchStaffs();
-  }, [user]);
 
-  const handleRefresh = async () => {
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.schoolId, currentPage, limit, search]);
+
+  const handleRefresh = useCallback(async () => {
     if (!user?.schoolId) return;
 
+    setLoading(true);
     try {
-      const [users, teachers, parents, students, admins, jobRoles] =
+      const [usersResponse, teachersResponse, parentsResponse, studentsResponse, admins, jobRoles] =
         await Promise.all([
-          schoolService.getSchoolUsers(user?.schoolId!),
-          schoolService.getSchoolTeachers(user?.schoolId!),
-          schoolService.getSchoolParents(user?.schoolId!),
-          schoolService.getStudents(user?.schoolId!),
+          schoolService.getSchoolUsers(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getSchoolTeachers(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getSchoolParents(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
+          schoolService.getStudents(user?.schoolId!, {
+            page: currentPage,
+            limit,
+            search: search || undefined,
+          }),
           schoolService.getSchoolAdmins(user?.schoolId!),
           configService.getCategory("JOB_ROLE"),
         ]);
 
-      setUsers(users);
-      setTeachers(teachers);
-      setParents(parents);
-      setStudents(students);
+      // Extract data from paginated responses
+      setUsers(usersResponse.data || []);
+      setTeachers(teachersResponse.data || []);
+      setParents(parentsResponse.data || []);
+      setStudents(studentsResponse.data || []);
+      setUsersMeta(usersResponse.meta || null);
+      setTeachersMeta(teachersResponse.meta || null);
+      setParentsMeta(parentsResponse.meta || null);
+      setStudentsMeta(studentsResponse.meta || null);
       setAdmins(admins);
       setJobRoles(jobRoles);
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Failed to fetch roles");
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.schoolId, currentPage, limit, search]);
 
-  if (loading) return <Loader />;
+  const handlePageChange = useCallback((newPage: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", newPage.toString());
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [router]);
+
+  const handleLimitChange = useCallback((newLimit: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("limit", newLimit.toString());
+    params.set("page", "1");
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [router]);
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Roles & Permissions"
         description="Manage user roles, permissions, and access control for the school system"
       />
-      <RolesCards total={users.length} />
+
+      {loading ? (
+        <CardsSkeleton count={1} />
+      ) : (
+        <RolesCards total={usersMeta?.total || users.length || 0} />
+      )}
+
+      {/* Search Bar */}
+      <SearchBar placeholder="Search users by name, email, role..." />
+
       <Tabs defaultValue="users">
         <ScrollArea>
           <TabsList className="mb-3 w-full">
@@ -126,24 +220,37 @@ const page = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <TabsContent value="users">
-          <UserRoles
-            users={users}
-            onRefresh={() => handleRefresh()}
-            jobRoles={jobRoles.items}
-          />
+          {loading ? (
+            <TableSkeleton columns={5} rows={limit} />
+          ) : (
+            <UserRoles
+              users={users}
+              onRefresh={() => handleRefresh()}
+              jobRoles={jobRoles.items}
+            />
+          )}
         </TabsContent>
         <TabsContent value="roles">
           <RolesDefinitions
-            teachers={teachers.length}
-            students={students.length}
-            admins={admins.length}
-            parents={parents.length}
+            teachers={teachersMeta?.total || teachers.length || 0}
+            students={studentsMeta?.total || students.length || 0}
+            admins={admins.length || 0}
+            parents={parentsMeta?.total || parents.length || 0}
           />
         </TabsContent>
         <TabsContent value="permissions">
           <Permissions />
         </TabsContent>
       </Tabs>
+
+      {/* Pagination */}
+      {!loading && usersMeta && usersMeta.total > 0 && (
+        <Pagination
+          meta={usersMeta}
+          onPageChange={handlePageChange}
+          onLimitChange={handleLimitChange}
+        />
+      )}
     </div>
   );
 };

@@ -22,7 +22,7 @@ import {
   FlagComponent,
   PhoneInput,
 } from "@/components/PhoneNumberInput";
-import DateSelector from "@/components/DateSelector";
+import { DateSelector } from "@/components/DateSelector";
 import {
   Select,
   SelectContent,

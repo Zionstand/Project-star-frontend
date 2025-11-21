@@ -8,7 +8,7 @@ import {
   IconUserCircle,
   IconUsers,
 } from "@tabler/icons-react";
-import { Loader } from "@/components/Loader";
+import { DetailsSkeleton } from "@/components/DetailsSkeleton";
 import { schoolService } from "@/lib/school";
 import { Class, School, useAuth, User } from "@/store/useAuth";
 import { PageHeader } from "@/components/PageHeader";
@@ -77,7 +77,16 @@ const page = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Staff Details"
+        description="Loading staff information..."
+        back
+      />
+      <DetailsSkeleton sections={6} showAvatar={true} />
+    </div>
+  );
 
   if (!staff) return notFound();
 

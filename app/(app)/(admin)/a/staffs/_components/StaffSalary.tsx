@@ -34,7 +34,9 @@ export const StaffSalary = () => {
         </div>
         <Separator />
         <div className="rounded-md flex gap-1 text-sm items-center justify-between bg-primary/10 text-primary px-3 py-4 space-y-1">
-          <span className="text-black">Total Monthly Salary</span>
+          <span className="text-black dark:text-white">
+            Total Monthly Salary
+          </span>
           <span>
             <NairaIcon />
             370,000

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { ClassesCards } from "../_components/ClassesCards";
 import { IconPlus } from "@tabler/icons-react";
-import { Loader } from "@/components/Loader";
+import { CardsSkeleton } from "@/components/CardsSkeleton";
 import { schoolService } from "@/lib/school";
 import { Class, School, useAuth, User } from "@/store/useAuth";
 import { ClassSearchComponent } from "../_components/ClassSearchComponent";
@@ -10,6 +10,7 @@ import { ClassBox } from "./_components/ClassBox";
 import { PageHeader } from "@/components/PageHeader";
 import { toast } from "sonner";
 import { NothingFound } from "@/components/NothingFound";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const page = () => {
   const { user } = useAuth();
@@ -38,8 +39,6 @@ const page = () => {
     fetch();
   }, [user]);
 
-  if (loading) return <Loader />;
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -56,16 +55,30 @@ const page = () => {
         //   icon: IconPlus,
         // }}
       />
-      <ClassesCards classes={classes?.length} />
-      <ClassSearchComponent />
-      {classes?.length === 0 && (
-        <NothingFound message="No classes found yet!" />
+      {loading ? (
+        <CardsSkeleton count={1} />
+      ) : (
+        <ClassesCards classes={classes?.length} />
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {classes?.map((c) => (
-          <ClassBox key={c.id} schoolClass={c} />
-        ))}
-      </div>
+      <ClassSearchComponent />
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <Skeleton key={i} className="h-32 w-full" />
+          ))}
+        </div>
+      ) : (
+        <>
+          {classes?.length === 0 && (
+            <NothingFound message="No classes found yet!" />
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {classes?.map((c) => (
+              <ClassBox key={c.id} schoolClass={c} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

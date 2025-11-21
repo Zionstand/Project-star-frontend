@@ -3,8 +3,9 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import Providers from "./providers";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
-const poppins = Outfit({
+const outfits = Outfit({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
@@ -21,9 +22,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} antialiased`}>
-        <Providers>{children}</Providers>
-        <Toaster position="bottom-center" />
+      <body className={`${outfits.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>{children}</Providers>
+          <Toaster position="bottom-center" />
+        </ThemeProvider>
       </body>
     </html>
   );

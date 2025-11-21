@@ -114,7 +114,7 @@ export const ResetPasswordModal = ({
         </div>
 
         {/* Warning Box */}
-        <div className="border border-yellow-300 bg-yellow-50 text-yellow-900 text-xs rounded-md p-3">
+        <div className="border border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950 text-yellow-900 dark:text-yellow-100 text-xs rounded-md p-3">
           ⚠️ Resetting this user’s password will generate a new one
           automatically. The user will be required to log in again using the new
           credentials.

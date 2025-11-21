@@ -102,7 +102,7 @@ export function VerifyCodeForm({ email }: Props) {
   };
 
   return (
-    <Card className="bg-white md:min-w-md">
+    <Card className="bg-white dark:bg-card md:min-w-md">
       <CardContent className="space-y-10 py-6">
         <div className="space-y-3 text-center">
           <div

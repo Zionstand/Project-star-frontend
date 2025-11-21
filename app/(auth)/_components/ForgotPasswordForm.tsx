@@ -55,7 +55,7 @@ export function ForgotPasswordForm() {
   }
 
   return (
-    <Card className="bg-white">
+    <Card className="bg-white dark:bg-card">
       <CardContent className="space-y-10 py-6">
         <div className="space-y-3 text-center">
           <div

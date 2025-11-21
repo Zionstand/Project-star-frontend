@@ -9,7 +9,7 @@ import InviteStaff from "../_components/InviteStaff";
 import { PageHeader } from "@/components/PageHeader";
 import { ImportStaff } from "../_components/ImportStaff";
 import { toast } from "sonner";
-import { Loader } from "@/components/Loader";
+import { FormSkeleton } from "@/components/FormSkeleton";
 
 const page = () => {
   const [loading, setLoading] = useState(true);
@@ -40,8 +40,6 @@ const page = () => {
     fetchConfigs();
   }, []);
 
-  if (loading) return <Loader />;
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -49,50 +47,54 @@ const page = () => {
         description="Add a new staff manually or import from Excel/CSV or invite"
         back
       />
-      <Tabs defaultValue="manual">
-        <ScrollArea>
-          <TabsList className="mb-3 w-full">
-            <TabsTrigger value="manual">
-              <IconUserPlus
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Manual Entry
-            </TabsTrigger>
-            <TabsTrigger value="import" className="group">
-              <IconFileTypeXls
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Import from file
-            </TabsTrigger>
-            <TabsTrigger value="invite" className="group">
-              <IconShare
-                className="-ms-0.5 me-1.5 opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
-              Invite Link
-            </TabsTrigger>
-          </TabsList>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-        <TabsContent value="manual">
-          <AddStaffForm
-            countries={countries.items}
-            states={states.items}
-            jobRoles={jobRoles.items}
-          />
-        </TabsContent>
-        <TabsContent value="import">
-          <ImportStaff />
-        </TabsContent>
-        <TabsContent value="invite">
-          <InviteStaff />
-        </TabsContent>
-      </Tabs>
+      {loading ? (
+        <FormSkeleton fields={10} showHeader={false} columns={2} />
+      ) : (
+        <Tabs defaultValue="manual">
+          <ScrollArea>
+            <TabsList className="mb-3 w-full">
+              <TabsTrigger value="manual">
+                <IconUserPlus
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Manual Entry
+              </TabsTrigger>
+              <TabsTrigger value="import" className="group">
+                <IconFileTypeXls
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Import from file
+              </TabsTrigger>
+              <TabsTrigger value="invite" className="group">
+                <IconShare
+                  className="-ms-0.5 me-1.5 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Invite Link
+              </TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          <TabsContent value="manual">
+            <AddStaffForm
+              countries={countries.items}
+              states={states.items}
+              jobRoles={jobRoles.items}
+            />
+          </TabsContent>
+          <TabsContent value="import">
+            <ImportStaff />
+          </TabsContent>
+          <TabsContent value="invite">
+            <InviteStaff />
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 };

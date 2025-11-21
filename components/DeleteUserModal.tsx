@@ -94,7 +94,7 @@ export const DeleteUserModal = ({
         </div>
 
         {/* Warning Box */}
-        <div className="border border-red-300 bg-red-50 text-red-900 text-xs rounded-md p-3">
+        <div className="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950 text-red-900 dark:text-red-100 text-xs rounded-md p-3">
           ⚠️ Once deleted, this user’s account and all related data will be
           permanently removed.
           <br />

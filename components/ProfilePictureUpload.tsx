@@ -213,7 +213,7 @@ export const ProfilePictureUpload = ({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="flex flex-col gap-0 sm:max-w-lg">
+      <AlertDialogContent className="flex flex-col gap-0 overflow-hidden max-h-[70vh] max-w-[90vw] sm:max-w-xl sm:max-h-[min(640px,80vh)]">
         <AlertDialogHeader className="flex flex-row items-center justify-between gap-1 pb-4">
           <AlertDialogTitle>Upload Profile Picture</AlertDialogTitle>
           <Button size="icon" variant="ghost" onClick={onClose}>
@@ -221,7 +221,7 @@ export const ProfilePictureUpload = ({
           </Button>
         </AlertDialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="overflow-y-auto custom-scroll space-y-4 py-4">
           {!image ? (
             <div
               onDragOver={handleDragOver}
@@ -229,12 +229,12 @@ export const ProfilePictureUpload = ({
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-md p-12 text-center transition-colors ${
                 isDragging
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-300 bg-gray-50"
+                  ? "border-primary/50 bg-primary/50"
+                  : "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950"
               }`}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
                   <IconPhoto size={32} className="text-blue-500" />
                 </div>
                 <div>

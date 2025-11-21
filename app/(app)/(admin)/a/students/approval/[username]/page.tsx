@@ -1,5 +1,5 @@
 "use client";
-import { Loader } from "@/components/Loader";
+import { DetailsSkeleton } from "@/components/DetailsSkeleton";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -156,7 +156,16 @@ const page = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Student Details"
+        description="Loading student information..."
+        back
+      />
+      <DetailsSkeleton sections={6} showAvatar={true} />
+    </div>
+  );
 
   if (!student) return notFound();
 
@@ -218,7 +227,7 @@ const page = () => {
                     <IconSchool className="size-5" />
                     <div>
                       <p className="text-xs">Class</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {student.Student.desiredClass}
                       </p>
                     </div>
@@ -231,7 +240,7 @@ const page = () => {
                         <IconBuilding className="size-5" />
                         <div>
                           <p className="text-xs">Department</p>
-                          <p className="text-black font-medium">
+                          <p className="text-black dark:text-white font-medium">
                             {student.department || (
                               <span className="italic">
                                 No department selected
@@ -245,7 +254,7 @@ const page = () => {
                     <IconUser className="size-5" />
                     <div>
                       <p className="text-xs">Gender</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {student.gender || (
                           <span className="italic">No gender selected</span>
                         )}
@@ -256,7 +265,7 @@ const page = () => {
                     <IconCalendar className="size-5" />
                     <div>
                       <p className="text-xs">Date of Birth</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {formatDate(student.dob) || (
                           <span className="italic">No Date of Birth</span>
                         )}
@@ -267,7 +276,7 @@ const page = () => {
                     <IconAward className="size-5" />
                     <div>
                       <p className="text-xs">Candidate Number</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {student.Student.candidateNumber}
                       </p>
                     </div>
@@ -284,7 +293,7 @@ const page = () => {
                   <IconMail className="size-5" />
                   <div>
                     <p className="text-xs">Email</p>
-                    <p className="text-black font-medium">
+                    <p className="text-black dark:text-white font-medium">
                       {student.email ? (
                         <a
                           className="hover:underline hover:text-primary"
@@ -302,7 +311,7 @@ const page = () => {
                   <IconPhone className="size-5" />
                   <div>
                     <p className="text-xs">Phone</p>
-                    <p className="text-black font-medium">
+                    <p className="text-black dark:text-white font-medium">
                       {student.phoneNumber ? (
                         <a
                           className="hover:underline hover:text-primary"
@@ -320,7 +329,7 @@ const page = () => {
                   <IconMapPin2 className="size-5" />
                   <div>
                     <p className="text-xs">Address</p>
-                    <p className="text-black font-medium">
+                    <p className="text-black dark:text-white font-medium">
                       {student.address ? (
                         <p className="hover:underline hover:text-primary">
                           {student.address}, {student.city}, {student.state},{" "}
@@ -363,7 +372,7 @@ const page = () => {
                     <CardContent className="text-muted-foreground text-sm grid gap-4">
                       <div>
                         <p className="text-xs">Name</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.title}{" "}
                           {parent.parent.user?.firstName}{" "}
                           {parent.parent.user?.lastName}{" "}
@@ -371,7 +380,7 @@ const page = () => {
                       </div>
                       <div>
                         <p className="text-xs">Phone</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.phoneNumber ? (
                             <a href={`tel:${parent.parent.user?.phoneNumber}`}>
                               {formatPhoneNumber(
@@ -385,7 +394,7 @@ const page = () => {
                       </div>
                       <div>
                         <p className="text-xs">Phone</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.email ? (
                             <a href={`mailto:${parent.parent.user?.email}`}>
                               {parent.parent.user?.email}
@@ -397,7 +406,7 @@ const page = () => {
                       </div>
                       <div>
                         <p className="text-xs">Occupation</p>
-                        <p className="font-medium text-black">
+                        <p className="font-medium text-black dark:text-white">
                           {parent.parent.user?.occupation ? (
                             parent.parent.user.occupation
                           ) : (
@@ -420,13 +429,13 @@ const page = () => {
               <CardContent className="text-muted-foreground text-sm grid grid-cols-1 gap-2 md:grid-cols-2">
                 <div>
                   <p className="text-xs">Applied for:</p>
-                  <p className="text-black font-medium">
+                  <p className="text-black dark:text-white font-medium">
                     {student.Student.desiredClass}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs">Applied:</p>
-                  <p className="text-black font-medium">
+                  <p className="text-black dark:text-white font-medium">
                     {formatDate(student.createdAt)}
                   </p>
                 </div>
@@ -452,7 +461,7 @@ const page = () => {
                           <IconFileDescription className="size-5 text-primary" />
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium text-black text-sm">
+                          <p className="font-medium text-black dark:text-white text-sm">
                             {doc.type
                               .split("_")
                               .map(

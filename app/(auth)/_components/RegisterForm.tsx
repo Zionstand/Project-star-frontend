@@ -188,7 +188,7 @@ export function RegisterForm({
   }
 
   return (
-    <Card className="bg-white w-full">
+    <Card className="bg-white dark:bg-card w-full">
       <CardContent className="space-y-10 py-6">
         <div className="space-y-1 text-center">
           <h3 className="font-medium text-2xl md:text-3xl">

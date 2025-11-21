@@ -221,7 +221,6 @@ export const UserRoles = ({ users, onRefresh, jobRoles }: Props) => {
                   <div className="flex-1">
                     <div className="font-medium text-base line-clamp-1">
                       {user?.firstName} {user?.lastName}{" "}
-                      <Badge variant="outlineSuccess">Active</Badge>
                     </div>
                     <a
                       href={`mailto:${user?.email}`}

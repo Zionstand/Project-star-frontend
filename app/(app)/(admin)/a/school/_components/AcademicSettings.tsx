@@ -29,7 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { academicTerms, gradingSystems, termsPerSession } from "@/constant";
-import DateSelector from "@/components/DateSelector";
+import { DateSelector } from "@/components/DateSelector";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
 import api from "@/lib/api";

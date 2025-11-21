@@ -1,10 +1,19 @@
 "use client";
 import React from "react";
-import { IconDeviceFloppy } from "@tabler/icons-react";
+import {
+  IconBell,
+  IconDeviceFloppy,
+  IconDeviceLaptop,
+  IconServer,
+  IconShield,
+} from "@tabler/icons-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { General } from "./_components/General";
+import { NotificationSettings } from "../../../../../components/NotificationSettings";
 import { PageHeader } from "@/components/PageHeader";
+import { SystemSettings } from "./_components/SystemSettings";
+import { DisplaySettings } from "../../../../../components/DisplaySettings";
+import { SecuritySettings } from "@/components/SecuritySettings";
 
 const page = () => {
   return (
@@ -18,60 +27,55 @@ const page = () => {
           icon: IconDeviceFloppy,
         }}
       />
-      <Tabs defaultValue="catalog">
+      <Tabs defaultValue="notifications">
         <ScrollArea>
           <TabsList className="mb-3 w-full">
-            <TabsTrigger value="catalog">
-              {/* <IconBrandStackoverflow
-                      className="-ms-0.5 me-1.5 opacity-60"
-                      size={16}
-                      aria-hidden="true"
-                    /> */}
-              General
-            </TabsTrigger>
-            <TabsTrigger value="structure" className="group">
-              {/* <IconTopologyFullHierarchy
-                      className="-ms-0.5 me-1.5 opacity-60"
-                      size={16}
-                      aria-hidden="true"
-                    /> */}
+            <TabsTrigger value="notifications" className="group">
+              <IconBell
+                className="-ms-0.5 me-1.5 opacity-60"
+                size={16}
+                aria-hidden="true"
+              />
               Notifications
             </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
-              {/* <IconReplaceUser
-                      className="-ms-0.5 me-1.5 opacity-60"
-                      size={16}
-                      aria-hidden="true"
-                    /> */}
+            <TabsTrigger value="security" className="group">
+              <IconShield
+                className="-ms-0.5 me-1.5 opacity-60"
+                size={16}
+                aria-hidden="true"
+              />
               Security
             </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
-              {/* <IconReplaceUser
-                      className="-ms-0.5 me-1.5 opacity-60"
-                      size={16}
-                      aria-hidden="true"
-                    /> */}
+            <TabsTrigger value="system" className="group">
+              <IconServer
+                className="-ms-0.5 me-1.5 opacity-60"
+                size={16}
+                aria-hidden="true"
+              />
               System
             </TabsTrigger>
-            <TabsTrigger value="mapping" className="group">
-              {/* <IconReplaceUser
-                      className="-ms-0.5 me-1.5 opacity-60"
-                      size={16}
-                      aria-hidden="true"
-                    /> */}
+            <TabsTrigger value="display" className="group">
+              <IconDeviceLaptop
+                className="-ms-0.5 me-1.5 opacity-60"
+                size={16}
+                aria-hidden="true"
+              />
               Display
             </TabsTrigger>
           </TabsList>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
-        <TabsContent value="catalog">
-          <General />
+        <TabsContent value="notifications">
+          <NotificationSettings />
         </TabsContent>
-        <TabsContent value="structure">{/* <FeeStructures /> */}</TabsContent>
-        <TabsContent value="mapping">
-          <p className="text-muted-foreground p-4 pt-1 text-center text-xs">
-            Content for Tab 3
-          </p>
+        <TabsContent value="security">
+          <SecuritySettings />
+        </TabsContent>
+        <TabsContent value="system">
+          <SystemSettings />
+        </TabsContent>
+        <TabsContent value="display">
+          <DisplaySettings />
         </TabsContent>
       </Tabs>
     </div>

@@ -169,9 +169,11 @@ const page = () => {
               <CardContent className="space-y-2">
                 {assignment?.status === "GRADED" ? (
                   <div>
-                    <div className="space-y-1.5 border bg-green-100/80 border-green-500 rounded-md px-3 py-5">
-                      <p className="text-xs text-green-700">Score</p>
-                      <p className="text-base text-green-900 lg:text-lg">
+                    <div className="space-y-1.5 border bg-green-100/80 dark:bg-green-900/80 border-green-500 dark:border-green-900 rounded-md px-3 py-5">
+                      <p className="text-xs text-green-700 dark:text-green-300">
+                        Score
+                      </p>
+                      <p className="text-base text-green-900 dark:text-100 dark:text-green-100 lg:text-lg">
                         {assignment.grade}/
                         {assignment.Assignment.totalMarks === 0
                           ? 100
@@ -266,7 +268,7 @@ const page = () => {
                     <IconMail className="size-5" />
                     <div>
                       <p className="text-xs">Email</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {assignment?.Student?.user?.email ? (
                           <a
                             className="hover:underline hover:text-primary"
@@ -284,7 +286,7 @@ const page = () => {
                     <IconPhone className="size-5" />
                     <div>
                       <p className="text-xs">Student Phone</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {assignment?.Student.user?.phoneNumber ? (
                           <a
                             className="hover:underline hover:text-primary"
@@ -304,7 +306,7 @@ const page = () => {
                     <IconPhone className="size-5" />
                     <div>
                       <p className="text-xs">Parent Phone</p>
-                      <p className="text-black font-medium">
+                      <p className="text-black dark:text-white font-medium">
                         {assignment?.Student.ParentStudentLink[0].parent.user
                           ?.phoneNumber ? (
                           <a

@@ -11,18 +11,24 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { FullLogo } from "../../_components/Logo";
+import { maskEmail } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Success - Set new password | EduManage School Management",
 };
 
-const page = () => {
+type SearchParams = Promise<{
+  email: string;
+}>;
+
+const page = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const { email } = await searchParams;
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-center">
         <FullLogo />
       </div>
-      <Card className="bg-white md:min-w-md">
+      <Card className="bg-white dark:bg-card md:min-w-md">
         <CardContent className="space-y-10 py-6">
           <div className="space-y-3 text-center">
             <div
@@ -38,7 +44,7 @@ const page = () => {
               </h3>
               <p className="text-sm text-muted-foreground">
                 Your password has been successfully updated for{" "}
-                <span className="font-medium">js***@jd.com</span>
+                <span className="font-medium">{maskEmail(email)}</span>
               </p>
             </div>
           </div>

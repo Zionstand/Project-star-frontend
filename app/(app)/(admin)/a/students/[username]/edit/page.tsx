@@ -1,5 +1,5 @@
 "use client";
-import { Loader } from "@/components/Loader";
+import { FormSkeleton } from "@/components/FormSkeleton";
 import { PageHeader } from "@/components/PageHeader";
 import { schoolService } from "@/lib/school";
 import { Class, useAuth, User } from "@/store/useAuth";
@@ -50,7 +50,16 @@ const page = () => {
     fetch();
   }, [user, username]);
 
-  if (loading) return <Loader />;
+  if (loading) return (
+    <div className="space-y-6">
+      <PageHeader
+        title="Edit Student Details"
+        description="Loading student information..."
+        back
+      />
+      <FormSkeleton fields={12} showHeader={false} columns={2} />
+    </div>
+  );
 
   if (!student) return notFound();
 

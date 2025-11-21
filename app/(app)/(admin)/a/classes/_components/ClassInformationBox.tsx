@@ -39,7 +39,9 @@ export const ClassInformationBox = ({
               <p className="text-sm text-muted-foreground">
                 Classroom location
               </p>
-              <p className="text-base font-medium text-black">{location}</p>
+              <p className="text-base font-medium text-black dark:text-white">
+                {location}
+              </p>
             </div>
           </div>
         )}
@@ -47,14 +49,20 @@ export const ClassInformationBox = ({
           <IconCalendar className="size-4.5" />
           <div className="space-y-1">
             <p className="text-sm">Academic Year</p>
-            <p className="font-medium text-base text-black"> {academicYear}</p>
+            <p className="font-medium text-base text-black dark:text-white">
+              {" "}
+              {academicYear}
+            </p>
           </div>
         </div>
         <div className="flex items-start justify-start gap-2 text-muted-foreground">
           <IconUsers className="size-4.5" />
           <div className="space-y-1">
             <p className="text-sm">Class Capacity</p>
-            <p className="font-medium text-base text-black"> {capacity}</p>
+            <p className="font-medium text-base text-black dark:text-white">
+              {" "}
+              {capacity}
+            </p>
           </div>
         </div>
       </CardContent>

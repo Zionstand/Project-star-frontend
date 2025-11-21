@@ -59,7 +59,7 @@ import {
   termsPerSession,
   years,
 } from "@/constant";
-import DateSelector from "@/components/DateSelector";
+import { DateSelector } from "@/components/DateSelector";
 import { Loader } from "@/components/Loader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/store/useAuth";
@@ -210,16 +210,6 @@ export const AdministrativeDetails = ({ teachers, students }: Props) => {
                       </FormItem>
                     )}
                   />
-                </div>
-                <div className="rounded-md bg-green-500/5 text-green-800 p-4 border border-green-300 flex items-start justify-start gap-2">
-                  <IconAward />
-                  <div>
-                    <p className="text-medium text-sm">Accreditation Status</p>
-                    <p className="text-xs">
-                      This school is fully accredited by Ministry of Education.
-                      Accreditation is valid and up to date.
-                    </p>
-                  </div>
                 </div>
               </div>
               <Separator />

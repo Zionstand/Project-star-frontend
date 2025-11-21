@@ -1,4 +1,5 @@
 import api from "./api";
+import { PaginationParams } from "./types/pagination";
 
 export const schoolService = {
   getSchool: async (schoolID: string) => {
@@ -6,13 +7,13 @@ export const schoolService = {
     return res.data;
   },
 
-  getSchoolStaffs: async (schoolID: string) => {
-    const res = await api.get(`/schools/${schoolID}/staffs`);
+  getSchoolStaffs: async (schoolID: string, params?: PaginationParams) => {
+    const res = await api.get(`/schools/${schoolID}/staffs`, { params });
     return res.data;
   },
 
-  getSchoolUsers: async (schoolID: string) => {
-    const res = await api.get(`/schools/${schoolID}/users`);
+  getSchoolUsers: async (schoolID: string, params?: PaginationParams) => {
+    const res = await api.get(`/schools/${schoolID}/users`, { params });
     return res.data;
   },
 
@@ -21,13 +22,13 @@ export const schoolService = {
     return res.data;
   },
 
-  getSchoolTeachers: async (id: string) => {
-    const res = await api.get(`/schools/${id}/teachers`);
+  getSchoolTeachers: async (id: string, params?: PaginationParams) => {
+    const res = await api.get(`/schools/${id}/teachers`, { params });
     return res.data;
   },
 
-  getSchoolParents: async (id: string) => {
-    const res = await api.get(`/schools/${id}/parents`);
+  getSchoolParents: async (id: string, params?: PaginationParams) => {
+    const res = await api.get(`/schools/${id}/parents`, { params });
     return res.data;
   },
 
@@ -64,8 +65,8 @@ export const schoolService = {
     return res.data;
   },
 
-  getStudents: async (schoolId: string) => {
-    const res = await api.get(`/students/${schoolId}`);
+  getStudents: async (schoolId: string, params?: PaginationParams) => {
+    const res = await api.get(`/students/${schoolId}`, { params });
     return res.data;
   },
 

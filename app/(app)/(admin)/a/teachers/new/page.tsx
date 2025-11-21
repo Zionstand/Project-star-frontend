@@ -1,5 +1,5 @@
 "use client";
-import { Loader } from "@/components/Loader";
+import { FormSkeleton } from "@/components/FormSkeleton";
 import { schoolService } from "@/lib/school";
 import { Class, useAuth, User } from "@/store/useAuth";
 import React, { useEffect, useState } from "react";
@@ -22,13 +22,14 @@ const page = () => {
       if (!user?.schoolId) return;
 
       try {
-        const [teachers, classes, subjects] = await Promise.all([
+        const [teachersResponse, classes, subjects] = await Promise.all([
           schoolService.getSchoolTeachers(user?.schoolId!),
           schoolService.getSchoolClasses(user?.school?.schoolID!),
           schoolService.getSchoolSubjects(user?.school?.schoolID!),
         ]);
 
-        setTeachers(teachers);
+        // Extract data from paginated response
+        setTeachers(teachersResponse.data || []);
         setClasses(classes);
         setSubjects(subjects);
       } catch (error: any) {
@@ -41,8 +42,6 @@ const page = () => {
     fetchStaffs();
   }, [user]);
 
-  if (loading) return <Loader />;
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -50,11 +49,15 @@ const page = () => {
         description="Assign a teacher to a class or subject"
         back
       />
-      <AssignTeacherForm
-        teachers={teachers}
-        classes={classes}
-        subjects={subjects}
-      />
+      {loading ? (
+        <FormSkeleton fields={6} showHeader={false} />
+      ) : (
+        <AssignTeacherForm
+          teachers={teachers}
+          classes={classes}
+          subjects={subjects}
+        />
+      )}
     </div>
   );
 };

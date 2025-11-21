@@ -19,7 +19,7 @@ export const StaffCards = ({ total, active, teachers, onLeave }: Props) => {
     {
       title: "Total Staffs",
       value: total,
-      textColor: "text-black",
+      textColor: "text-black dark:text-white",
     },
     {
       title: "Active Staffs",

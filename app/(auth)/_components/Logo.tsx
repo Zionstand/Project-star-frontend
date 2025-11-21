@@ -20,10 +20,10 @@ export const FullLogo = ({
     >
       <Logo acronym={acronym} logo={logo} />
       <div className="space-y-0">
-        <h2 className="font-medium text-lg group-hover:text-primary transition-all">
+        <h2 className="font-medium text-lg text-primary group-hover:text-primary transition-all">
           {name}
         </h2>
-        <p className="text-muted-foreground text-sm -mt-1 group-hover:text-black transition-all">
+        <p className="text-muted-foreground text-sm -mt-1 group-hover:text-black dark:group-hover:text-white transition-all">
           School Management
         </p>
       </div>

@@ -132,14 +132,14 @@ export const StaffProfile = ({
             <IconBuilding className="size-5" />
             <div>
               <p className="text-xs">Department</p>
-              <p className="text-black font-medium">Science</p>
+              <p className="text-black dark:text-white font-medium">Science</p>
             </div>
           </div>
           <div className="flex items-start justify-start gap-2">
             <IconBriefcase className="size-5" />
             <div>
               <p className="text-xs">Employee Number</p>
-              <p className="text-black font-medium">
+              <p className="text-black dark:text-white font-medium">
                 {employeeID || <span className="italic">No employee ID</span>}
               </p>
             </div>
@@ -148,7 +148,7 @@ export const StaffProfile = ({
             <IconCalendar className="size-5" />
             <div>
               <p className="text-xs">Date of Birth</p>
-              <p className="text-black font-medium">
+              <p className="text-black dark:text-white font-medium">
                 {dob ? (
                   formatDate(dob)
                 ) : (
@@ -161,7 +161,9 @@ export const StaffProfile = ({
             <IconClock className="size-5" />
             <div>
               <p className="text-xs">Joined Date</p>
-              <p className="text-black font-medium">{formatDate(joinedDate)}</p>
+              <p className="text-black dark:text-white font-medium">
+                {formatDate(joinedDate)}
+              </p>
             </div>
           </div>
         </div>

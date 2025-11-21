@@ -26,7 +26,6 @@ export const StudentCard = ({ student }: Props) => {
             className="font-medium hover:underline hover:text-primary text-base line-clamp-1"
           >
             {student?.firstName} {student?.lastName} {student?.otherName}
-            <Badge variant={"outlineSuccess"}>Active</Badge>
           </Link>
           <a
             className="hover:text-primary text-sm text-muted-foreground hover:underline transition-all line-clamp-1"

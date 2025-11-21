@@ -32,7 +32,7 @@ export const StaffContactInformation = ({
       <CardContent className="grid gap-4 text-muted-foreground text-sm">
         <div className="flex items-start justify-start gap-2">
           <IconMail className="size-5" />
-          <p className="text-black font-medium">
+          <p className="text-black dark:text-white font-medium">
             {email ? (
               <a
                 className="hover:underline hover:text-primary"
@@ -47,7 +47,7 @@ export const StaffContactInformation = ({
         </div>
         <div className="flex items-start justify-start gap-2">
           <IconPhone className="size-5" />
-          <p className="text-black font-medium">
+          <p className="text-black dark:text-white font-medium">
             {phoneNumber ? (
               <a
                 className="hover:underline hover:text-primary"
@@ -62,7 +62,7 @@ export const StaffContactInformation = ({
         </div>
         <div className="flex items-start justify-start gap-2">
           <IconMapPin2 className="size-5" />
-          <p className="text-black font-medium">
+          <p className="text-black dark:text-white font-medium">
             {address ? (
               <p>{address}</p>
             ) : (
@@ -74,7 +74,7 @@ export const StaffContactInformation = ({
         <p className="text-xs">Emergency Contact</p>
         <div className="flex items-start justify-start gap-2">
           <IconUser className="size-5" />
-          <p className="text-black font-medium">
+          <p className="text-black dark:text-white font-medium">
             {emergencyContactName ? (
               emergencyContactName
             ) : (
@@ -84,7 +84,7 @@ export const StaffContactInformation = ({
         </div>
         <div className="flex items-start justify-start gap-2">
           <IconPhone className="size-5" />
-          <p className="text-black font-medium">
+          <p className="text-black dark:text-white font-medium">
             {emergencyPhoneNumber ? (
               <a
                 className="hover:underline hover:text-primary"

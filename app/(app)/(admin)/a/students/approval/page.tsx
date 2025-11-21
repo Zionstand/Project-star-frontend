@@ -6,7 +6,8 @@ import { StudentSearchComponent } from "../../_components/StudentSearchComponent
 import { Class, useAuth, User } from "@/store/useAuth";
 import { schoolService } from "@/lib/school";
 import { toast } from "sonner";
-import { Loader } from "@/components/Loader";
+import { CardsSkeleton } from "@/components/CardsSkeleton";
+import { ListSkeleton } from "@/components/ListSkeleton";
 import { ApprovalStudentBox } from "./_components/ApprovalStudentBox";
 import { NothingFound } from "@/components/NothingFound";
 
@@ -79,29 +80,37 @@ const page = () => {
     }
   };
 
-  if (loading) return <Loader />;
   return (
     <div className="space-y-6">
       <PageHeader
         title={"Student Approvals"}
         description={"Review and approve student enrollment requests"}
       />
-      <StudentApprovalCards
-        students={students.length}
-        rejectedStudents={rejectedStudents.length}
-      />
-      <StudentSearchComponent />
-      <div className="space-y-4">
-        {allStudents.length === 0 && <NothingFound message="No students yet" />}
-        {allStudents.map((student) => (
-          <ApprovalStudentBox
-            key={student?.id}
-            student={student}
-            onStudentStatusChange={handleStudentStatusChange}
-            classes={classes}
+      {loading ? (
+        <>
+          <CardsSkeleton count={2} />
+          <ListSkeleton items={5} showHeader={false} itemHeight="h-32" />
+        </>
+      ) : (
+        <>
+          <StudentApprovalCards
+            students={students.length}
+            rejectedStudents={rejectedStudents.length}
           />
-        ))}
-      </div>
+          <StudentSearchComponent />
+          <div className="space-y-4">
+            {allStudents.length === 0 && <NothingFound message="No students yet" />}
+            {allStudents.map((student) => (
+              <ApprovalStudentBox
+                key={student?.id}
+                student={student}
+                onStudentStatusChange={handleStudentStatusChange}
+                classes={classes}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

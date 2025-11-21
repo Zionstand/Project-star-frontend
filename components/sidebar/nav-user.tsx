@@ -7,6 +7,8 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,11 +35,13 @@ import { getDashboardPath } from "@/hooks/use-role-redirect";
 import { IconUser } from "@tabler/icons-react";
 import { formatWord } from "@/lib/utils";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const handleSignout = useSignout();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const { user, setCurrentRole } = useAuth();
 
@@ -152,6 +156,21 @@ export function NavUser() {
                 <DropdownMenuSeparator />
               </>
             )}
+            <DropdownMenuItem
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun className="size-4" />
+                  <span>Light mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="size-4" />
+                  <span>Dark mode</span>
+                </>
+              )}
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignout}>
               <LogOut />

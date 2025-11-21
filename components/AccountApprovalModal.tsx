@@ -178,14 +178,14 @@ export const AccountApprovedModal = ({ onClose }: Props) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center h-screen justify-center bg-red-300/5 backdrop-blur-xs">
       <div
-        className="bg-white rounded-2xl shadow-xl w-full overflow-hidden max-h-[70vh] max-w-[90vw] sm:max-w-xl sm:max-h-[min(640px,80vh)]
+        className="bg-white dark:bg-card rounded-2xl shadow-xl w-full overflow-hidden max-h-[70vh] max-w-[90vw] sm:max-w-xl sm:max-h-[min(640px,80vh)]
     flex flex-col"
       >
         <div className="overflow-y-auto custom-scroll w-full flex-1">
-          <div className="bg-white rounded-2xl shadow-xl w-full">
+          <div className="bg-white dark:bg-card rounded-2xl shadow-xl w-full">
             {/* Header */}
             <div className="bg-primary px-2 lg:px-6 py-12 text-center relative">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-full mb-4 shadow-lg">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-white dark:bg-card rounded-full mb-4 shadow-lg">
                 <IconCheck
                   className="w-10 h-10 text-green-500"
                   strokeWidth={3}
@@ -401,7 +401,7 @@ const QuickAccessCard = ({
   return (
     <button
       onClick={onClick}
-      className="bg-white flex md:flex-col items-center md:items-start justify-start gap-2 border border-gray-200 rounded-md p-4 hover:border-primary hover:shadow-md transition-all text-left group"
+      className="bg-white dark:bg-card flex md:flex-col items-center md:items-start justify-start gap-2 border border-gray-200 rounded-md p-4 hover:border-primary hover:shadow-md transition-all text-left group"
     >
       <div className={cn(bgColor, color, "p-3 rounded-md")}>
         <Icon />
@@ -468,7 +468,7 @@ const WelcomeTour = ({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center h-screen justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
+      <div className="bg-white dark:bg-card rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
         {/* Blue Header Bar */}
         <div className="h-2 bg-primary" />
 

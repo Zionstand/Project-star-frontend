@@ -292,7 +292,7 @@ export const AddSubjectForm = ({ departments, classLevels }: Props) => {
         </Card>
         <div className="flex items-center justify-end gap-2">
           <Button
-            onClick={() => router.push("/a/classes")}
+            onClick={() => router.back()}
             type="button"
             variant="secondary"
             disabled={pending}
@@ -300,7 +300,7 @@ export const AddSubjectForm = ({ departments, classLevels }: Props) => {
             Cancel
           </Button>
           <Button disabled={pending} type="submit">
-            {pending ? <Loader text="Creating..." /> : "Create Class"}
+            {pending ? <Loader text="Creating..." /> : "Create Subject"}
           </Button>
         </div>
       </form>

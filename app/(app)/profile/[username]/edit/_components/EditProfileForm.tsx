@@ -60,7 +60,7 @@ import { Progress } from "@/components/ui/progress";
 
 import { UserProfilePicture } from "@/components/UserProfilePicture";
 import { Badge } from "@/components/ui/badge";
-import DateSelector from "@/components/DateSelector";
+import { DateSelector } from "@/components/DateSelector";
 import { Textarea } from "@/components/ui/textarea";
 import {
   FileWithMeta,

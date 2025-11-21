@@ -28,6 +28,7 @@ import { useAuth } from "@/store/useAuth";
 import { useRouter } from "next/navigation";
 import { getDashboardPath, useRoleRedirect } from "@/hooks/use-role-redirect";
 import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
+import { TwoFactorVerifyModal } from "@/components/TwoFactorVerifyModal";
 
 export function LoginForm() {
   const router = useRouter();
@@ -38,6 +39,11 @@ export function LoginForm() {
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
+
+  // 2FA modal state
+  const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
+  const [tempToken, setTempToken] = useState("");
+  const [userId, setUserId] = useState("");
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -50,10 +56,21 @@ export function LoginForm() {
     startTransition(async () => {
       try {
         const res = await api.post("/auth/login", data);
+
+        // Check if 2FA is required
+        if (res.data.requiresTwoFactor) {
+          // Store temp token and user ID for 2FA verification
+          setTempToken(res.data.tempToken);
+          setUserId(res.data.user.id);
+          setShowTwoFactorModal(true);
+          toast.info(res.data.message || "Please enter your 2FA code");
+          return;
+        }
+
+        // Normal login (no 2FA required)
         setUser(res.data.user);
         toast.success(res.data.message);
         const dashboardPath = getDashboardPath(res.data.user.role);
-
         router.push(dashboardPath);
       } catch (error: any) {
         toast.error(error.response.data.message);
@@ -61,8 +78,24 @@ export function LoginForm() {
     });
   }
 
+  // Handle successful 2FA verification
+  const handleTwoFactorSuccess = (user: any) => {
+    setUser(user);
+    setShowTwoFactorModal(false);
+    toast.success("Login successful!");
+    const dashboardPath = getDashboardPath(user.role);
+    router.push(dashboardPath);
+  };
+
+  // Handle 2FA cancellation
+  const handleTwoFactorCancel = () => {
+    setShowTwoFactorModal(false);
+    setTempToken("");
+    setUserId("");
+  };
+
   return (
-    <Card className="bg-white">
+    <Card className="bg-white dark:bg-card">
       <CardContent className="space-y-10 py-6">
         <div className="space-y-1 text-center">
           <h3 className="font-medium text-2xl md:text-3xl">Welcome Back</h3>
@@ -149,6 +182,15 @@ export function LoginForm() {
           </form>
         </Form>
       </CardContent>
+
+      {/* Two-Factor Authentication Modal */}
+      <TwoFactorVerifyModal
+        isOpen={showTwoFactorModal}
+        userId={userId}
+        tempToken={tempToken}
+        onSuccess={handleTwoFactorSuccess}
+        onCancel={handleTwoFactorCancel}
+      />
     </Card>
   );
 }

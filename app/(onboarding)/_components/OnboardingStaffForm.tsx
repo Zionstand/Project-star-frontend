@@ -45,7 +45,7 @@ import {
   OnboardingStaffSchemaType,
 } from "@/lib/zodSchema";
 import { Textarea } from "@/components/ui/textarea";
-import DateSelector from "@/components/DateSelector";
+import { DateSelector } from "@/components/DateSelector";
 import { getDashboardPath, useRoleRedirect } from "@/hooks/use-role-redirect";
 import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 
@@ -192,7 +192,7 @@ export function OnboardingStaffForm({
   }
 
   return (
-    <Card className="bg-white w-full">
+    <Card className="bg-white dark:bg-card w-full">
       <CardContent className="space-y-10 py-6">
         <div className="space-y-1 text-center">
           <h3 className="font-medium text-2xl md:text-3xl">

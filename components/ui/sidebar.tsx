@@ -138,7 +138,7 @@ function SidebarProvider({
             } as React.CSSProperties
           }
           className={cn(
-            "group/sidebar-wrapper has-data-[variant=inset]:bg-primary flex min-h-svh w-full",
+            "group/sidebar-wrapper has-data-[variant=inset]:bg-primary dark:bg-primary flex min-h-svh w-full",
             className
           )}
           {...props}
@@ -524,7 +524,11 @@ function SidebarMenuButton({
       data-sidebar="menu-button"
       data-size={size}
       data-active={isActive}
-      className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      className={cn(
+        sidebarMenuButtonVariants({ variant, size }),
+        className,
+        "dark:hover:bg-sidebar-accent hover:text-primary dark:hover:text-white"
+      )}
       {...props}
     />
   );
@@ -693,8 +697,8 @@ function SidebarMenuSubButton({
       data-size={size}
       data-active={isActive}
       className={cn(
-        "text-white ring-sidebar-ring hover:bg-secondary hover:text-primary active:bg-primary-accent active:text-sidebar-accent-foreground [&>svg]:text-white hover:[&>svg]:text-primary flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-sm px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
-        "data-[active=true]:bg-primary-accent data-[active=true]:text-sidebar-accent-foreground",
+        "text-white hover:text-primary ring-sidebar-ring hover:bg-secondary active:bg-white active:text-sidebar-accent-foreground [&>svg]:text-white hover:[&>svg]:text-primary flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-sm px-2 outline-hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 dark:hover:text-white",
+        "data-[active=true]:bg-white data-[active=true]:text-white",
         size === "sm" && "text-xs",
         size === "md" && "text-sm h-9",
         "group-data-[collapsible=icon]:hidden",

@@ -12,49 +12,33 @@ import {
 import { RecentActivityBox } from "../_components/RecentActivityBox";
 import { PageHeader } from "@/components/PageHeader";
 import { DashboardCards } from "@/components/DashboardCards";
-import { useEffect, useState } from "react";
-import { Class, useAuth, User } from "@/store/useAuth";
-import { schoolService } from "@/lib/school";
-import { toast } from "sonner";
-import { Loader } from "@/components/Loader";
+import { useAuth } from "@/store/useAuth";
 import Link from "next/link";
 import { ComingSoon } from "@/components/ComingSoon";
+import { CardsSkeleton } from "@/components/CardsSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSchoolClasses, useSchoolStudents } from "@/hooks/useSchoolData";
 
 const page = () => {
   const { user } = useAuth();
 
-  const [classes, setClasses] = useState<Class[]>([]);
-  const [students, setStudents] = useState<User[]>([]);
+  // Use React Query hooks for automatic caching
+  const { data: classes = [], isLoading: classesLoading } = useSchoolClasses(
+    user?.school?.schoolID || undefined
+  );
 
-  const [loading, setLoading] = useState(true);
+  const { data: studentsData, isLoading: studentsLoading } = useSchoolStudents(
+    user?.schoolId || undefined
+  );
 
-  useEffect(() => {
-    const fetch = async () => {
-      if (!user?.schoolId) return;
+  const students = studentsData?.data || [];
+  const studentsMeta = studentsData?.meta || null;
+  const loading = classesLoading || studentsLoading;
 
-      try {
-        const [classes, students] = await Promise.all([
-          schoolService.getSchoolClasses(user?.school?.schoolID!),
-          schoolService.getStudents(user?.schoolId!),
-        ]);
-
-        setClasses(classes);
-        setStudents(students);
-      } catch (error: any) {
-        toast.error(error.response.data.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetch();
-  }, [user]);
-
-  if (loading) return <Loader />;
   const stats = [
     {
       title: "Total Students",
-      value: `${students.length}`,
+      value: `${studentsMeta?.total || students.length || 0}`,
       icon: IconUsers,
       bgColor: "bg-primary",
       textColor: "text-white",
@@ -151,7 +135,13 @@ const page = () => {
           "Welcome back! Here's what's happening at your school today."
         }
       />
-      <DashboardCards stats={stats} />
+
+      {loading ? (
+        <CardsSkeleton count={4} />
+      ) : (
+        <DashboardCards stats={stats} />
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="col-span-2">
           <Card className="gap-0">
@@ -162,17 +152,33 @@ const page = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 mt-2 relative">
-              <ComingSoon />
-              {recentActivities.map(
-                ({ time, title, description, type }, index) => (
-                  <RecentActivityBox
-                    time={time}
-                    type={type}
-                    title={title}
-                    description={description}
-                    key={index}
-                  />
-                )
+              {loading ? (
+                <div className="space-y-3">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-3 w-2/3" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <ComingSoon />
+                  {recentActivities.map(
+                    ({ time, title, description, type }, index) => (
+                      <RecentActivityBox
+                        time={time}
+                        type={type}
+                        title={title}
+                        description={description}
+                        key={index}
+                      />
+                    )
+                  )}
+                </>
               )}
             </CardContent>
           </Card>
@@ -183,42 +189,56 @@ const page = () => {
               <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 mt-3">
-              {quickActions.map(
-                (
-                  {
-                    icon,
-                    title,
-                    description,
-                    color,
-                    bgColor,
-                    slug,
-                    hoverBorder,
-                  },
-                  index
-                ) => {
-                  const Icon = icon;
-                  return (
-                    <Link
-                      href={slug}
-                      key={index}
-                      className={cn(
-                        "flex items-center gap-2 cursor-pointer rounded-md p-3 border border-transparent transition-colors",
-                        bgColor,
-                        hoverBorder
-                      )}
-                    >
-                      <div className="rounded-md p-3 bg-white">
-                        <Icon className={cn("h-6 w-6", color)} />
+              {loading ? (
+                <div className="space-y-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <Skeleton className="h-12 w-12 rounded-md" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-3/4" />
+                        <Skeleton className="h-3 w-1/2" />
                       </div>
-                      <div className="space-y-0">
-                        <h4 className="font-medium text-sm">{title}</h4>
-                        <p className="text-xs text-muted-foreground">
-                          {description}
-                        </p>
-                      </div>
-                    </Link>
-                  );
-                }
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                quickActions.map(
+                  (
+                    {
+                      icon,
+                      title,
+                      description,
+                      color,
+                      bgColor,
+                      slug,
+                      hoverBorder,
+                    },
+                    index
+                  ) => {
+                    const Icon = icon;
+                    return (
+                      <Link
+                        href={slug}
+                        key={index}
+                        className={cn(
+                          "flex items-center gap-2 cursor-pointer rounded-md p-3 border border-transparent transition-colors",
+                          bgColor,
+                          hoverBorder
+                        )}
+                      >
+                        <div className="rounded-md p-3 bg-white dark:bg-card">
+                          <Icon className={cn("h-6 w-6", color)} />
+                        </div>
+                        <div className="space-y-0">
+                          <h4 className="font-medium text-sm">{title}</h4>
+                          <p className="text-xs text-muted-foreground">
+                            {description}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  }
+                )
               )}
             </CardContent>
           </Card>

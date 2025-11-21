@@ -66,7 +66,7 @@ const DocumentItem = ({
         return {
           icon: IconCircleX,
           iconColor: "text-red-600",
-          bgColor: "bg-white",
+          bgColor: "bg-white dark:bg-muted",
           borderColor: "border-gray-200",
           badge: "Missing",
           badgeBg: "bg-red-100",
