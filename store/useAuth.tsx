@@ -95,6 +95,18 @@ export type School = {
   updatedAt: Date | null;
 } | null;
 
+export type Attendance = {
+  id: string;
+  studentId: string;
+  classId: string;
+  schoolId: string;
+  date: string;
+  status: "PRESENT" | "ABSENT" | "LATE";
+  markedById: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Student = {
   Class: Class;
   LGA: string | null;
@@ -116,6 +128,8 @@ export type Student = {
   }[];
   documents: Document[];
   user: User;
+  assignmentSubmissions: AssignmentSubmissions[];
+  Attendance?: Attendance[];
 };
 export type ParentChildrenLink = {
   relation: string;

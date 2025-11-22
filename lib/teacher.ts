@@ -1,4 +1,5 @@
 import api from "./api";
+import { PaginationParams } from "./types/pagination";
 
 export const teacherService = {
   getTeacherClasses: async (schoolId: string, teacherId: string) => {
@@ -8,6 +9,28 @@ export const teacherService = {
 
   getTeacherSubjects: async (schoolId: string, teacherId: string) => {
     const res = await api.get(`/teachers/${teacherId}/${schoolId}/subjects`);
+    return res.data;
+  },
+
+  getTeacherStudents: async (
+    schoolId: string,
+    teacherId: string,
+    params?: PaginationParams
+  ) => {
+    const res = await api.get(`/teachers/${teacherId}/${schoolId}/students`, {
+      params,
+    });
+    return res.data;
+  },
+
+  getTeacherStudentDetails: async (
+    schoolId: string,
+    teacherId: string,
+    username: string | string[]
+  ) => {
+    const res = await api.get(
+      `/teachers/${teacherId}/${schoolId}/students/${username}`
+    );
     return res.data;
   },
 
@@ -63,6 +86,17 @@ export const teacherService = {
   ) => {
     const res = await api.get(
       `/assignment-submissions/${schoolId}/${assignmentId}`
+    );
+    return res.data;
+  },
+
+  getTeacherStudentAssignments: async (
+    schoolId: string,
+    teacherId: string,
+    username: string | string[]
+  ) => {
+    const res = await api.get(
+      `/teachers/${teacherId}/${schoolId}/students/${username}/assignments`
     );
     return res.data;
   },

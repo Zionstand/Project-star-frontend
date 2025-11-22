@@ -58,22 +58,22 @@ export function LoginForm() {
         const res = await api.post("/auth/login", data);
 
         // Check if 2FA is required
-        if (res.data.requiresTwoFactor) {
+        if (res?.data?.requiresTwoFactor) {
           // Store temp token and user ID for 2FA verification
-          setTempToken(res.data.tempToken);
-          setUserId(res.data.user.id);
+          setTempToken(res?.data?.tempToken);
+          setUserId(res?.data?.user.id);
           setShowTwoFactorModal(true);
-          toast.info(res.data.message || "Please enter your 2FA code");
+          toast.info(res?.data?.message || "Please enter your 2FA code");
           return;
         }
 
         // Normal login (no 2FA required)
-        setUser(res.data.user);
-        toast.success(res.data.message);
-        const dashboardPath = getDashboardPath(res.data.user.role);
+        setUser(res?.data?.user);
+        toast.success(res?.data?.message);
+        const dashboardPath = getDashboardPath(res?.data?.user?.role);
         router.push(dashboardPath);
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message || "Internal server error");
       }
     });
   }

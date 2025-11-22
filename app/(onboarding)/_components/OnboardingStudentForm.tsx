@@ -189,11 +189,11 @@ export function OnboardingStudentForm({
     startTransition(async () => {
       try {
         const res = await api.post(`/students/${schoolID}/onboarding`, data);
-        setUser(res.data.user);
-        toast.success(res.data.message);
+        setUser(res?.data?.user);
+        toast.success(res?.data?.message);
         router.replace("/s/dashboard");
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message || "Internal server error");
       }
     });
   }

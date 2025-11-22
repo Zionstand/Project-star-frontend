@@ -58,7 +58,7 @@ export const StudentCard = ({ student }: Props) => {
           </span>
           <a
             className="hover:text-primary hover:underline transition-all flex items-center justify-start"
-            href={`tel:alice@gmail.com`}
+            href={`tel:${student?.phoneNumber}`}
           >
             <IconPhone className="inline-block size-4.5" />
             {student?.phoneNumber ? (

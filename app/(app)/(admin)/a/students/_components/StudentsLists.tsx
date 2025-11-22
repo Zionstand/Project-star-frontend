@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
-import { StudentCard } from "./StudentCard";
 import { StudentsTable } from "./StudentsTable";
 import { StudentsCard } from "./StudentsCard";
 import { User } from "@/store/useAuth";

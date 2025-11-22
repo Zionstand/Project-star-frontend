@@ -180,13 +180,13 @@ export function OnboardingStaffForm({
           `/schools/${schoolID}/staff/onboarding`,
           data
         );
-        setUser(res.data.user);
-        toast.success(res.data.message);
-        const dashboardPath = getDashboardPath(res.data.user.role);
+        setUser(res?.data?.user);
+        toast.success(res?.data?.message);
+        const dashboardPath = getDashboardPath(res?.data?.user?.role);
 
         router.push(dashboardPath);
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message || "Internal server error");
       }
     });
   }

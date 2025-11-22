@@ -178,11 +178,11 @@ export function RegisterForm({
     startTransition(async () => {
       try {
         const res = await api.post("/auth/register/school", data);
-        setUser(res.data.user);
-        toast.success(res.data.message);
+        setUser(res?.data?.user);
+        toast.success(res?.data?.message);
         router.push("/a/dashboard");
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message || 'Internal server error');
       }
     });
   }

@@ -177,6 +177,24 @@ export const teacherNavLinks = [
     ],
   },
   {
+    title: "Academic",
+    url: "#",
+    icon: IconFileDescription,
+    isActive: true,
+    items: [
+      {
+        title: "My Students",
+        url: "/t/students",
+        icon: IconUsers,
+      },
+      {
+        title: "My Timetables",
+        url: "/t/timetables",
+        icon: IconClock,
+      },
+    ],
+  },
+  {
     title: "Daily Operations",
     url: "#",
     icon: IconUsers,
