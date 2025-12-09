@@ -136,13 +136,9 @@ const page = () => {
         }
       />
 
-      {loading ? (
-        <CardsSkeleton count={4} />
-      ) : (
-        <DashboardCards stats={stats} />
-      )}
+      {loading ? <CardsSkeleton count={4} /> : <DashboardCards stats={stats} />}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         <div className="col-span-2">
           <Card className="gap-0">
             <CardHeader>

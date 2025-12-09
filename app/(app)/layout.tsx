@@ -7,9 +7,11 @@ import { AppSidebarHeader } from "@/components/sidebar/app-sidebar-header";
 import { useAutoRefresh } from "@/hooks/use-auto-refresh";
 import { useSchoolFetcher } from "@/hooks/use-school-fetcher";
 import { useRoleRedirect } from "@/hooks/use-role-redirect";
+import { useRouter } from "next/navigation";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const router = useRouter();
   // useRoleRedirect(user);
   // useSchoolFetcher();
   // useAutoRefresh();
@@ -19,6 +21,10 @@ export default function Layout({ children }: { children: ReactNode }) {
     const savedRole = localStorage.getItem("currentRole");
     if (savedRole) setCurrentRole(savedRole);
   }, []);
+
+  useEffect(() => {
+    if (!user) router.push("/");
+  }, [user]);
 
   return (
     <SidebarProvider>

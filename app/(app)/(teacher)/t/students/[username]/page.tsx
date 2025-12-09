@@ -80,9 +80,6 @@ const page = () => {
           ),
         ]);
 
-        console.log(student);
-        console.log("Assignments:", assignmentsData);
-
         setStudent(student);
         setAssignments(assignmentsData || []);
         const publicHolidays: any = []; // get from DB or config

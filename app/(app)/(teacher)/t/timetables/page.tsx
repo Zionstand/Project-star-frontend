@@ -17,8 +17,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-// Mock data for student's class timetable - Replace with actual API calls
-const MOCK_STUDENT_SLOTS: TimetableSlot[] = [
+// Mock data for teacher's timetable - Replace with actual API calls
+const MOCK_TEACHER_SLOTS: TimetableSlot[] = [
   // Monday
   {
     id: "1",
@@ -26,102 +26,80 @@ const MOCK_STUDENT_SLOTS: TimetableSlot[] = [
     startTime: "08:10",
     endTime: "08:45",
     subject: { id: "1", name: "Mathematics" },
-    teacher: { id: "1", firstName: "John", lastName: "Smith" },
+    teacher: { id: "1", firstName: "Current", lastName: "Teacher" },
     room: "101",
     slotType: "REGULAR",
   },
   {
     id: "2",
     day: "Monday",
-    startTime: "08:50",
-    endTime: "09:30",
-    subject: { id: "2", name: "English" },
-    teacher: { id: "2", firstName: "Sarah", lastName: "Johnson" },
+    startTime: "09:32",
+    endTime: "10:15",
+    subject: { id: "1", name: "Mathematics" },
+    teacher: { id: "1", firstName: "Current", lastName: "Teacher" },
     room: "102",
     slotType: "REGULAR",
   },
   {
     id: "3",
     day: "Monday",
-    startTime: "09:32",
-    endTime: "10:15",
-    subject: { id: "3", name: "Physics" },
-    teacher: { id: "3", firstName: "Michael", lastName: "Brown" },
-    room: "Lab 1",
-    slotType: "REGULAR",
-  },
-  {
-    id: "4",
-    day: "Monday",
     startTime: "10:15",
     endTime: "10:32",
     slotType: "BREAK",
   },
   {
-    id: "5",
-    day: "Monday",
-    startTime: "10:50",
-    endTime: "11:30",
-    subject: { id: "4", name: "Chemistry" },
-    teacher: { id: "4", firstName: "Emily", lastName: "Davis" },
-    room: "Lab 2",
-    slotType: "REGULAR",
-  },
-  {
-    id: "6",
+    id: "4",
     day: "Monday",
     startTime: "12:45",
     endTime: "13:30",
     slotType: "LUNCH",
   },
-  {
-    id: "7",
-    day: "Monday",
-    startTime: "13:30",
-    endTime: "14:15",
-    subject: { id: "5", name: "Physical Education" },
-    teacher: { id: "5", firstName: "David", lastName: "Wilson" },
-    room: "Gymnasium",
-    slotType: "REGULAR",
-  },
   // Tuesday
   {
-    id: "8",
-    day: "Tuesday",
-    startTime: "08:10",
-    endTime: "08:45",
-    subject: { id: "2", name: "English" },
-    teacher: { id: "2", firstName: "Sarah", lastName: "Johnson" },
-    room: "102",
-    slotType: "REGULAR",
-  },
-  {
-    id: "9",
+    id: "5",
     day: "Tuesday",
     startTime: "08:50",
     endTime: "09:30",
     subject: { id: "1", name: "Mathematics" },
-    teacher: { id: "1", firstName: "John", lastName: "Smith" },
+    teacher: { id: "1", firstName: "Current", lastName: "Teacher" },
     room: "101",
     slotType: "REGULAR",
   },
   {
-    id: "10",
-    day: "Tuesday",
-    startTime: "09:32",
-    endTime: "10:15",
-    slotType: "LITERARY_AND_DEBATE",
-  },
-  {
-    id: "11",
+    id: "7",
     day: "Tuesday",
     startTime: "10:15",
     endTime: "10:32",
     slotType: "BREAK",
   },
   {
-    id: "12",
+    id: "8",
     day: "Tuesday",
+    startTime: "12:45",
+    endTime: "13:30",
+    slotType: "LUNCH",
+  },
+  // Wednesday
+  {
+    id: "9",
+    day: "Wednesday",
+    startTime: "08:10",
+    endTime: "08:45",
+    subject: { id: "1", name: "Mathematics" },
+    teacher: { id: "1", firstName: "Current", lastName: "Teacher" },
+    room: "103",
+    slotType: "REGULAR",
+  },
+  {
+    id: "10",
+    day: "Wednesday",
+    startTime: "10:15",
+    endTime: "10:32",
+    slotType: "BREAK",
+  },
+  {
+    id: "11",
+    day: "Wednesday",
     startTime: "12:45",
     endTime: "13:30",
     slotType: "LUNCH",
@@ -141,7 +119,7 @@ const TimetablesPage = () => {
     <div className="space-y-6">
       <PageHeader
         title="My Timetable"
-        description="View your class schedule"
+        description="View your teaching schedule"
         secondaryCTA={{
           label: "Export PDF",
           slug: "#",
@@ -186,7 +164,7 @@ const TimetablesPage = () => {
       {/* Timetable Grid */}
       <div className="bg-card border rounded-lg p-4">
         <TimetableGrid
-          slots={MOCK_STUDENT_SLOTS}
+          slots={MOCK_TEACHER_SLOTS}
           viewType={viewType}
           selectedDay={viewType === "daily" ? selectedDay : undefined}
         />

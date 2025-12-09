@@ -472,6 +472,18 @@ export const teacherMetadata = {
     ],
     path: "/t/attendances",
   }),
+  timetables: createMetadata({
+    title: "My Timetable - Teaching Schedule",
+    description:
+      "View your teaching schedule, class periods, and lesson timetable.",
+    keywords: [
+      "teacher timetable",
+      "teaching schedule",
+      "lesson periods",
+      "class schedule",
+    ],
+    path: "/t/timetables",
+  }),
   settings: createMetadata({
     title: "Teacher Settings - Preferences",
     description:

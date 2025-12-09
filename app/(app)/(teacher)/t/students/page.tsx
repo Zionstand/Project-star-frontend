@@ -52,8 +52,6 @@ const StudentsPageContent = () => {
           setStudentsData(data);
         }
       } catch (error: any) {
-        console.log(error);
-
         if (isMounted) {
           toast.error(
             error?.response?.data?.message || "Failed to fetch students"
